@@ -37,3 +37,9 @@ header .results-dropdown>a span{flex:0 0 auto;border-radius:5px;padding:3px 6px;
   header .hamb{order:2!important;margin-left:0!important}
   header .results-dropdown{position:fixed;top:70px;right:12px;width:min(330px,calc(100vw - 24px));max-height:calc(100vh - 84px);overflow:auto}
 }
+
+/* The results action is a direct, vertically centered page link. */
+header .results-page-link{order:3!important;margin-left:auto!important;display:inline-flex!important;align-items:center;justify-content:center;gap:8px;min-height:42px;padding:10px 15px!important}
+header .results-page-link span{font-size:14px}
+@media(max-width:1100px){header .results-page-link{display:inline-flex!important}}
+@media(max-width:760px){header .results-page-link{order:1!important;margin:0 8px 0 auto!important;min-height:36px;padding:8px 10px!important;font-size:8px!important}header .hamb{order:2!important;margin-left:0!important}}
