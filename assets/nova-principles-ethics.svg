@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 680" fill="none">
+<defs>
+ <linearGradient id="sky" x1="70" y1="40" x2="730" y2="650" gradientUnits="userSpaceOnUse"><stop stop-color="#EAF5FF"/><stop offset=".58" stop-color="#B8D9F5"/><stop offset="1" stop-color="#87B8E6"/></linearGradient>
+ <linearGradient id="palm" x1="155" y1="390" x2="630" y2="656" gradientUnits="userSpaceOnUse"><stop stop-color="#F1C6A6"/><stop offset="1" stop-color="#D99575"/></linearGradient>
+ <linearGradient id="sleeve" x1="492" y1="547" x2="730" y2="666" gradientUnits="userSpaceOnUse"><stop stop-color="#0A3C70"/><stop offset="1" stop-color="#1673C6"/></linearGradient>
+ <filter id="shadow" x="100" y="95" width="610" height="535" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feGaussianBlur stdDeviation="18"/></filter>
+</defs>
+<path fill="url(#sky)" d="M0 0h800v680H0z"/>
+<circle cx="570" cy="170" r="176" fill="#fff" fill-opacity=".38"/>
+<circle cx="560" cy="330" r="223" stroke="#fff" stroke-opacity=".42" stroke-width="2"/>
+<circle cx="560" cy="330" r="262" stroke="#fff" stroke-opacity=".24" stroke-width="1.5"/>
+<path d="M0 85h210M610 584h190M80 0v155M738 0v99" stroke="#fff" stroke-opacity=".48" stroke-width="2"/>
+<circle cx="208" cy="85" r="4" fill="#fff"/><circle cx="610" cy="584" r="4" fill="#fff"/>
+<ellipse cx="440" cy="538" rx="278" ry="58" fill="#133E72" fill-opacity=".2" filter="url(#shadow)"/>
+<!-- paper children holding hands -->
+<g stroke="#fff" stroke-width="13" stroke-linecap="round" stroke-linejoin="round">
+ <path d="M214 336l67-29 69 21 66-32 70 27 66-30"/>
+</g>
+<g>
+ <circle cx="214" cy="270" r="31" fill="#F7FBFF"/><path d="M171 323c8-24 26-36 43-36s36 12 44 36l-14 91h-60z" fill="#2C81CF"/><path d="M178 346l36 26 35-25M184 403l-28 62m99-62 26 62" stroke="#F7FBFF" stroke-width="12" stroke-linecap="round"/>
+ <circle cx="350" cy="252" r="30" fill="#F7FBFF"/><path d="M309 305c8-24 25-35 41-35 17 0 34 11 42 35l-14 98h-55z" fill="#F0B94E"/><path d="M316 331l34 27 36-26M321 393l-21 68m80-68 20 68" stroke="#F7FBFF" stroke-width="12" stroke-linecap="round"/>
+ <circle cx="486" cy="265" r="31" fill="#F7FBFF"/><path d="M443 320c8-24 26-36 43-36s35 12 43 36l-15 98h-57z" fill="#31A18F"/><path d="M451 342l35 28 35-27M455 409l-25 56m98-56 25 56" stroke="#F7FBFF" stroke-width="12" stroke-linecap="round"/>
+ <circle cx="619" cy="250" r="30" fill="#F7FBFF"/><path d="M578 304c8-24 25-35 41-35 17 0 34 11 42 35l-14 96h-55z" fill="#F07E70"/><path d="M586 330l33 27 36-26m-63 63-20 66m79-66 20 66" stroke="#F7FBFF" stroke-width="12" stroke-linecap="round"/>
+</g>
+<!-- open hands supporting the group -->
+<path d="M160 490c42-32 90-46 143-43l119 8c27 2 45 20 43 42-1 20-20 33-46 33h-58l111 19c30 5 47 25 41 47-6 19-27 28-54 23l-125-18 88 34c28 11 39 31 30 50-9 19-31 24-57 14l-154-54c-54-19-98-36-142-69-28-21-38-62 1-86z" fill="url(#palm)"/>
+<path d="M455 520c24-20 56-29 91-24l93 13c23 3 38 20 34 39-4 18-21 27-44 24l-68-9 78 29c24 9 34 28 26 46-8 17-27 22-49 14l-80-28" stroke="#F7D4BA" stroke-width="4" stroke-linecap="round"/>
+<path d="M517 607c62 25 118 40 177 57 27 8 44-1 51-17 7-17-2-34-27-44l-68-28c24 7 43 1 48-17 5-18-8-34-31-39l-54-12c24 2 37-9 38-26 1-18-13-32-35-35l-91-11" fill="url(#sleeve)"/>
+<path d="M576 500c-24-10-48-12-72-6" stroke="#F6D3B9" stroke-width="4" stroke-linecap="round"/>
+<circle cx="675" cy="157" r="5" fill="#fff"/><circle cx="703" cy="184" r="3" fill="#fff"/><circle cx="150" cy="183" r="4" fill="#fff"/>
+</svg>
