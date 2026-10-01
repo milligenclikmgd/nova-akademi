@@ -50,3 +50,6 @@ header .results-page-link{text-decoration:none!important}
 header .results-page-link{transform:none!important;transition:background-color .22s ease,box-shadow .22s ease,filter .22s ease!important}
 header .results-page-link:hover,header .results-page-link:focus-visible{transform:none!important;background:#146fc1!important;box-shadow:0 7px 18px #0c5cae2b!important;filter:brightness(1.02)}
 @media(prefers-reduced-motion:reduce){header .results-page-link{transition:none!important}}
+
+/* Calm hover: color and a light shadow, with no scale pulse. */
+header .results-page-link:hover,header .results-page-link:focus-visible{animation:none!important;transition:background-color .22s ease,box-shadow .22s ease,filter .22s ease!important}
