@@ -6,8 +6,8 @@
 .hero-visuals .hero-slide.is-active{opacity:1}
 .hero-slide:nth-child(1){background-image:linear-gradient(90deg,#fff 0%,#fffffff2 35%,#ffffffc9 47%,#ffffff22 62%,transparent 75%),url("assets/nova-slider-folk.svg")!important}
 .hero-slide:nth-child(2){background-image:linear-gradient(90deg,#fff 0%,#fffffff2 35%,#ffffffc9 47%,#ffffff22 62%,transparent 75%),url("assets/nova-slider-violin.svg")!important}
-.hero-slide:nth-child(3){background-image:linear-gradient(90deg,#fff 0%,#fffffff2 35%,#ffffffc9 47%,#ffffff22 62%,transparent 75%),url("assets/nova-slider-violin.svg")!important}
-.hero-slide:nth-child(4){background-image:linear-gradient(90deg,#fff 0%,#fffffff2 35%,#ffffffc9 47%,#ffffff22 62%,transparent 75%),url("assets/nova-slider-violin.svg")!important}
+
+
 .hero>div.hero-copy{position:relative!important;z-index:2!important;flex:0 1 58%!important;width:min(58vw,900px)!important;max-width:900px!important;margin:0 auto 0 0!important}
 .hero h1{max-width:880px!important;font-size:clamp(36px,3.55vw,56px)!important;line-height:1.12!important;letter-spacing:-.04em!important}
 .hero h1 span{display:inline-block!important;white-space:nowrap!important}
@@ -21,7 +21,7 @@
 .world-count:before{background:#00102e!important}
 .world-count:after{width:min(68%,1050px)!important;background-size:auto 155%!important;background-position:left center!important;mask-image:linear-gradient(90deg,#000 0%,#000 37%,transparent 100%)!important;-webkit-mask-image:linear-gradient(90deg,#000 0%,#000 37%,transparent 100%)!important}
 @media(max-width:1120px){.hero>div.hero-copy{width:58vw!important;flex-basis:58%!important}.hero h1{font-size:clamp(34px,4vw,47px)!important}.hero-film{right:2.5%!important;min-width:155px!important}.world-count:after{width:min(72%,820px)!important}}
-@media(max-width:760px){.hero{height:auto!important;min-height:410px!important;padding:42px 6%!important}.hero-visuals .hero-slide{background-size:100% 100%,auto 106%!important;background-position:left center,right 40%!important}.hero-slide:nth-child(n){background-image:linear-gradient(90deg,#fff 0%,#fffffff0 49%,#ffffff86 68%,#ffffff22 100%),url("assets/nova-slider-folk.svg")!important}.hero-slide:nth-child(2){background-image:linear-gradient(90deg,#fff 0%,#fffffff0 49%,#ffffff86 68%,#ffffff22 100%),url("assets/nova-slider-violin.svg")!important}.hero-slide:nth-child(3){background-image:linear-gradient(90deg,#fff 0%,#fffffff0 49%,#ffffff86 68%,#ffffff22 100%),url("assets/nova-slider-violin.svg")!important}.hero-slide:nth-child(4){background-image:linear-gradient(90deg,#fff 0%,#fffffff0 49%,#ffffff86 68%,#ffffff22 100%),url("assets/nova-slider-violin.svg")!important}.hero>div.hero-copy{width:100%!important;max-width:640px!important;flex-basis:auto!important}.hero h1{font-size:clamp(31px,7.2vw,42px)!important}.hero h1 span{white-space:normal!important}.hero-film{display:none!important}.world-count:after{width:95%!important;background-size:auto 110%!important;mask-image:linear-gradient(90deg,#000 0%,transparent 95%)!important;-webkit-mask-image:linear-gradient(90deg,#000 0%,transparent 95%)!important}}
+@media(max-width:760px){.hero{height:auto!important;min-height:410px!important;padding:42px 6%!important}.hero-visuals .hero-slide{background-size:100% 100%,auto 106%!important;background-position:left center,right 40%!important}.hero-slide:nth-child(n){background-image:linear-gradient(90deg,#fff 0%,#fffffff0 49%,#ffffff86 68%,#ffffff22 100%),url("assets/nova-slider-folk.svg")!important}.hero-slide:nth-child(2){background-image:linear-gradient(90deg,#fff 0%,#fffffff0 49%,#ffffff86 68%,#ffffff22 100%),url("assets/nova-slider-violin.svg")!important}.hero>div.hero-copy{width:100%!important;max-width:640px!important;flex-basis:auto!important}.hero h1{font-size:clamp(31px,7.2vw,42px)!important}.hero h1 span{white-space:normal!important}.hero-film{display:none!important}.world-count:after{width:95%!important;background-size:auto 110%!important;mask-image:linear-gradient(90deg,#000 0%,transparent 95%)!important;-webkit-mask-image:linear-gradient(90deg,#000 0%,transparent 95%)!important}}
 @media(prefers-reduced-motion:reduce){.hero-visuals .hero-slide,.slider-dots button{transition:none!important}}
 
 /* Reframe every carousel photo consistently and preserve clear left/right content zones. */
@@ -29,8 +29,8 @@
 .hero-visuals .hero-slide{background-size:100% 100%,auto 100%!important;background-position:left center,66% center!important;transition:opacity 1.35s ease-in-out!important}
 .hero-slide:nth-child(n){background-image:linear-gradient(90deg,#fff 0%,#fffffff2 30%,#ffffffb5 43%,#ffffff12 61%,#08264a14 76%,#08264a6b 100%),url("assets/nova-slider-folk.svg")!important}
 .hero-slide:nth-child(2){background-image:linear-gradient(90deg,#fff 0%,#fffffff2 30%,#ffffffb5 43%,#ffffff12 61%,#08264a14 76%,#08264a6b 100%),url("assets/nova-slider-violin.svg")!important}
-.hero-slide:nth-child(3){background-image:linear-gradient(90deg,#fff 0%,#fffffff2 30%,#ffffffb5 43%,#ffffff12 61%,#08264a14 76%,#08264a6b 100%),url("assets/nova-slider-violin.svg")!important}
-.hero-slide:nth-child(4){background-image:linear-gradient(90deg,#fff 0%,#fffffff2 30%,#ffffffb5 43%,#ffffff12 61%,#08264a14 76%,#08264a6b 100%),url("assets/nova-slider-violin.svg")!important}
+
+
 .hero>div.hero-copy{flex:0 1 54%!important;width:min(54vw,790px)!important;max-width:790px!important;margin:0 auto 0 0!important}
 .hero h1{max-width:790px!important;font-size:clamp(36px,3.35vw,54px)!important;line-height:1.13!important;letter-spacing:-.035em!important}
 .hero h1 span{white-space:normal!important}
@@ -47,8 +47,16 @@
  .hero-visuals .hero-slide{background-size:100% 100%,auto 100%!important;background-position:left center,72% center!important}
  .hero-slide:nth-child(n){background-image:linear-gradient(90deg,#fff 0%,#fffffff0 38%,#ffffffad 66%,#ffffff4d 100%),url("assets/nova-slider-folk.svg")!important}
  .hero-slide:nth-child(2){background-image:linear-gradient(90deg,#fff 0%,#fffffff0 38%,#ffffffad 66%,#ffffff4d 100%),url("assets/nova-slider-violin.svg")!important}
- .hero-slide:nth-child(3){background-image:linear-gradient(90deg,#fff 0%,#fffffff0 38%,#ffffffad 66%,#ffffff4d 100%),url("assets/nova-slider-violin.svg")!important}
- .hero-slide:nth-child(4){background-image:linear-gradient(90deg,#fff 0%,#fffffff0 38%,#ffffffad 66%,#ffffff4d 100%),url("assets/nova-slider-violin.svg")!important}
+ 
+ 
  .hero>div.hero-copy{width:100%!important;max-width:650px!important}
  .hero-film{display:none!important}
+}
+
+/* Keep source aspect ratio; pin the two panoramas flush to the right edge. */
+.hero-visuals .hero-slide{background-size:100% 100%,auto 100%!important;background-position:left center,right center!important;background-color:#0b2b4a!important}
+.hero-slide:nth-child(1){background-image:linear-gradient(90deg,transparent 0%,transparent 63%,#08264a18 78%,#08264a70 100%),url("assets/nova-slider-folk.svg")!important}
+.hero-slide:nth-child(2){background-image:linear-gradient(90deg,transparent 0%,transparent 63%,#08264a18 78%,#08264a70 100%),url("assets/nova-slider-violin.svg")!important}
+@media(max-width:760px){
+ .hero-visuals .hero-slide{background-size:100% 100%,auto 100%!important;background-position:left center,68% center!important}
 }
