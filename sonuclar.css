@@ -29,3 +29,8 @@
 .empty-results{padding:28px;text-align:center;border:1px dashed #cdd9e5;border-radius:12px;background:#fff;color:var(--muted);font-size:13px}
 @media(max-width:620px){.results-header{height:68px}.results-header img{width:150px}.results-main{padding:25px 14px 50px}.result-tabs{grid-template-columns:1fr 1fr}.candidate-row{grid-template-columns:36px minmax(0,1fr) auto;gap:8px;padding:9px}.candidate-rank{grid-row:1/3}.candidate-action{grid-column:3;grid-row:1/3;padding:8px 9px}.candidate-name{font-size:11px}.results-tools{align-items:flex-start;flex-direction:column}.results-search{width:100%}}
 @media(prefers-reduced-motion:reduce){.result-tab,.candidate-action{transition:none}}
+
+/* Clear distinction between sample data and official results. */
+.demo-banner{border-color:#d7e6f2;background:#eef6fc;color:#35546e}
+.demo-banner b{background:#d9e9f7;color:#205582}
+.candidate-demo{display:none}
