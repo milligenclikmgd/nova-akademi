@@ -25,3 +25,15 @@ header .results-dropdown>a span{flex:0 0 auto;border-radius:5px;padding:3px 6px;
 @media(max-width:1120px){header .brand{width:clamp(155px,17vw,190px)!important;flex-basis:clamp(155px,17vw,190px)!important}header .left{gap:10px!important}header .nav-submenu{left:0;transform:translateY(8px)}header .nav-item:hover>.nav-submenu,header .nav-item:focus-within>.nav-submenu,header .nav-item.is-open>.nav-submenu{transform:translateY(0)}}
 @media(max-width:760px){header .brand{width:155px!important;flex-basis:155px!important;height:67px!important}header .left.open{display:grid!important;gap:4px!important;max-height:calc(100vh - 74px);overflow:auto}header .left.open .nav-item{display:grid;grid-template-columns:1fr 24px;align-items:center}header .left.open .nav-item>.nav-link{padding:12px 0;font-size:13px!important}header .left.open .nav-toggle{grid-column:2;grid-row:1}header .left.open .nav-submenu{position:static;grid-column:1/-1;grid-row:2;min-width:0;width:100%;display:none;opacity:1;visibility:visible;pointer-events:auto;transform:none;box-shadow:none;background:#f5f9fd;border:0;border-radius:8px;padding:4px 8px;margin-bottom:5px}header .left.open .nav-item.is-open>.nav-submenu,header .left.open .nav-item:focus-within>.nav-submenu{display:grid}header .results-picker{display:none!important}}
 @media(prefers-reduced-motion:reduce){header .nav-toggle svg,header .nav-submenu,header .topcta{transition:none!important}}
+
+/* Keep exam results reachable at tablet and phone widths. */
+@media(max-width:1100px){
+  header .results-picker{display:block!important;order:1!important;margin-left:auto!important}
+  header .results-toggle{display:inline-flex!important;align-items:center;justify-content:center;padding:10px 12px!important;font-size:9px!important}
+}
+@media(max-width:760px){
+  header .results-picker{display:block!important;order:1!important;margin:0 8px 0 auto!important}
+  header .results-toggle{display:inline-flex!important;min-height:36px;padding:8px 10px!important;font-size:8px!important}
+  header .hamb{order:2!important;margin-left:0!important}
+  header .results-dropdown{position:fixed;top:70px;right:12px;width:min(330px,calc(100vw - 24px));max-height:calc(100vh - 84px);overflow:auto}
+}
