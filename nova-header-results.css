@@ -53,3 +53,11 @@ header .results-page-link:hover,header .results-page-link:focus-visible{transfor
 
 /* Calm hover: color and a light shadow, with no scale pulse. */
 header .results-page-link:hover,header .results-page-link:focus-visible{animation:none!important;transition:background-color .22s ease,box-shadow .22s ease,filter .22s ease!important}
+
+
+/* Stable exam-results hover: never pulse or blink. */
+header .results-page-link,header .results-page-link::before,header .results-page-link::after{animation:none!important}
+header .results-page-link{will-change:background-color,box-shadow!important;transform:translateZ(0)!important;transition:background-color .24s ease,box-shadow .24s ease,color .24s ease!important}
+header .results-page-link:hover,header .results-page-link:focus-visible{animation:none!important;transform:translateZ(0)!important;background:linear-gradient(110deg,#1678d6,#0a5da9)!important;box-shadow:0 8px 20px #0c5cae2e!important;color:#fff!important;filter:none!important}
+header .results-page-link span{display:inline-block;transition:transform .24s ease!important}
+header .results-page-link:hover span,header .results-page-link:focus-visible span{transform:translate(2px,-2px)!important}
