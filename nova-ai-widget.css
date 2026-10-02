@@ -32,3 +32,5 @@
 .nova-ai-compose button svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
 @media(max-width:600px){.nova-ai-widget{right:14px;bottom:14px}.nova-ai-panel,.nova-ai-widget.is-open{width:calc(100vw - 28px);height:min(480px,calc(100dvh - 28px))}.nova-ai-launcher{width:178px;height:54px;padding:7px 13px}.nova-ai-label{font-size:14px}}
 @media(prefers-reduced-motion:reduce){.nova-ai-widget,.nova-ai-launcher,.nova-ai-panel,.nova-ai-close{transition:none!important}}
+
+.nova-ai-conversation{overflow-y:auto}.nova-ai-message{max-width:86%;padding:10px 12px;border-radius:12px;margin:10px 0;font-size:12px;line-height:1.5}.nova-ai-message.user{margin-left:auto;background:#0b66b8;color:#fff;border-bottom-right-radius:3px}.nova-ai-message.assistant{background:#edf4fa;color:#17395b;border-bottom-left-radius:3px}.nova-ai-message.pending{opacity:.65;font-style:italic}.nova-ai-compose button:disabled{opacity:.55;cursor:wait}
