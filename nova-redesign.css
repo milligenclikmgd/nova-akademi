@@ -25,3 +25,5 @@ header .brand{width:259px!important;flex-basis:259px!important}footer{position:r
 
 /* Kriter Medya: white logo without image background on the NOVA-blue footer */
 footer .kriter-media{filter:brightness(0) invert(1)!important;mix-blend-mode:screen!important;opacity:1!important}
+
+footer .kriter-media{filter:none!important;mix-blend-mode:normal!important}
