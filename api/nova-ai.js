@@ -37,6 +37,8 @@ export default async function handler(req, res) {
     if (!reply) throw new Error("Yanıt alınamadı.");
     return res.status(200).json({ reply });
   } catch (error) {
-    return res.status(502).json({ error: error.message || "NOVA AI şu an yanıt veremiyor." });
+    const message = error.message || "NOVA AI şu an yanıt veremiyor.";
+    if (/high demand|resource exhausted|rate limit/i.test(message)) return res.status(503).json({ error: "NOVA AI şu an yoğun. Lütfen birkaç saniye sonra tekrar deneyin." });
+    return res.status(502).json({ error: "NOVA AI şu an yanıt veremiyor. Lütfen tekrar deneyin." });
   }
 }
