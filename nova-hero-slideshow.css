@@ -25,7 +25,7 @@
 @media(prefers-reduced-motion:reduce){.hero-visuals .hero-slide,.slider-dots button{transition:none!important}}
 
 /* Reframe every carousel photo consistently and preserve clear left/right content zones. */
-.hero{height:clamp(400px,48vh,520px)!important;min-height:400px!important;padding-inline:clamp(26px,5vw,88px)!important}
+.hero{height:clamp(460px,55vh,598px)!important;min-height:460px!important;padding-inline:clamp(26px,5vw,88px)!important}
 .hero-visuals .hero-slide{background-size:100% 100%,auto 100%!important;background-position:left center,66% center!important;transition:opacity 1.35s ease-in-out!important}
 .hero-slide:nth-child(n){background-image:linear-gradient(90deg,#fff 0%,#fffffff2 30%,#ffffffb5 43%,#ffffff12 61%,#08264a14 76%,#08264a6b 100%),url("assets/nova-slider-folk.svg")!important}
 .hero-slide:nth-child(2){background-image:linear-gradient(90deg,#fff 0%,#fffffff2 30%,#ffffffb5 43%,#ffffff12 61%,#08264a14 76%,#08264a6b 100%),url("assets/nova-slider-violin.svg")!important}
@@ -37,13 +37,13 @@
 .hero-intro{max-width:520px!important}
 .hero-film{right:4.2%!important;min-width:210px!important;padding:18px 0 18px 22px!important;border-left:1px solid #ffffffad!important;background:linear-gradient(90deg,transparent,#08264a52)!important;text-shadow:0 1px 8px #08264a70}
 @media(max-width:1120px){
- .hero{height:clamp(390px,48vh,490px)!important}
+ .hero{height:clamp(449px,55vh,564px)!important}
  .hero-visuals .hero-slide{background-size:100% 100%,auto 100%!important;background-position:left center,68% center!important}
  .hero>div.hero-copy{width:56vw!important;flex-basis:56%!important}
  .hero-film{right:2.4%!important;min-width:175px!important}
 }
 @media(max-width:760px){
- .hero{height:auto!important;min-height:445px!important;padding:42px 6% 54px!important}
+ .hero{height:auto!important;min-height:512px!important;padding:48px 6% 62px!important}
  .hero-visuals .hero-slide{background-size:100% 100%,auto 100%!important;background-position:left center,72% center!important}
  .hero-slide:nth-child(n){background-image:linear-gradient(90deg,#fff 0%,#fffffff0 38%,#ffffffad 66%,#ffffff4d 100%),url("assets/nova-slider-folk.svg")!important}
  .hero-slide:nth-child(2){background-image:linear-gradient(90deg,#fff 0%,#fffffff0 38%,#ffffffad 66%,#ffffff4d 100%),url("assets/nova-slider-violin.svg")!important}
