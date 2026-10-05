@@ -7,3 +7,34 @@
 @media(min-width:1331px){[data-nova-header]{min-height:142px}.nova-main-header{min-height:142px!important;padding-inline:clamp(22px,3vw,64px)!important;gap:clamp(18px,2vw,32px)!important}.nova-main-header .nova-brand{width:304px!important}.nova-main-header .nova-brand img{max-height:105px!important}.nova-main-header .nova-nav{gap:clamp(8px,1vw,16px)!important;justify-content:space-between}.nova-main-header .nova-nav-link{font-size:14.3px!important;letter-spacing:.012em!important}.nova-main-header .nova-results{padding:16px 18px!important;font-size:11.5px!important}.nova-main-header .nova-nav-item .nova-arrow{display:inline-flex!important;align-items:center!important;justify-content:center!important;width:17px!important;height:22px!important;padding:0!important;border:0!important;background:transparent!important;color:#507092!important;line-height:1!important;transform:none!important;transform-origin:center center!important;transition:transform .24s ease!important}.nova-main-header .nova-arrow svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}.nova-main-header .nova-nav-item.is-open .nova-arrow{transform:rotate(180deg)!important}.nova-main-header .nova-submenu{opacity:0;display:grid!important;visibility:hidden;transform:translateY(-8px) scale(.98);transform-origin:top left;transition:opacity .2s ease,transform .24s ease,visibility .24s}.nova-main-header .nova-nav-item.is-open .nova-submenu{opacity:1;visibility:visible;transform:translateY(0) scale(1)}footer .footer-logo{width:min(364px,80vw)!important;max-height:143px!important}}
 @media(min-width:1121px) and (max-width:1600px){.nova-main-header .nova-nav-link{font-size:12px!important}.nova-main-header .nova-brand{width:265px!important}.nova-main-header .nova-nav{gap:8px!important}.nova-main-header .nova-results{padding:14px 14px!important;font-size:9.5px!important}}
 @media(max-width:1600px) and (min-width:1331px){.nova-main-header{min-height:126px!important}.nova-main-header .nova-brand img{max-height:95px!important}}
+
+/* Headerı %20 daha kompaktlaştır — 2026-10-06 */
+@media (min-width:1331px){
+  [data-nova-header]{min-height:114px}
+  .nova-main-header{min-height:114px!important;gap:clamp(14px,1.6vw,26px)!important}
+  .nova-main-header .nova-brand{width:243px!important}
+  .nova-main-header .nova-brand img{max-height:84px!important}
+  .nova-main-header .nova-nav-link{font-size:11.4px!important}
+  .nova-main-header .nova-results{padding:13px 14px!important;font-size:9.2px!important}
+  footer .footer-logo{width:min(291px,72vw)!important;max-height:114px!important}
+}
+@media (min-width:1121px) and (max-width:1330px){
+  [data-nova-header]{min-height:77px}
+  .nova-main-header{min-height:77px!important}
+  .nova-main-header .nova-brand{width:163px!important}
+  .nova-main-header .nova-brand img{max-height:50px!important}
+  .nova-main-header .nova-nav-link{font-size:8.8px!important}
+  .nova-main-header .nova-nav{gap:7px!important}
+  .nova-main-header .nova-results{padding:10px 11px!important;font-size:7.2px!important}
+  footer .footer-logo{width:min(224px,66vw)!important;max-height:88px!important}
+}
+@media (max-width:1120px){
+  .nova-main-header .nova-brand{width:123px}
+  footer .footer-logo{width:min(224px,66vw)!important;max-height:88px!important}
+}
+@media (max-width:580px){.nova-main-header .nova-brand{width:100px}}
+/* Alt menüler yalnızca fare üzerine gelindiğinde açılır. */
+@media (hover:hover) and (min-width:1121px){
+  .nova-main-header .nova-nav-item.has-submenu:hover .nova-submenu{display:grid;opacity:1;visibility:visible;transform:translateY(0) scale(1)}
+  .nova-main-header .nova-nav-item.has-submenu:hover .nova-arrow{transform:rotate(180deg)!important}
+}
