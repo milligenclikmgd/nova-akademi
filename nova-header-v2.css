@@ -45,3 +45,14 @@
   .nova-main-header .nova-nav-item.has-submenu::after{content:"";position:absolute;z-index:19;left:-16px;right:-16px;top:100%;height:30px}
   .nova-main-header .nova-submenu{top:calc(100% + 14px)!important}
 }
+
+/* Header menü ölçeği +%10 — 2026-10-06 */
+@media (min-width:1331px){
+  .nova-main-header .nova-nav{gap:clamp(9px,.77vw,13px)!important}
+  .nova-main-header .nova-nav-link{font-size:12.54px!important}
+}
+@media (min-width:1121px) and (max-width:1330px){
+  .nova-main-header .nova-nav{gap:8.8px!important}
+  .nova-main-header .nova-nav-link{font-size:9.68px!important}
+}
+@media (max-width:1120px){.nova-main-header .nova-nav-link{font-size:11px}}
