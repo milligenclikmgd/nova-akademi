@@ -4,7 +4,7 @@
 (()=>{
   const navigation=[
     {label:'KURUMSAL',href:'index.html#kurumsal',children:[
-      {label:'Hakkımızda',href:'index.html#kurumsal'},
+      {label:'Hakkımızda',href:'hakkimizda.html'},
       {label:'Faaliyet Alanları',href:'index.html#faaliyet'},
       {label:'Rakamlarla NOVA',href:'index.html#rakamlar'},
       {label:'Birimler',href:'index.html#birimler',children:[
