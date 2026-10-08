@@ -56,3 +56,8 @@
   .nova-main-header .nova-nav-link{font-size:9.68px!important}
 }
 @media (max-width:1120px){.nova-main-header .nova-nav-link{font-size:11px}}
+
+/* 3D NOVA logo kullanımı — 2026-10-08 */
+footer .footer-logo{filter:none!important}
+@media (min-width:1331px){.nova-main-header .nova-nav{gap:clamp(11px,.92vw,16px)!important}}
+@media (min-width:1121px) and (max-width:1330px){.nova-main-header .nova-nav{gap:10.6px!important}}
