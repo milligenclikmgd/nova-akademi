@@ -61,3 +61,15 @@
 footer .footer-logo{filter:none!important}
 @media (min-width:1331px){.nova-main-header .nova-nav{gap:clamp(11px,.92vw,16px)!important}}
 @media (min-width:1121px) and (max-width:1330px){.nova-main-header .nova-nav{gap:10.6px!important}}
+
+/* Müşteri onaylı 7 başlıklı eşit dağılımlı header — 2026-10-08 */
+@media (min-width:1121px){
+  .nova-main-header{gap:clamp(16px,1.8vw,30px)!important;padding-inline:clamp(22px,3vw,60px)!important}
+  .nova-main-header .nova-brand{width:clamp(190px,15vw,243px)!important}
+  .nova-main-header .nova-nav{display:grid!important;grid-template-columns:repeat(7,minmax(0,1fr));align-items:center;justify-content:stretch!important;gap:clamp(4px,.45vw,9px)!important;flex:1}
+  .nova-main-header .nova-nav-item{width:100%;justify-content:center;gap:3px;min-width:0}
+  .nova-main-header .nova-nav-link{font-size:clamp(9.3px,.72vw,12.2px)!important;line-height:1.18;text-align:center;letter-spacing:.012em!important}
+  .nova-main-header .nova-results{display:none!important}
+  .nova-main-header .nova-results-item .nova-nav-link{color:#0d5cab;font-weight:900}
+  .nova-main-header .nova-submenu{left:0!important}
+}
