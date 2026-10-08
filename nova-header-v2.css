@@ -81,3 +81,8 @@ footer .footer-logo{filter:none!important}
   .nova-main-header .nova-nav-link{font-size:clamp(9.3px,.72vw,12.2px)!important;text-align:left}
   .nova-main-header .nova-results{display:inline-flex!important}
 }
+
+/* Ana başlıkları header genişliğine belirgin yay — 2026-10-08 */
+@media (min-width:1121px){
+  .nova-main-header .nova-nav{justify-content:space-between!important;gap:clamp(16px,1.5vw,28px)!important}
+}
