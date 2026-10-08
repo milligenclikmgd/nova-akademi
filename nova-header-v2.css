@@ -86,3 +86,6 @@ footer .footer-logo{filter:none!important}
 @media (min-width:1121px){
   .nova-main-header .nova-nav{justify-content:space-between!important;gap:clamp(16px,1.5vw,28px)!important}
 }
+
+/* Başlıkları %5 yaklaştır — 2026-10-08 */
+@media (min-width:1121px){.nova-main-header .nova-nav{padding-right:5%;box-sizing:border-box}}
