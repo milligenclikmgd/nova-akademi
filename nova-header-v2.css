@@ -73,3 +73,11 @@ footer .footer-logo{filter:none!important}
   .nova-main-header .nova-results-item .nova-nav-link{color:#0d5cab;font-weight:900}
   .nova-main-header .nova-submenu{left:0!important}
 }
+
+/* Sınav Sonuçları ayrı buton; ana menü %15 daha sıkı — 2026-10-08 */
+@media (min-width:1121px){
+  .nova-main-header .nova-nav{display:flex!important;align-items:center;justify-content:flex-start!important;gap:clamp(9px,.78vw,14px)!important;flex:1}
+  .nova-main-header .nova-nav-item{width:auto;justify-content:flex-start}
+  .nova-main-header .nova-nav-link{font-size:clamp(9.3px,.72vw,12.2px)!important;text-align:left}
+  .nova-main-header .nova-results{display:inline-flex!important}
+}
