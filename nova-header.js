@@ -26,7 +26,11 @@
       {label:'Değerlendirme',href:'index.html#degerlendirme'},
       {label:'Kabul Süreci',href:'index.html#sistem'}
     ]},
-    {label:'ÖĞRENCİ YOLCULUĞU',href:'index.html#yolculuk'},
+    {label:'ÖĞRENCİ YOLCULUĞU',href:'index.html#yolculuk',children:[
+      {label:'Gelişim Planı',href:'index.html#yolculuk'},
+      {label:'Performans Takibi',href:'index.html#yolculuk'},
+      {label:'Kariyer Hazırlığı',href:'index.html#yolculuk'}
+    ]},
     {label:'NOVA GLOBAL',href:'index.html#global'},
     {label:'İLETİŞİM',href:'index.html#iletisim'}
   ];
