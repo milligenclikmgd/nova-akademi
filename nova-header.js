@@ -14,7 +14,7 @@
         {label:'Stratejik Plan',href:'stratejik-plan-gelisim.html'},
         {label:'İnsan Kaynakları',href:'insan-kaynaklari-egitici-gelisimi.html'}
       ]},
-      {label:'Değerlerimiz',href:'index.html#degerler'},
+      {label:'Değerlerimiz',href:'degerlerimiz.html'},
       {label:'Yönetim Kurulu',href:'index.html#yonetim'},
       {label:'İş Ortakları',href:'index.html#ortaklar'}
     ]},
