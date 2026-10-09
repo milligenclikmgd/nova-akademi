@@ -1,0 +1,1 @@
+document.querySelectorAll('.value-card').forEach(card=>card.addEventListener('click',()=>{const active=card.classList.contains('active');document.querySelectorAll('.value-card').forEach(x=>{x.classList.remove('active');x.setAttribute('aria-expanded','false')});if(!active){card.classList.add('active');card.setAttribute('aria-expanded','true')}}));
