@@ -5,7 +5,7 @@
   const navigation=[
     {label:'KURUMSAL',href:'index.html#kurumsal',children:[
       {label:'Hakkımızda',href:'hakkimizda.html'},
-      {label:'Faaliyet Alanları',href:'index.html#faaliyet'},
+      {label:'Faaliyet Alanları',href:'faaliyet-alanlari.html'},
       {label:'Rakamlarla NOVA',href:'index.html#rakamlar'},
       {label:'Birimler',href:'index.html#birimler',children:[
         {label:'Ölçme Değerlendirme',href:'index.html#olcme'},
