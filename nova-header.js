@@ -15,7 +15,7 @@
         {label:'İnsan Kaynakları',href:'insan-kaynaklari-egitici-gelisimi.html'}
       ]},
       {label:'Değerlerimiz',href:'degerlerimiz.html'},
-      {label:'Yönetim Kurulu',href:'index.html#yonetim'},
+      {label:'Yönetim Kurulu',href:'yonetim-kurulu.html'},
       {label:'İş Ortakları',href:'index.html#ortaklar'}
     ]},
     {label:'EĞİTİM MODELİMİZ',href:'index.html#model'},
