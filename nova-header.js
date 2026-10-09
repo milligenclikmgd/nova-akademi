@@ -8,11 +8,11 @@
       {label:'Faaliyet Alanları',href:'faaliyet-alanlari.html'},
       {label:'Rakamlarla NOVA',href:'rakamlarla-nova.html'},
       {label:'Birimler',href:'index.html#birimler',children:[
-        {label:'Ölçme Değerlendirme',href:'index.html#olcme'},
-        {label:'Program Geliştirme',href:'index.html#program'},
-        {label:'Bilgi İşlem Merkezi',href:'index.html#bilgi-islem'},
-        {label:'Stratejik Plan',href:'index.html#strateji'},
-        {label:'İnsan Kaynakları',href:'index.html#ik'}
+        {label:'Ölçme Değerlendirme',href:'olcme-degerlendirme.html'},
+        {label:'Program Geliştirme',href:'program-gelistirme.html'},
+        {label:'Bilgi İşlem Merkezi',href:'bilgi-islem-veri-yonetimi.html'},
+        {label:'Stratejik Plan',href:'stratejik-plan-gelisim.html'},
+        {label:'İnsan Kaynakları',href:'insan-kaynaklari-egitici-gelisimi.html'}
       ]},
       {label:'Değerlerimiz',href:'index.html#degerler'},
       {label:'Yönetim Kurulu',href:'index.html#yonetim'},
