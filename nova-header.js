@@ -18,7 +18,10 @@
       {label:'Yönetim Kurulu',href:'yonetim-kurulu.html'},
       {label:'İş Ortakları',href:'index.html#ortaklar'}
     ]},
-    {label:'EĞİTİM MODELİMİZ',href:'index.html#model'},
+    {label:'EĞİTİM MODELİMİZ',href:'index.html#model',children:[
+      {label:'Nova Eğitim Modeli',href:'index.html#model'},
+      {label:'Nova Öğrenci Pasaportu',href:'index.html#yolculuk'}
+    ]},
     {label:'YETENEK SİSTEMİ',href:'index.html#sistem'},
     {label:'ÖĞRENCİ YOLCULUĞU',href:'index.html#yolculuk'},
     {label:'NOVA GLOBAL',href:'index.html#global'},
