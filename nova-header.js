@@ -22,7 +22,10 @@
       {label:'Nova Eğitim Modeli',href:'index.html#model'},
       {label:'Nova Öğrenci Pasaportu',href:'index.html#yolculuk'}
     ]},
-    {label:'YETENEK SİSTEMİ',href:'index.html#sistem'},
+    {label:'YETENEK SİSTEMİ',href:'index.html#sistem',children:[
+      {label:'Değerlendirme',href:'index.html#degerlendirme'},
+      {label:'Kabul Süreci',href:'index.html#sistem'}
+    ]},
     {label:'ÖĞRENCİ YOLCULUĞU',href:'index.html#yolculuk'},
     {label:'NOVA GLOBAL',href:'index.html#global'},
     {label:'İLETİŞİM',href:'index.html#iletisim'}
