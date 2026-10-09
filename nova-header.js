@@ -32,7 +32,7 @@
       {label:'Kariyer Hazırlığı',href:'index.html#yolculuk'}
     ]},
     {label:'NOVA GLOBAL',href:'index.html#global'},
-    {label:'İLETİŞİM',href:'index.html#iletisim'}
+    {label:'İLETİŞİM',href:'iletisim.html'}
   ];
 
   const link=(item,className)=>`<a class="${className}" href="${item.href||'#'}">${item.label}</a>`;
