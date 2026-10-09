@@ -62,3 +62,4 @@
   });
   document.querySelectorAll('.nova-main-header .hamb').forEach(button=>button.addEventListener('click',()=>button.closest('.nova-main-header').querySelector('.nova-nav').classList.toggle('open')));
 })();
+/* Production sync: 2026-10-10 */
