@@ -152,3 +152,11 @@ footer .footer-logo{filter:none!important}
 @media (min-width:1121px){
   .nova-main-header .nova-nav{gap:clamp(33.8px,2.795vw,57.2px)!important}
 }
+
+
+/* Menü ve Sınav Sonuçları tuşunu aynı görsel ritimde tut — 2026-10-10 */
+@media (min-width:1121px){
+  .nova-main-header{gap:clamp(34px,2.65vw,52px)!important}
+  .nova-main-header .nova-nav{flex:0 1 auto!important;gap:clamp(28px,2.3vw,46px)!important;padding-right:0!important}
+  .nova-main-header .nova-nav-link{font-size:clamp(10.2px,.78vw,13px)!important}
+}
