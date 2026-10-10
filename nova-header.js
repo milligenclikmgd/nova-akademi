@@ -18,7 +18,7 @@
       {label:'Yönetim Kurulu',href:'yonetim-kurulu.html'},
       {label:'İş Ortaklarımız',href:'is-ortaklarimiz.html'}
     ]},
-    {label:'EĞİTİM MODELİMİZ',href:'nova-egitim-modeli.html',children:[
+    {label:'EĞİTİM MODELİMİZ',href:'index.html#model',children:[
       {label:'Nova Eğitim Modeli',href:'nova-egitim-modeli.html'},
       {label:'Nova Öğrenci Pasaportu',href:'index.html#yolculuk'}
     ]},
