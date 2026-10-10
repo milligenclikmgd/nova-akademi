@@ -65,3 +65,11 @@
 .about-page .about-index span{font-size:13px}
 .about-page .visual-history{background-image:linear-gradient(145deg,rgba(3,37,71,.08),rgba(3,43,77,.38)),url('assets/nova-about-hero-20261010.webp');background-position:72% center}
 @media(max-width:620px){.about-page .about-hero{min-height:325px;padding-top:48px;padding-bottom:40px}.about-page .about-index{padding:20px 0}.about-page .about-index a{font-size:11px}}
+
+
+/* Hakkımızda – bölüm bağlantısı etkileşimi */
+.about-page .about-index a{position:relative;display:flex;align-items:center;gap:7px;min-height:38px;transition:color .22s ease,background-color .22s ease,transform .22s ease,box-shadow .22s ease}
+.about-page .about-index a:after{content:"↘";display:inline-block;color:#1398dd;font-size:14px;line-height:1;opacity:0;transform:translate(-5px,5px);transition:opacity .22s ease,transform .22s ease}
+.about-page .about-index a:hover,.about-page .about-index a:focus-visible{color:var(--nova);background:#edf8fe;transform:translateY(-2px);box-shadow:0 8px 16px rgba(10,92,143,.10);outline:none}
+.about-page .about-index a:hover:after,.about-page .about-index a:focus-visible:after{opacity:1;transform:translate(0,0)}
+@media(max-width:620px){.about-page .about-index a{min-height:34px}.about-page .about-index a:hover{transform:none}}
