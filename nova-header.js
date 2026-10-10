@@ -20,7 +20,7 @@
     ]},
     {label:'EĞİTİM MODELİMİZ',href:'index.html#model',children:[
       {label:'Nova Eğitim Modeli',href:'nova-egitim-modeli.html'},
-      {label:'Nova Öğrenci Pasaportu',href:'index.html#yolculuk'}
+      {label:'Nova Öğrenci Pasaportu',href:'nova-ogrenci-pasaportu.html'}
     ]},
     {label:'YETENEK SİSTEMİ',href:'index.html#sistem',children:[
       {label:'Değerlendirme',href:'index.html#degerlendirme'},
