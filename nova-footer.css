@@ -18,3 +18,5 @@ footer#iletisim .footer-bottom .kriter-media img{display:block!important;width:9
 
 /* NOVA logosu tüm footer'larda özgün renkleriyle kullanılır */
 footer#iletisim .footer-logo,footer .footer-logo{filter:none!important;opacity:1!important;mix-blend-mode:normal!important}
+
+footer#iletisim .footer-bottom .footer-phone{margin-left:auto!important;display:flex!important;flex-direction:column!important;align-items:flex-end!important;gap:2px!important;text-decoration:none!important;color:#fff!important;line-height:1!important}footer#iletisim .footer-bottom .footer-phone small{color:#dff3ff!important;font-size:9px!important;font-weight:800!important;letter-spacing:.12em!important}footer#iletisim .footer-bottom .footer-phone strong{color:#fff!important;font-size:24px!important;letter-spacing:-.04em!important;font-weight:800!important;white-space:nowrap!important}@media(max-width:760px){footer#iletisim .footer-bottom .footer-phone{margin-left:0!important;align-items:flex-start!important}footer#iletisim .footer-bottom .footer-phone strong{font-size:21px!important}}
