@@ -128,7 +128,7 @@ footer .footer-logo{filter:none!important}
 @media (min-width:1121px){
   .nova-main-header .nova-nav{
     justify-content:flex-start!important;
-    gap:clamp(12px,.95vw,18px)!important;
+    gap:clamp(15px,1.19vw,22.5px)!important;
     padding-right:2.5%!important;
   }
 }
