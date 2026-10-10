@@ -160,3 +160,7 @@ footer .footer-logo{filter:none!important}
   .nova-main-header .nova-nav{flex:0 1 auto!important;gap:clamp(28px,2.3vw,46px)!important;padding-right:0!important}
   .nova-main-header .nova-nav-link{font-size:clamp(10.2px,.78vw,13px)!important}
 }
+
+
+/* Footer logosu kurumsal özgün renkleriyle kullanılır — 2026-10-10 */
+footer .footer-logo{filter:none!important;opacity:1!important}
