@@ -115,3 +115,10 @@ footer .footer-logo{filter:none!important}
   .nova-main-header .nova-submenu-group>.nova-submenu-level2::after{content:"›";display:inline-block;margin-left:7px;color:#5c7898;font-size:16px;line-height:0;vertical-align:-1px;transition:transform .2s ease}
   .nova-main-header .nova-submenu-group:hover>.nova-submenu-level2::after{transform:translateX(3px)}
 }
+
+
+/* Header ve Sınav Sonuçları butonu %35 daha yakın — 2026-10-10 */
+@media (min-width:1121px){
+  .nova-main-header{gap:clamp(10px,1.17vw,20px)!important}
+  .nova-main-header .nova-nav{padding-right:4.55%!important}
+}
