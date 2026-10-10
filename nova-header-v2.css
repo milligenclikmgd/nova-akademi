@@ -122,3 +122,13 @@ footer .footer-logo{filter:none!important}
   .nova-main-header{gap:clamp(10px,1.17vw,20px)!important}
   .nova-main-header .nova-nav{padding-right:4.55%!important}
 }
+
+
+/* Ana menü başlıklarını yakın ve dengeli tut — 2026-10-10 */
+@media (min-width:1121px){
+  .nova-main-header .nova-nav{
+    justify-content:flex-start!important;
+    gap:clamp(12px,.95vw,18px)!important;
+    padding-right:2.5%!important;
+  }
+}
