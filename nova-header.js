@@ -23,7 +23,7 @@
       {label:'Nova Öğrenci Pasaportu',href:'nova-ogrenci-pasaportu.html'}
     ]},
     {label:'YETENEK SİSTEMİ',href:'index.html#sistem',children:[
-      {label:'Değerlendirme',href:'index.html#degerlendirme'},
+      {label:'Değerlendirme',href:'nova-yetenek-taramasi.html'},
       {label:'Kabul Süreci',href:'index.html#sistem'}
     ]},
     {label:'ÖĞRENCİ YOLCULUĞU',href:'index.html#yolculuk',children:[
