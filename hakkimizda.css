@@ -56,3 +56,12 @@
 .about-page .section-visual:before,.about-page .section-visual:after{content:none}
 .about-page .section-visual>span,.about-page .section-visual .selection-stat{display:none}
 @media(max-width:620px){.about-page .about-hero{min-height:360px;padding-top:56px;padding-bottom:48px}}
+
+
+/* Hakkımızda – hero ve yönlendirme inceltmesi */
+.about-page .about-hero{min-height:385px;padding-top:58px;padding-bottom:54px}
+.about-page .about-index{padding:26px 0}
+.about-page .about-index a{font-size:12px;letter-spacing:.035em}
+.about-page .about-index span{font-size:13px}
+.about-page .visual-history{background-image:linear-gradient(145deg,rgba(3,37,71,.08),rgba(3,43,77,.38)),url('assets/nova-about-hero-20261010.webp');background-position:72% center}
+@media(max-width:620px){.about-page .about-hero{min-height:325px;padding-top:48px;padding-bottom:40px}.about-page .about-index{padding:20px 0}.about-page .about-index a{font-size:11px}}
