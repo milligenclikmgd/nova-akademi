@@ -34,3 +34,18 @@
 .about-page .purpose-manifesto{max-width:655px;grid-template-columns:repeat(2,minmax(0,1fr));margin-top:30px;padding-top:22px;font-size:16px;gap:14px}
 @media(max-width:900px){.about-page .about-section{grid-template-columns:155px minmax(0,1fr);gap:32px;padding:72px 0}.about-page .section-label>span{font-size:38px}.about-page .section-visual{grid-column:2;max-width:360px;min-height:230px}.about-page .section-label{position:static}.about-page .about-prose{max-width:none}.about-page .purpose-manifesto{max-width:none}.about-page .about-journey{display:grid}}
 @media(max-width:620px){.about-page .about-section{display:block;width:calc(100% - 34px);padding:58px 0}.about-page .section-label{margin-bottom:17px}.about-page .section-label>span{font-size:34px;margin-bottom:7px}.about-page .section-label p{max-width:none;font-size:11px}.about-page .section-body h2{font-size:30px}.about-page .section-visual{min-height:220px;margin-top:25px;max-width:none}.about-page .purpose-manifesto{grid-template-columns:1fr;font-size:16px}}
+
+
+/* Hakkımızda – başlık ve kapak görseli revizyonu */
+.about-page .about-hero{display:block;min-height:505px;padding-top:104px;padding-bottom:96px;background-image:linear-gradient(90deg,rgba(244,251,255,.98) 0%,rgba(242,250,255,.93) 34%,rgba(238,248,253,.15) 64%,rgba(238,248,253,.03) 100%),url('assets/nova-about-hero-20261010.webp');background-position:center;background-size:cover}
+.about-page .about-hero:after{background:linear-gradient(90deg,rgba(222,244,255,.3),transparent 58%);opacity:1}
+.about-page .about-hero-copy{max-width:540px}.about-page .about-hero-art{display:none}.about-page .about-hero h1{max-width:520px}
+.about-page .section-label{padding-top:7px}.about-page .section-label>span{display:none}.about-page .section-label p{max-width:220px;color:var(--nova);font-size:clamp(19px,1.72vw,27px);font-weight:800;line-height:1.08;letter-spacing:-.045em}
+.about-page .section-label p:before{content:"";display:block;width:44px;height:3px;margin:0 0 16px;background:var(--cyan)}
+.about-page .section-visual{min-height:286px;background-color:#0a4d7d}
+.about-page .visual-history{background-image:linear-gradient(145deg,rgba(3,37,71,.10),rgba(3,43,77,.52)),url('assets/nova-hero.png')}
+.about-page .visual-selection{background-image:linear-gradient(145deg,rgba(3,37,71,.10),rgba(3,43,77,.52)),url('assets/project-her-cocuk.webp')}
+.about-page .visual-journey{background-image:linear-gradient(145deg,rgba(3,37,71,.10),rgba(3,43,77,.52)),url('assets/ecosystem-dancer.webp')}
+.about-page .visual-global{background-image:linear-gradient(145deg,rgba(3,37,71,.10),rgba(3,43,77,.52)),url('assets/slider-blue.webp')}
+.about-page .visual-purpose{background-image:linear-gradient(145deg,rgba(3,37,71,.10),rgba(3,43,77,.52)),url('assets/project-anadolu-ruyasi.webp')}
+@media(max-width:620px){.about-page .about-hero{min-height:430px;padding-top:68px;padding-bottom:58px;background-position:66% center}.about-page .about-hero h1{font-size:38px}.about-page .section-label p{max-width:none;font-size:21px}.about-page .section-label p:before{margin-bottom:11px}}
