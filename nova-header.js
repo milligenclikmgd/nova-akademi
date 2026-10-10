@@ -62,4 +62,5 @@
   });
   document.querySelectorAll('.nova-main-header .hamb').forEach(button=>button.addEventListener('click',()=>button.closest('.nova-main-header').querySelector('.nova-nav').classList.toggle('open')));
 })();
-/* Production sync: 2026-10-10 · partners */
+const mountFooterPhone=()=>document.querySelectorAll('footer#iletisim .footer-bottom').forEach(bottom=>{if(bottom.querySelector('.footer-phone'))return;const phone=document.createElement('a');phone.className='footer-phone';phone.href='tel:+908503038957';phone.setAttribute('aria-label','NOVA telefon numarası 0850 303 89 57');phone.innerHTML='<small>BİZE ULAŞIN</small><strong>0850 303 89 57</strong>';bottom.append(phone)});if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',mountFooterPhone,{once:true});else mountFooterPhone();
+/* Production sync: 2026-10-11 · footer phone */
