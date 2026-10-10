@@ -49,3 +49,10 @@
 .about-page .visual-global{background-image:linear-gradient(145deg,rgba(3,37,71,.10),rgba(3,43,77,.52)),url('assets/slider-blue.webp')}
 .about-page .visual-purpose{background-image:linear-gradient(145deg,rgba(3,37,71,.10),rgba(3,43,77,.52)),url('assets/project-anadolu-ruyasi.webp')}
 @media(max-width:620px){.about-page .about-hero{min-height:430px;padding-top:68px;padding-bottom:58px;background-position:66% center}.about-page .about-hero h1{font-size:38px}.about-page .section-label p{max-width:none;font-size:21px}.about-page .section-label p:before{margin-bottom:11px}}
+
+
+/* Hakkımızda – sade görsel sütun ve kısa hero */
+.about-page .about-hero{min-height:430px;padding-top:74px;padding-bottom:68px}
+.about-page .section-visual:before,.about-page .section-visual:after{content:none}
+.about-page .section-visual>span,.about-page .section-visual .selection-stat{display:none}
+@media(max-width:620px){.about-page .about-hero{min-height:360px;padding-top:56px;padding-bottom:48px}}
