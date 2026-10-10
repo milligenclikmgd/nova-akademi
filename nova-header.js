@@ -24,7 +24,7 @@
     ]},
     {label:'YETENEK SİSTEMİ',href:'index.html#sistem',children:[
       {label:'Değerlendirme',href:'nova-yetenek-taramasi.html'},
-      {label:'Kabul Süreci',href:'index.html#sistem'}
+      {label:'Kabul Süreci',href:'ogrenci-kabul-sureci.html'}
     ]},
     {label:'ÖĞRENCİ YOLCULUĞU',href:'index.html#yolculuk',children:[
       {label:'Gelişim Planı',href:'index.html#yolculuk'},
