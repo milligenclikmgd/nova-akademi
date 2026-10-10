@@ -146,3 +146,9 @@ footer .footer-logo{filter:none!important}
   .nova-main-header{gap:clamp(30px,2.45vw,50px)!important}
   .nova-main-header .nova-nav{gap:clamp(26px,2.15vw,44px)!important}
 }
+
+
+/* Ana menü başlıklarını mevcut düzenin %30 daha açığına getir — 2026-10-10 */
+@media (min-width:1121px){
+  .nova-main-header .nova-nav{gap:clamp(33.8px,2.795vw,57.2px)!important}
+}
