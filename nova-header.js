@@ -16,7 +16,7 @@
       ]},
       {label:'Değerlerimiz',href:'degerlerimiz.html'},
       {label:'Yönetim Kurulu',href:'yonetim-kurulu.html'},
-      {label:'İş Ortakları',href:'index.html#ortaklar'}
+      {label:'İş Ortaklarımız',href:'is-ortaklarimiz.html'}
     ]},
     {label:'EĞİTİM MODELİMİZ',href:'index.html#model',children:[
       {label:'Nova Eğitim Modeli',href:'index.html#model'},
@@ -62,4 +62,4 @@
   });
   document.querySelectorAll('.nova-main-header .hamb').forEach(button=>button.addEventListener('click',()=>button.closest('.nova-main-header').querySelector('.nova-nav').classList.toggle('open')));
 })();
-/* Production sync: 2026-10-10 */
+/* Production sync: 2026-10-10 · partners */
