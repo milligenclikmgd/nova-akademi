@@ -132,3 +132,10 @@ footer .footer-logo{filter:none!important}
     padding-right:2.5%!important;
   }
 }
+
+
+/* Referans görseldeki header başlık aralığı — 2026-10-10 */
+@media (min-width:1121px){
+  .nova-main-header{gap:clamp(22px,2.2vw,34px)!important}
+  .nova-main-header .nova-nav{gap:clamp(22px,2vw,30px)!important}
+}
