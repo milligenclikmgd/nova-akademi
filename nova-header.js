@@ -27,7 +27,7 @@
       {label:'Kabul Süreci',href:'ogrenci-kabul-sureci.html'}
     ]},
     {label:'ÖĞRENCİ YOLCULUĞU',href:'index.html#yolculuk',children:[
-      {label:'Gelişim Planı',href:'index.html#yolculuk'},
+      {label:'Gelişim Planı',href:'gelisim-plani.html'},
       {label:'Performans Takibi',href:'index.html#yolculuk'},
       {label:'Kariyer Hazırlığı',href:'index.html#yolculuk'}
     ]},
