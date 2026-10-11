@@ -169,3 +169,6 @@ footer .footer-logo{filter:none!important;opacity:1!important}
 html body>[data-nova-header]{position:relative!important;left:auto!important;right:auto!important;width:100%!important;max-width:none!important;margin:0!important;padding:0!important;transform:none!important;box-sizing:border-box!important}
 html body>[data-nova-header]>.nova-main-header{position:relative!important;left:auto!important;right:auto!important;width:100%!important;max-width:none!important;margin:0!important;transform:none!important;box-sizing:border-box!important}
 @media(min-width:1121px){html body>[data-nova-header]>.nova-main-header{padding-inline:clamp(22px,3vw,60px)!important;justify-content:flex-start!important}html body>[data-nova-header] .nova-brand{margin-left:0!important;transform:none!important}html body>[data-nova-header] .nova-nav{margin-left:0!important;transform:none!important}html body>[data-nova-header] .nova-results{margin-left:0!important;transform:none!important}}
+
+/* Ortalanmış ortak header grubu */
+@media(min-width:1121px){html body>[data-nova-header]>.nova-main-header{justify-content:center!important}html body>[data-nova-header] .nova-nav{flex:0 0 auto!important;width:auto!important;justify-content:flex-start!important}html body>[data-nova-header] .nova-results{flex:0 0 auto!important}}
