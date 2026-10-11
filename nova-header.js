@@ -28,7 +28,7 @@
     ]},
     {label:'ÖĞRENCİ YOLCULUĞU',href:'index.html#yolculuk',children:[
       {label:'Gelişim Planı',href:'gelisim-plani.html'},
-      {label:'Performans Takibi',href:'index.html#yolculuk'},
+      {label:'Performans Takibi',href:'performans-takibi.html'},
       {label:'Kariyer Hazırlığı',href:'index.html#yolculuk'}
     ]},
     {label:'NOVA GLOBAL',href:'index.html#global'},
