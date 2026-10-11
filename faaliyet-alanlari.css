@@ -103,3 +103,13 @@
 .activity-values-row:has(.unified-card:hover) .unified-card:hover h3{opacity:0}
 .activity-values-row:has(.unified-card:hover) .unified-card:hover p{max-height:230px;opacity:1;transform:translateY(0)}
 @media(max-width:760px){.unified-card__detail-title{font-size:28px;margin-bottom:10px}.activity-values-row .unified-card:first-child p,.activity-values-row:has(.unified-card:hover) .unified-card:hover p{max-height:245px}}
+
+
+/* Hero kaldırıldıktan sonraki doğrudan kontenjan açılışı */
+.selection-intro{max-width:900px;padding:8px 0 0;color:var(--muted)}
+.selection-intro h1{margin:13px 0 22px;color:var(--nova);font-size:clamp(27px,3vw,39px);line-height:1.15;letter-spacing:-.05em}
+.selection-intro p{max-width:790px;margin:0 0 11px;font-size:14px;line-height:1.85}
+.selection-intro__emphasis{margin:19px 0!important;color:#163a59;line-height:1.95!important}
+.selection-intro__emphasis strong{font-weight:800}
+.selection-intro + .unified-areas{margin-top:48px}
+@media(max-width:600px){.selection-intro h1{font-size:30px}.selection-intro p{font-size:13px;line-height:1.78}.selection-intro__emphasis{line-height:1.8!important}}
