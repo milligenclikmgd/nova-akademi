@@ -66,3 +66,5 @@ const mountFooterPhone=()=>document.querySelectorAll('footer#iletisim .footer-bo
 /* Production sync: 2026-10-11 · footer phone and transparent Kriter logo */
 
 const mountFooterBrand=()=>document.querySelectorAll('footer .footer-logo').forEach(logo=>{logo.src='assets/nova-kabartmasiz.png?v=20261011-2';logo.classList.add('footer-logo--white');logo.alt='NOVA Performans Sanatları Gelişim Merkezi'});if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',mountFooterBrand,{once:true});else mountFooterBrand();
+
+const ensureFooterWhiteLogo=()=>{if(document.getElementById('nova-footer-white-logo'))return;const style=document.createElement('style');style.id='nova-footer-white-logo';style.textContent='footer .footer-logo.footer-logo--white{filter:brightness(0) invert(1)!important;opacity:1!important}';document.head.append(style)};ensureFooterWhiteLogo();
