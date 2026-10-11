@@ -1,1 +1,0 @@
-(()=>{const track=document.querySelector('.marquee-track');if(!track)return;track.addEventListener('focusin',()=>track.style.animationPlayState='paused');track.addEventListener('focusout',()=>track.style.animationPlayState='');})();
