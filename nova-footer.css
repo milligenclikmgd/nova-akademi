@@ -26,3 +26,7 @@ footer#iletisim .footer-bottom .kriter-media{position:absolute!important;left:50
 footer#iletisim .footer-bottom .footer-phone{position:absolute!important;right:0!important;top:50%!important;transform:translateY(-50%)!important;margin:0!important;align-items:flex-end!important}
 footer#iletisim .footer-bottom .footer-phone strong{font-size:30px!important;letter-spacing:-.05em!important}
 @media(max-width:760px){footer#iletisim .footer-bottom{min-height:0!important;padding-right:0!important}footer#iletisim .footer-bottom .kriter-media,footer#iletisim .footer-bottom .footer-phone{position:static!important;transform:none!important;align-items:flex-start!important}footer#iletisim .footer-bottom .kriter-media{order:3!important;align-self:center!important}footer#iletisim .footer-bottom .footer-phone{order:2!important}footer#iletisim .footer-bottom .footer-phone strong{font-size:25px!important}}
+/* NOVA AI alanı için alt satırı yukarı taşı */
+footer#iletisim{padding-bottom:132px!important}
+footer#iletisim .footer-bottom .kriter-media img{filter:none!important;mix-blend-mode:normal!important;opacity:1!important;background:transparent!important;width:112px!important;max-width:112px!important}
+@media(max-width:760px){footer#iletisim{padding-bottom:36px!important}footer#iletisim .footer-bottom .kriter-media img{width:98px!important;max-width:98px!important}}
