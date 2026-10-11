@@ -113,3 +113,10 @@
 .selection-intro__emphasis strong{font-weight:800}
 .selection-intro + .unified-areas{margin-top:48px}
 @media(max-width:600px){.selection-intro h1{font-size:30px}.selection-intro p{font-size:13px;line-height:1.78}.selection-intro__emphasis{line-height:1.8!important}}
+
+
+/* Faaliyet Alanları tanıtım videosu */
+.faaliyet-video-hero{padding:28px 0 0;background:linear-gradient(180deg,#f5fbff 0%,#fff 100%)}
+.faaliyet-video-hero__frame{aspect-ratio:16/9;overflow:hidden;border-radius:18px;background:#062c56;box-shadow:0 20px 42px rgba(6,53,93,.16)}
+.faaliyet-video-hero .faaliyet-video{width:100%;height:100%;object-fit:cover;background:#062c56}
+@media(max-width:600px){.faaliyet-video-hero{padding-top:18px}.faaliyet-video-hero__frame{border-radius:12px}}
