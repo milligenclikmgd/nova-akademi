@@ -120,3 +120,11 @@
 .faaliyet-video-hero__frame{aspect-ratio:16/9;overflow:hidden;border-radius:18px;background:#062c56;box-shadow:0 20px 42px rgba(6,53,93,.16)}
 .faaliyet-video-hero .faaliyet-video{width:100%;height:100%;object-fit:cover;background:#062c56}
 @media(max-width:600px){.faaliyet-video-hero{padding-top:18px}.faaliyet-video-hero__frame{border-radius:12px}}
+
+
+/* Sağ hero videosu: otomatik sessiz başlangıç ve ses düğmesi */
+.faaliyet-hero__video{isolation:isolate}
+.faaliyet-video__sound{position:absolute;z-index:4;right:14px;bottom:14px;display:inline-flex;align-items:center;gap:7px;padding:9px 12px;border:1px solid rgba(255,255,255,.56);border-radius:999px;background:rgba(2,27,60,.78);backdrop-filter:blur(10px);color:#fff;font:800 10px/1 Manrope,Arial,sans-serif;letter-spacing:.08em;cursor:pointer;transition:background .2s ease,transform .2s ease}
+.faaliyet-video__sound:hover{background:#0b6eb0;transform:translateY(-1px)}
+.faaliyet-video__sound>span:first-child{font-size:13px;letter-spacing:0}
+@media(max-width:600px){.faaliyet-video__sound{right:10px;bottom:10px;padding:8px 10px;font-size:9px}}
