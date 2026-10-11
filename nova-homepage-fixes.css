@@ -29,3 +29,13 @@ body:has(.partners-marquee) .quick-access em{display:block;margin-top:7px;color:
 body:has(.partners-marquee) .quick-access i{width:auto!important;height:auto!important;padding:0!important;border:0!important;border-radius:0!important;background:transparent!important;color:#155f9f!important;font-size:19px!important;font-style:normal!important;transition:transform .25s ease!important}
 body:has(.partners-marquee) .quick-access a:hover i{transform:translateX(3px)!important;background:transparent!important;color:#0b3e6e!important}
 @media(max-width:760px){body:has(.partners-marquee) .quick-access{margin:18px 4.5% 20px!important;border-top-width:2px!important}body:has(.partners-marquee) .quick-access a{border-right:1px solid #dce6ef!important;border-bottom:1px solid #dce6ef!important;border-radius:0!important;grid-template-columns:42px minmax(0,1fr)!important;padding:15px 12px!important;gap:10px!important}body:has(.partners-marquee) .quick-access a:nth-child(2n){border-right:0!important}body:has(.partners-marquee) .quick-access a:nth-child(n+3){border-bottom:0!important}body:has(.partners-marquee) .quick-access a>b{width:40px!important;height:40px!important}body:has(.partners-marquee) .quick-access i{display:none!important}}
+
+
+/* Ensure colored icon badges remain visible on hover. */
+body:has(.partners-marquee) .quick-access a:nth-child(1){--shortcut-icon:#1473c9}
+body:has(.partners-marquee) .quick-access a:nth-child(2){--shortcut-icon:#a97621}
+body:has(.partners-marquee) .quick-access a:nth-child(3){--shortcut-icon:#16856d}
+body:has(.partners-marquee) .quick-access a:nth-child(4){--shortcut-icon:#6251b7}
+body:has(.partners-marquee) .quick-access a>b{color:var(--shortcut-icon)!important}
+body:has(.partners-marquee) .quick-access a:hover>b{background:var(--shortcut-icon)!important;border-color:var(--shortcut-icon)!important;color:#fff!important}
+body:has(.partners-marquee) .quick-access a:hover>b .card-icon{stroke:#fff!important}
