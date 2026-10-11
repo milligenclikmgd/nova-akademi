@@ -19,8 +19,8 @@
 .about-page .section-visual>span{position:absolute;z-index:1;left:22px;bottom:19px;color:#fff;font-size:12px;font-weight:800;letter-spacing:.16em}
 .about-page .visual-history{background-image:url('assets/nova-hero.png')}
 .about-page .visual-selection{display:flex;align-items:flex-end;background-image:url('assets/project-her-cocuk.webp')}
-.about-page .visual-journey{background-image:url('assets/ecosystem-dancer.webp')}
-.about-page .visual-global{background-image:url('assets/slider-blue.webp')}
+.about-page .visual-journey{background-image:url('assets/about-journey-three-generations.png')}
+.about-page .visual-global{background-image:url('assets/about-global-violin.png')}
 .about-page .visual-purpose{background-image:url('assets/project-anadolu-ruyasi.webp')}
 .about-page .history-side,.about-page .global-map{display:none}
 .about-page .about-selection{background:transparent}
@@ -45,8 +45,8 @@
 .about-page .section-visual{min-height:286px;background-color:#0a4d7d}
 .about-page .visual-history{background-image:linear-gradient(145deg,rgba(3,37,71,.10),rgba(3,43,77,.52)),url('assets/nova-hero.png')}
 .about-page .visual-selection{background-image:linear-gradient(145deg,rgba(3,37,71,.10),rgba(3,43,77,.52)),url('assets/project-her-cocuk.webp')}
-.about-page .visual-journey{background-image:linear-gradient(145deg,rgba(3,37,71,.10),rgba(3,43,77,.52)),url('assets/ecosystem-dancer.webp')}
-.about-page .visual-global{background-image:linear-gradient(145deg,rgba(3,37,71,.10),rgba(3,43,77,.52)),url('assets/slider-blue.webp')}
+.about-page .visual-journey{background-image:linear-gradient(145deg,rgba(3,37,71,.10),rgba(3,43,77,.52)),url('assets/about-journey-three-generations.png')}
+.about-page .visual-global{background-image:linear-gradient(145deg,rgba(3,37,71,.10),rgba(3,43,77,.52)),url('assets/about-global-violin.png')}
 .about-page .visual-purpose{background-image:linear-gradient(145deg,rgba(3,37,71,.10),rgba(3,43,77,.52)),url('assets/project-anadolu-ruyasi.webp')}
 @media(max-width:620px){.about-page .about-hero{min-height:430px;padding-top:68px;padding-bottom:58px;background-position:66% center}.about-page .about-hero h1{font-size:38px}.about-page .section-label p{max-width:none;font-size:21px}.about-page .section-label p:before{margin-bottom:11px}}
 

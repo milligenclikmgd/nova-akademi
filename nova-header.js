@@ -7,6 +7,7 @@
       {label:'Hakkımızda',href:'hakkimizda.html'},
       {label:'Faaliyet Alanları',href:'faaliyet-alanlari.html'},
       {label:'Rakamlarla NOVA',href:'rakamlarla-nova.html'},
+      {label:'Değerlerimiz',href:'degerlerimiz.html'},
       {label:'Birimler',href:'index.html#birimler',children:[
         {label:'Ölçme Değerlendirme',href:'olcme-degerlendirme.html'},
         {label:'Program Geliştirme',href:'program-gelistirme.html'},
@@ -14,11 +15,10 @@
         {label:'Stratejik Plan',href:'stratejik-plan-gelisim.html'},
         {label:'İnsan Kaynakları',href:'insan-kaynaklari-egitici-gelisimi.html'}
       ]},
-      {label:'Değerlerimiz',href:'degerlerimiz.html'},
       {label:'Yönetim Kurulu',href:'yonetim-kurulu.html'},
       {label:'İş Ortaklarımız',href:'is-ortaklarimiz.html'}
     ]},
-    {label:'EĞİTİM MODELİMİZ',href:'index.html#model',children:[
+    {label:'EĞİTİM MODELİ',href:'index.html#model',children:[
       {label:'Nova Eğitim Modeli',href:'nova-egitim-modeli.html'},
       {label:'Nova Öğrenci Pasaportu',href:'nova-ogrenci-pasaportu.html'}
     ]},
@@ -41,7 +41,7 @@
     ? `<div class="nova-submenu-group">${link(item,'nova-submenu-level2')}${renderThird(item.children)}</div>`
     : link(item,'nova-submenu-level2')).join('');
   const renderTop=item=>`<div class="nova-nav-item">${link(item,'nova-nav-link')}${item.children?.length?`<div class="nova-submenu">${renderSecond(item.children)}</div>`:''}</div>`;
-  const html=`<header class="nova-main-header"><button class="hamb" type="button" aria-label="Menüyü aç">☰</button><a class="nova-brand" href="index.html#top"><img src="assets/nova-kabartmasiz.png?v=20261011-2" alt="NOVA Performans Sanatları Gelişim Merkezi"></a><nav class="nova-nav" aria-label="Ana menü">${navigation.map(renderTop).join('')}</nav><a class="nova-results" href="sinavlar.html">SINAV SONUÇLARI <span aria-hidden="true">↗</span></a></header>`;
+  const html=`<header class="nova-main-header"><button class="hamb" type="button" aria-label="Menüyü aç">☰</button><a class="nova-brand" href="index.html#top"><img src="assets/nova-logo2.png?v=20261011-6" alt="NOVA Performans Sanatları Gelişim Merkezi"></a><nav class="nova-nav" aria-label="Ana menü">${navigation.map(renderTop).join('')}</nav><a class="nova-results" href="sinavlar.html">SINAV SONUÇLARI <span aria-hidden="true">↗</span></a></header>`;
 
   document.querySelectorAll('[data-nova-header]').forEach(slot=>slot.innerHTML=html);
   const close=item=>{item.classList.remove('is-open');item.querySelector('.nova-sub-toggle')?.setAttribute('aria-expanded','false')};
@@ -65,6 +65,6 @@
 const mountFooterPhone=()=>document.querySelectorAll('footer#iletisim .footer-bottom').forEach(bottom=>{const kriter=bottom.querySelector('.kriter-media img');if(kriter){kriter.src='assets/kriter-medya-transparent.png?v=20261011-1';kriter.alt='Kriter Medya'}if(bottom.querySelector('.footer-phone'))return;const phone=document.createElement('a');phone.className='footer-phone';phone.href='tel:+908503038957';phone.setAttribute('aria-label','NOVA telefon numarası 0850 303 89 57');phone.innerHTML='<small>BİZE ULAŞIN</small><strong>0850 303 89 57</strong>';bottom.append(phone)});if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',mountFooterPhone,{once:true});else mountFooterPhone();
 /* Production sync: 2026-10-11 · footer phone and transparent Kriter logo */
 
-const mountFooterBrand=()=>document.querySelectorAll('footer .footer-logo').forEach(logo=>{logo.src='assets/nova-kabartmasiz.png?v=20261011-2';logo.classList.add('footer-logo--white');logo.style.filter='brightness(0) invert(1)';logo.alt='NOVA Performans Sanatları Gelişim Merkezi'});if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',mountFooterBrand,{once:true});else mountFooterBrand();
+const mountFooterBrand=()=>document.querySelectorAll('footer .footer-logo').forEach(logo=>{logo.src='assets/nova-logo2.png?v=20261011-6';logo.classList.add('footer-logo--white');logo.style.filter='brightness(0) invert(1)';logo.alt='NOVA Performans Sanatları Gelişim Merkezi'});if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',mountFooterBrand,{once:true});else mountFooterBrand();
 
 const ensureFooterWhiteLogo=()=>{if(document.getElementById('nova-footer-white-logo'))return;const style=document.createElement('style');style.id='nova-footer-white-logo';style.textContent='footer .footer-logo.footer-logo--white{filter:brightness(0) invert(1)!important;opacity:1!important}';document.head.append(style)};ensureFooterWhiteLogo();
