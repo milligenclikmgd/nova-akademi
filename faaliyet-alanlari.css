@@ -81,3 +81,25 @@
 .activity-values-row .unified-card:hover p,.activity-values-row .unified-card:focus-visible p{max-height:190px;opacity:1;transform:translateY(0)}
 .activity-values-row .unified-card:hover .unified-card__arrow,.activity-values-row .unified-card:focus-visible .unified-card__arrow{background:#fff;color:var(--blue)}
 @media(max-width:760px){.activity-values-row{height:460px;gap:6px}.activity-values-row .unified-card,.activity-values-row:has(.unified-card:hover) .unified-card{flex-basis:56px!important}.activity-values-row .unified-card:first-child,.activity-values-row .unified-card:hover,.activity-values-row .unified-card:focus-visible,.activity-values-row:has(.unified-card:hover) .unified-card:hover{flex-basis:calc(100% - 112px)!important}.activity-values-row .unified-card__top{padding:19px 16px}.activity-values-row .unified-card h3{left:16px;bottom:19px;font-size:16px}.activity-values-row .unified-card p{left:20px;right:20px;bottom:24px;font-size:12px;line-height:1.6}.activity-values-row .unified-card__arrow{top:18px;right:13px}}
+
+
+/* Açık kartta başlık + açıklama; kapalı kartta yalnız başlık */
+.activity-values-row .unified-card--blue{background-image:url('https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=1600&q=90')!important}
+.activity-values-row .unified-card--coral{background-image:url('https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=1600&q=90')!important}
+.activity-values-row .unified-card--lilac{background-image:url('https://images.unsplash.com/photo-1503095396549-807759245b35?auto=format&fit=crop&w=1600&q=90')!important}
+.activity-values-row .unified-card--gold{background-image:url('https://images.unsplash.com/photo-1551524164-687a55dd1126?auto=format&fit=crop&w=1600&q=90')!important}
+.activity-values-row .unified-card--mint{background-image:url('https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=1600&q=90')!important}
+.activity-values-row .unified-card--sky{background-image:url('https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1600&q=90')!important}
+.activity-values-row .unified-card--peach{background-image:url('https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&w=1600&q=90')!important}
+.activity-values-row .unified-card--violet{background-image:url('https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1600&q=90')!important}
+.activity-values-row .unified-card--sand{background-image:url('https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&w=1600&q=90')!important}
+.activity-values-row .unified-card:before{background:linear-gradient(180deg,rgba(2,22,51,.38),rgba(2,31,72,.94))!important}
+.activity-values-row .unified-card:first-child:before,.activity-values-row .unified-card:hover:before,.activity-values-row .unified-card:focus-visible:before{background:linear-gradient(90deg,rgba(1,26,62,.96) 0%,rgba(2,58,122,.72) 53%,rgba(0,14,38,.35) 100%)!important}
+.unified-card__detail-title{display:block;margin:0 0 12px;color:#fff;font-size:clamp(26px,3vw,40px);font-weight:600;line-height:1;letter-spacing:-.05em}
+.unified-card__detail-copy{display:block}
+.activity-values-row .unified-card:first-child p{max-height:230px}
+.activity-values-row:has(.unified-card:hover) .unified-card:first-child h3{opacity:1}
+.activity-values-row:has(.unified-card:hover) .unified-card:first-child p{max-height:0;opacity:0;transform:translateY(20px)}
+.activity-values-row:has(.unified-card:hover) .unified-card:hover h3{opacity:0}
+.activity-values-row:has(.unified-card:hover) .unified-card:hover p{max-height:230px;opacity:1;transform:translateY(0)}
+@media(max-width:760px){.unified-card__detail-title{font-size:28px;margin-bottom:10px}.activity-values-row .unified-card:first-child p,.activity-values-row:has(.unified-card:hover) .unified-card:hover p{max-height:245px}}
