@@ -80,3 +80,7 @@
 /* Görseller kart içinde gerçek öğe olarak, kırpılmadan gösterilir */
 .about-page .visual-journey,.about-page .visual-global{min-height:0!important;background:#fff!important;background-image:none!important}
 .about-page .visual-journey .about-section-image,.about-page .visual-global .about-section-image{display:block;width:100%;height:auto;aspect-ratio:1216/1294;object-fit:contain;object-position:center;background:#fff}
+
+/* Kaynak görseldeki beyaz dış çerçeveyi kart dışında bırak */
+.about-page .visual-journey,.about-page .visual-global{background:#071d33!important}
+.about-page .visual-journey .about-section-image,.about-page .visual-global .about-section-image{width:104.2%!important;max-width:none!important;height:auto!important;margin:-2.1%!important;aspect-ratio:auto!important;object-fit:cover!important;clip-path:none!important}
