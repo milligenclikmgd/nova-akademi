@@ -54,3 +54,30 @@
 .unified-card-grid:has(.activity-values-row .unified-card:hover) .unified-card-grid{filter:none}
 @media(max-width:760px){.activity-values-row{height:450px;gap:6px}.activity-values-row .unified-card{flex-basis:33.333%}.activity-values-row .unified-card:hover,.activity-values-row .unified-card:focus-visible{flex-basis:62%}.activity-values-row:has(.unified-card:hover) .unified-card:not(:hover){flex-basis:19%}.activity-values-row .unified-card__top{padding:18px 15px}.activity-values-row .unified-card h3{left:16px;bottom:20px;font-size:16px}.activity-values-row .unified-card:hover h3,.activity-values-row .unified-card:focus-visible h3{top:70px;left:20px;right:20px;font-size:24px}.activity-values-row .unified-card p{left:20px;right:18px;bottom:22px;font-size:11px}.activity-values-row .unified-card__arrow{right:12px;top:18px}}
 @media(max-width:480px){.activity-values-row{height:420px}.activity-values-row .unified-card__icon{width:32px;height:32px}.activity-values-row .unified-card__number{display:none}}
+
+
+/* Faaliyet alanları: Değerlerimiz sayfasındaki kurumsal fotoğraflı akordeon sisteminin aynısı */
+.activity-values-row{height:520px;gap:10px}
+.activity-values-row .unified-card{isolation:isolate;flex:0 1 132px;padding:0;border-radius:0;background:#061d3a center/cover no-repeat!important;filter:none!important;opacity:1!important}
+.activity-values-row .unified-card--blue,.activity-values-row .unified-card--gold,.activity-values-row .unified-card--peach{background-image:url('https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=1600&q=90')!important}
+.activity-values-row .unified-card--coral,.activity-values-row .unified-card--mint,.activity-values-row .unified-card--violet{background-image:url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1600&q=90')!important}
+.activity-values-row .unified-card--lilac,.activity-values-row .unified-card--sky,.activity-values-row .unified-card--sand{background-image:url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1600&q=90')!important}
+.activity-values-row .unified-card:before{content:"";position:absolute;z-index:1;inset:0;width:auto;height:auto;right:auto;top:auto;border:0;border-radius:0;opacity:1;background:linear-gradient(180deg,rgba(0,30,67,.18),rgba(0,43,96,.90));transform:none!important;transition:background .45s ease}
+.activity-values-row .unified-card__top{z-index:3;padding:27px 28px}
+.activity-values-row .unified-card__icon{display:none}
+.activity-values-row .unified-card__number{color:#fff;font-size:12px;line-height:1;font-weight:700;letter-spacing:.12em}
+.activity-values-row .unified-card h3{z-index:3;left:28px;bottom:29px;color:#fff;font-size:20px;font-weight:600;line-height:1;letter-spacing:.04em;white-space:nowrap;writing-mode:vertical-rl;transform:rotate(180deg);transition:opacity .25s ease,transform .4s ease,font-size .4s ease,writing-mode .01s linear .39s!important}
+.activity-values-row .unified-card p{z-index:3;left:28px;right:28px;bottom:30px;max-width:420px;color:#fff;font-size:14px;line-height:1.7}
+.activity-values-row .unified-card__arrow{z-index:3;right:25px;top:27px;width:29px;height:29px;border-color:#fff8;color:#fff}
+.activity-values-row .unified-card:first-child{flex:1 1 62%}
+.activity-values-row .unified-card:first-child:before{background:linear-gradient(90deg,rgba(0,35,78,.92) 0%,rgba(0,62,135,.58) 47%,rgba(0,0,0,.18) 100%)}
+.activity-values-row .unified-card:first-child h3{opacity:0}
+.activity-values-row .unified-card:first-child p{max-height:190px;opacity:1;transform:translateY(0)}
+.activity-values-row .unified-card:hover,.activity-values-row .unified-card:focus-visible{flex:1 1 62%}
+.activity-values-row:has(.unified-card:hover) .unified-card{flex:0 1 132px!important}
+.activity-values-row:has(.unified-card:hover) .unified-card:hover{flex:1 1 62%!important}
+.activity-values-row .unified-card:hover:before,.activity-values-row .unified-card:focus-visible:before{background:linear-gradient(90deg,rgba(0,35,78,.92) 0%,rgba(0,62,135,.58) 47%,rgba(0,0,0,.18) 100%)}
+.activity-values-row .unified-card:hover h3,.activity-values-row .unified-card:focus-visible h3{opacity:0;transform:rotate(180deg)}
+.activity-values-row .unified-card:hover p,.activity-values-row .unified-card:focus-visible p{max-height:190px;opacity:1;transform:translateY(0)}
+.activity-values-row .unified-card:hover .unified-card__arrow,.activity-values-row .unified-card:focus-visible .unified-card__arrow{background:#fff;color:var(--blue)}
+@media(max-width:760px){.activity-values-row{height:460px;gap:6px}.activity-values-row .unified-card,.activity-values-row:has(.unified-card:hover) .unified-card{flex-basis:56px!important}.activity-values-row .unified-card:first-child,.activity-values-row .unified-card:hover,.activity-values-row .unified-card:focus-visible,.activity-values-row:has(.unified-card:hover) .unified-card:hover{flex-basis:calc(100% - 112px)!important}.activity-values-row .unified-card__top{padding:19px 16px}.activity-values-row .unified-card h3{left:16px;bottom:19px;font-size:16px}.activity-values-row .unified-card p{left:20px;right:20px;bottom:24px;font-size:12px;line-height:1.6}.activity-values-row .unified-card__arrow{top:18px;right:13px}}
