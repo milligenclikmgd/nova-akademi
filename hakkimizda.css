@@ -73,3 +73,6 @@
 .about-page .about-index a:hover,.about-page .about-index a:focus-visible{color:var(--nova);background:#edf8fe;transform:translateY(-2px);box-shadow:0 8px 16px rgba(10,92,143,.10);outline:none}
 .about-page .about-index a:hover:after,.about-page .about-index a:focus-visible:after{opacity:1;transform:translate(0,0)}
 @media(max-width:620px){.about-page .about-index a{min-height:34px}.about-page .about-index a:hover{transform:none}}
+
+/* Hakkımızda görselleri tam kadraj gösterilir */
+.about-page .visual-journey,.about-page .visual-global{background-size:cover,contain!important;background-repeat:no-repeat!important;background-position:center!important;background-color:#0a4d7d!important}
