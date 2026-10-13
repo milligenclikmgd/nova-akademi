@@ -10,3 +10,6 @@
 @media(prefers-reduced-motion:reduce){.data-card{transition:none}.data-card:hover{transform:none}}
 /* Kapanış bölümü: başlık solda, açıklama ortada, görsel sağda. */
 .data-closing .data-trio__label h2{margin:14px 0 0;color:#123d72;font-size:clamp(25px,2.5vw,36px);line-height:1.16;letter-spacing:-.05em}.data-closing .data-trio__body>p{margin:0;color:#526e84;font-size:15px;line-height:1.85}
+
+/* Kapanış bölümündeki iç ızgaranın dış bölüme sıkışmasını önle. */
+.data-closing{display:block}.data-closing .data-trio__inner{min-width:0}
