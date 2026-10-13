@@ -1,0 +1,10 @@
+{
+  "name": "nova-akademi",
+  "main": "worker.js",
+  "compatibility_date": "2026-10-14",
+  "assets": {
+    "directory": "./",
+    "binding": "ASSETS",
+    "run_worker_first": ["/api/*"]
+  }
+}

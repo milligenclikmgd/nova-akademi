@@ -1,0 +1,7 @@
+/.git/
+/.github/
+/api/
+/node_modules/
+/worker.js
+/wrangler.jsonc
+/.vercel-deploy-trigger
