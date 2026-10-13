@@ -59,3 +59,8 @@
 .assessment-follow .assessment-follow__grid{min-height:640px!important;align-items:stretch!important}
 .assessment-follow__visual{height:640px!important;min-height:640px!important;align-self:stretch!important;background-color:#062e61!important;background-size:cover!important;background-position:left center!important}
 @media(max-width:1120px){.assessment-follow .assessment-follow__grid{min-height:auto!important}.assessment-follow__visual{height:500px!important;min-height:500px!important}}
+
+
+/* Clean criteria cards and restore a comfortable text gutter */
+.orbit-card i{display:none!important}
+@media(min-width:1121px){.assessment-orbit__intro{padding-left:clamp(42px,5vw,92px)!important}}
