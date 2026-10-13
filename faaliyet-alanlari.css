@@ -192,3 +192,10 @@
 .faaliyet-page .approach-strip,.faaliyet-page .activity-note{width:100vw!important;margin-left:calc(50% - 50vw)!important;margin-right:calc(50% - 50vw)!important;padding-left:max(24px,calc((100vw - 1160px)/2))!important;padding-right:max(24px,calc((100vw - 1160px)/2))!important}
 .faaliyet-page .approach-strip>.container,.faaliyet-page .activity-note>.container{width:100%!important;max-width:1160px!important;margin:0 auto!important}
 @media(max-width:1450px){.faaliyet-page .faaliyet-arts .container,.faaliyet-page .faaliyet-arts__grid{max-width:1160px!important}.faaliyet-page .faaliyet-art-card{height:350px!important}}@media(max-width:820px){.faaliyet-page .faaliyet-art-card{height:290px!important}}
+
+
+/* Kartlar başlıksız, hover ile açılan anlatım yüzeyi */
+.faaliyet-page .faaliyet-arts__head{display:none!important}.faaliyet-page .faaliyet-arts{padding-top:66px!important}.faaliyet-page .faaliyet-art-card{cursor:default!important}
+.faaliyet-page .faaliyet-art-card small{bottom:-170px!important;max-width:calc(100% - 34px)!important;font-size:14.3px!important;line-height:1.52!important;color:#eef7ff!important;transition:bottom .44s cubic-bezier(.22,.8,.22,1),opacity .3s ease!important;opacity:0}
+.faaliyet-page .faaliyet-art-card:hover strong{bottom:116px!important;transition:bottom .42s cubic-bezier(.22,.8,.22,1)!important}.faaliyet-page .faaliyet-art-card:hover small{bottom:21px!important;opacity:1!important}
+.faaliyet-page .faaliyet-art-card[aria-expanded="true"] strong{bottom:19px!important}.faaliyet-page .faaliyet-art-card[aria-expanded="true"] small{bottom:-170px!important;opacity:0!important}
