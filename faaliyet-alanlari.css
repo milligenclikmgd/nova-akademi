@@ -128,3 +128,32 @@
 .faaliyet-video__sound:hover{background:#0b6eb0;transform:translateY(-1px)}
 .faaliyet-video__sound>span:first-child{font-size:13px;letter-spacing:0}
 @media(max-width:600px){.faaliyet-video__sound{right:10px;bottom:10px;padding:8px 10px;font-size:9px}}
+
+
+/* Faaliyet Alanları — Hakkımızda ile ortak üç sütun dili */
+.faaliyet-page .activity-overview{padding-top:0;background:#fff}
+.faaliyet-page .faaliyet-story{width:min(1160px,calc(100% - 48px));margin:0 auto;padding:96px 0;display:grid;grid-template-columns:230px minmax(0,1fr) 270px;gap:52px;align-items:start;border-bottom:1px solid #dfe9f0}
+.faaliyet-page .faaliyet-story__label{padding-top:7px}
+.faaliyet-page .faaliyet-story__label p{margin:0;color:#082f5c;font-size:clamp(19px,1.72vw,27px);font-weight:800;line-height:1.08;letter-spacing:-.045em}
+.faaliyet-page .faaliyet-story__label p:before{content:"";display:block;width:44px;height:3px;margin:0 0 16px;background:#0a9de6}
+.faaliyet-page .faaliyet-story__body h2{margin:0 0 29px;color:#082f5c;font-size:clamp(30px,2.5vw,43px);line-height:1.12;letter-spacing:-.055em}
+.faaliyet-page .faaliyet-story__body p{margin:0 0 17px;color:#49677e;font-size:14px;line-height:1.9}
+.faaliyet-page .faaliyet-story__body strong{color:#183e5f}
+.faaliyet-page .faaliyet-story__visual{margin:0;min-height:286px;display:flex;align-items:center;overflow:hidden;border-radius:15px;background:#082f5c;box-shadow:0 18px 42px rgba(10,56,89,.16)}
+.faaliyet-page .faaliyet-story__visual img{display:block;width:100%;height:286px;object-fit:cover;object-position:center}
+.faaliyet-page .faaliyet-vertical-cards{width:min(1160px,calc(100% - 48px));margin:0 auto;padding:84px 0}
+.faaliyet-page .faaliyet-vertical-cards .unified-areas__head{display:none}
+.faaliyet-page .faaliyet-vertical-cards .unified-card-grid{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.faaliyet-page .faaliyet-vertical-cards .activity-values-row{display:contents!important}
+.faaliyet-page .faaliyet-vertical-cards .unified-card{display:flex!important;min-width:0!important;min-height:360px!important;height:360px!important;flex:none!important;position:relative;justify-content:flex-end;overflow:hidden;border-radius:14px!important;padding:25px!important;color:#fff!important;background:linear-gradient(165deg,#07335e,#0b6aa3)!important;box-shadow:0 14px 30px rgba(8,47,92,.14);transition:transform .25s ease,box-shadow .25s ease!important}
+.faaliyet-page .faaliyet-vertical-cards .unified-card:nth-child(3n+2){background:linear-gradient(165deg,#0d527f,#168bc8)!important}
+.faaliyet-page .faaliyet-vertical-cards .unified-card:nth-child(3n){background:linear-gradient(165deg,#092849,#0a5b95)!important}
+.faaliyet-page .faaliyet-vertical-cards .unified-card:hover{transform:translateY(-7px)!important;box-shadow:0 22px 38px rgba(8,47,92,.25)!important}
+.faaliyet-page .faaliyet-vertical-cards .unified-card__top{position:absolute;inset:22px 22px auto;display:flex;justify-content:space-between}
+.faaliyet-page .faaliyet-vertical-cards .unified-card__icon{display:grid!important;place-items:center;width:40px;height:40px;border:1px solid rgba(255,255,255,.45);border-radius:50%;color:#fff}
+.faaliyet-page .faaliyet-vertical-cards .unified-card__number{color:#bfeaff!important}
+.faaliyet-page .faaliyet-vertical-cards .unified-card h3{margin:0!important;writing-mode:initial!important;transform:none!important;color:#fff!important;font-size:22px!important;line-height:1.15!important}
+.faaliyet-page .faaliyet-vertical-cards .unified-card p{display:none!important}
+.faaliyet-page .faaliyet-vertical-cards .unified-card__arrow{position:absolute;right:23px;bottom:22px;color:#bfeaff}
+@media(max-width:900px){.faaliyet-page .faaliyet-story{grid-template-columns:155px minmax(0,1fr);gap:32px;padding:72px 0}.faaliyet-page .faaliyet-story__visual{grid-column:2;max-width:360px}.faaliyet-page .faaliyet-vertical-cards .unified-card-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:620px){.faaliyet-page .faaliyet-story,.faaliyet-page .faaliyet-vertical-cards{width:calc(100% - 34px)}.faaliyet-page .faaliyet-story{display:block;padding:58px 0}.faaliyet-page .faaliyet-story__label{margin-bottom:17px}.faaliyet-page .faaliyet-story__visual{margin-top:25px;min-height:220px}.faaliyet-page .faaliyet-story__visual img{height:220px}.faaliyet-page .faaliyet-vertical-cards{padding:58px 0}.faaliyet-page .faaliyet-vertical-cards .unified-card-grid{grid-template-columns:1fr}.faaliyet-page .faaliyet-vertical-cards .unified-card{height:300px!important;min-height:300px!important}}
