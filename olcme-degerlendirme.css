@@ -12,3 +12,25 @@
 @media(max-width:1100px){.assessment-orbit__grid{width:min(1180px,calc(100% - 48px))!important}.assessment-follow__grid{grid-template-columns:1fr 1fr!important}.orbit-child{width:360px!important;height:360px!important}}@media(max-width:720px){.assessment-orbit__grid{width:calc(100% - 34px)!important}.assessment-follow__grid{grid-template-columns:1fr!important}.assessment-follow__grid>div:last-child{padding:52px 24px!important;max-width:none!important}.assessment-follow__grid>div:last-child:after{font-size:14px}.assessment-follow .assessment-kicker:after{width:60px}}
 
 .assessment-follow__grid>div:last-child:after{display:none!important}.follow-facts{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin:28px 0 30px;padding:3px 0}.follow-facts span{display:flex;align-items:center;gap:12px;color:#fff;font-size:15px;font-weight:700;line-height:1.25}.follow-facts svg{width:28px;height:28px;flex:0 0 28px;fill:none;stroke:#5cd2ff;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}@media(max-width:720px){.follow-facts{grid-template-columns:1fr;gap:13px}}
+
+
+/* Final production alignment: orbit and full-bleed follow-up panel */
+.assessment-orbit__grid{width:min(1480px,calc(100% - 56px))!important;max-width:none!important;grid-template-columns:minmax(340px,.72fr) minmax(760px,1.55fr)!important;gap:54px!important}
+.assessment-orbit__visual{width:100%!important;min-height:720px!important;margin:0!important}
+.orbit-lines{width:500px!important;height:500px!important;left:50%!important;top:115px!important;inset:auto!important;transform:translateX(-50%)!important;border-radius:50%!important}
+.orbit-child{width:390px!important;height:390px!important;left:50%!important;top:170px!important;transform:translateX(-50%)!important;border-radius:50%!important;overflow:hidden!important}
+.orbit-child img{width:100%!important;height:100%!important;object-fit:cover!important;object-position:center!important}
+.orbit-card{width:235px!important;min-height:124px!important}
+.orbit-card--1{top:0!important;left:50%!important;transform:translateX(-50%)!important}
+.orbit-card--2{top:96px!important;right:0!important;left:auto!important}
+.orbit-card--3{top:328px!important;right:0!important;left:auto!important}
+.orbit-card--4{bottom:0!important;right:112px!important;left:auto!important;top:auto!important}
+.orbit-card--5{bottom:0!important;left:112px!important;right:auto!important;top:auto!important;transform:none!important}
+.orbit-card--6{top:328px!important;left:0!important;right:auto!important}
+.orbit-card--7{top:96px!important;left:0!important;right:auto!important}
+.assessment-follow{padding:0!important;background:#062e61!important}
+.assessment-follow .assessment-follow__grid{width:100%!important;max-width:none!important;min-height:610px!important;display:grid!important;grid-template-columns:minmax(0,48%) minmax(0,52%)!important;gap:0!important;align-items:stretch!important}
+.assessment-follow__visual{min-height:610px!important;height:610px!important;align-self:stretch!important;background-size:cover!important;background-repeat:no-repeat!important;background-position:left center!important}
+.assessment-follow__grid>div:last-child{padding:72px clamp(38px,7vw,128px) 72px 82px!important;align-self:center!important}
+@media(max-width:1120px){.assessment-orbit__grid{grid-template-columns:1fr!important}.assessment-orbit__visual{max-width:800px!important;margin:auto!important}.assessment-follow .assessment-follow__grid{grid-template-columns:1fr!important}.assessment-follow__visual{height:470px!important;min-height:470px!important}.assessment-follow__grid>div:last-child{padding:60px 28px!important}}
+@media(max-width:720px){.assessment-orbit__grid{width:calc(100% - 30px)!important}.assessment-orbit__visual{min-height:980px!important}.orbit-lines{width:300px!important;height:300px!important;top:330px!important}.orbit-child{width:230px!important;height:230px!important;top:365px!important}.orbit-card{width:calc(50% - 10px)!important;min-height:112px!important}.orbit-card--1{top:0!important;left:0!important;transform:none!important}.orbit-card--2{top:126px!important;right:0!important}.orbit-card--3{top:252px!important;left:0!important}.orbit-card--4{top:640px!important;right:0!important;bottom:auto!important}.orbit-card--5{top:766px!important;left:0!important;bottom:auto!important}.orbit-card--6{top:640px!important;left:auto!important;right:0!important}.orbit-card--7{top:514px!important;left:0!important}.assessment-follow__visual{height:390px!important;min-height:390px!important}}
