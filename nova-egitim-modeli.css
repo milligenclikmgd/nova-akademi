@@ -72,3 +72,12 @@
   .education-orbit:has(.orbit-card--1:hover) .orbit-card--1,.education-orbit:has(.orbit-card--5:hover) .orbit-card--5,.education-orbit:has(.orbit-card--1:focus-visible) .orbit-card--1,.education-orbit:has(.orbit-card--5:focus-visible) .orbit-card--5{transform:translateX(-50%) scale(1.08)}
   .education-orbit:has(.orbit-card--3:hover) .orbit-card--3,.education-orbit:has(.orbit-card--6:hover) .orbit-card--6,.education-orbit:has(.orbit-card--3:focus-visible) .orbit-card--3,.education-orbit:has(.orbit-card--6:focus-visible) .orbit-card--6{transform:translateY(-50%) scale(1.08)}
 }
+
+/* Dairesel modülün tüm içeriğini oranını koruyarak %40 küçült */
+.education-orbit:before,.education-orbit:after{display:none}
+.education-orbit{width:60%;max-width:528px;min-height:0;height:auto;aspect-ratio:1;position:relative}
+.education-orbit__scale{position:absolute;top:0;left:0;width:166.6667%;height:166.6667%;transform:scale(.6);transform-origin:top left}
+@media(max-width:600px){
+  .education-orbit{width:60%;max-width:none;height:390px;min-height:0;aspect-ratio:auto}
+  .education-orbit__scale{width:166.6667%;height:166.6667%}
+}
