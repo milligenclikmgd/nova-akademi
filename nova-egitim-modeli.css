@@ -23,3 +23,52 @@
 @media(max-width:900px){.education-route__grid{grid-template-columns:1fr;gap:28px}.education-route__intro{text-align:center}.education-route__intro>p,.education-route__intro blockquote{margin-left:auto;margin-right:auto;max-width:650px}.education-route__intro blockquote{text-align:left}.education-orbit{width:min(690px,100%);margin:auto}}
 @media(max-width:600px){.education-route{padding:58px 0}.education-orbit{min-height:610px}.orbit-lines{inset:84px 44px}.orbit-center{width:182px;height:182px;top:155px;border-width:7px}.nova-star{width:118px;height:127px}.orbit-card{width:152px;min-height:116px;padding:12px 10px 12px 43px;border-radius:15px}.orbit-card__num{left:11px;top:11px;font-size:10px}.orbit-card:before{left:9px;top:38px;width:26px;height:26px;border-radius:9px;font-size:14px}.orbit-card h3{font-size:12px;margin:21px 0 5px}.orbit-card p{font-size:10px;line-height:1.4}.orbit-card--1{top:0}.orbit-card--2{top:92px}.orbit-card--3{top:242px}.orbit-card--4{bottom:76px}.orbit-card--5{bottom:0}.orbit-card--6{top:242px}.orbit-card--7{top:92px}}
 @media(prefers-reduced-motion:reduce){.orbit-card{transition:none}}
+
+/* Dairesel akış: eş merkezli çemberler ve daha geniş yerleşim */
+.education-route .education-shell{width:min(1380px,calc(100% - 64px))}
+.education-route__grid{grid-template-columns:.58fr 1.42fr;gap:28px}
+.education-route__intro{padding-left:0;text-align:left}
+.education-route__intro h2{max-width:440px}
+.education-route__intro>p,.education-route__intro blockquote{max-width:400px}
+.education-orbit{width:100%;max-width:880px;min-height:0;height:auto;aspect-ratio:1;margin:0 auto}
+.orbit-lines{width:82%;height:auto;aspect-ratio:1;inset:50% auto auto 50%;transform:translate(-50%,-50%);border-radius:50%}
+.orbit-center{width:clamp(190px,34%,282px);height:auto;aspect-ratio:1;top:50%;left:50%;transform:translate(-50%,-50%)}
+.orbit-card{width:clamp(170px,27%,230px)}
+.orbit-card--2{top:13%;right:0}
+.orbit-card--3{top:50%;right:0;transform:translateY(-50%)}
+.orbit-card--4{top:auto;bottom:13%;right:0}
+.orbit-card--6{top:50%;left:0;transform:translateY(-50%)}
+.orbit-card--7{top:13%;left:0}
+.education-orbit:has(.orbit-card--3:hover) .orbit-card--3,.education-orbit:has(.orbit-card--6:hover) .orbit-card--6,.education-orbit:has(.orbit-card--3:focus-visible) .orbit-card--3,.education-orbit:has(.orbit-card--6:focus-visible) .orbit-card--6{transform:translateY(-50%) scale(1.08);z-index:5;filter:none;opacity:1;box-shadow:0 24px 42px rgba(12,104,204,.25)}
+.education-orbit:has(.orbit-card:hover) .orbit-card:not(:hover),.education-orbit:has(.orbit-card:focus-visible) .orbit-card:not(:focus-visible){transform:none}
+.education-orbit:has(.orbit-card:hover) .orbit-card--1,.education-orbit:has(.orbit-card:hover) .orbit-card--5,.education-orbit:has(.orbit-card:focus-visible) .orbit-card--1,.education-orbit:has(.orbit-card:focus-visible) .orbit-card--5{transform:translateX(-50%)}
+.education-orbit:has(.orbit-card:hover) .orbit-card--3,.education-orbit:has(.orbit-card:hover) .orbit-card--6,.education-orbit:has(.orbit-card:focus-visible) .orbit-card--3,.education-orbit:has(.orbit-card:focus-visible) .orbit-card--6{transform:translateY(-50%)}
+@media(max-width:900px){
+  .education-route .education-shell{width:min(840px,calc(100% - 48px))}
+  .education-route__grid{grid-template-columns:1fr;gap:24px}
+  .education-route__intro{text-align:left}
+  .education-route__intro h2{max-width:620px}
+  .education-route__intro>p,.education-route__intro blockquote{margin-left:0;margin-right:0;max-width:620px}
+  .education-orbit{width:100%;max-width:800px}
+}
+@media(max-width:600px){
+  .education-route .education-shell{width:calc(100% - 34px)}
+  .education-orbit{width:100%;max-width:none;height:650px;min-height:0;aspect-ratio:auto}
+  .orbit-lines{width:min(84vw,390px);height:auto;aspect-ratio:1;top:50%;left:50%;right:auto;bottom:auto;transform:translate(-50%,-50%)}
+  .orbit-center{width:clamp(108px,34vw,150px);height:auto;aspect-ratio:1;top:50%;left:50%;transform:translate(-50%,-50%);border-width:7px}
+  .nova-star{width:64%;height:auto;aspect-ratio:1/1.07}
+  .orbit-card{width:clamp(112px,33%,156px);min-height:112px;padding:11px 9px 11px 42px;border-radius:15px}
+  .orbit-card__num{left:10px;top:10px;font-size:10px}
+  .orbit-card:before{left:8px;top:37px;width:26px;height:26px;border-radius:9px;font-size:14px}
+  .orbit-card h3{font-size:12px;margin:20px 0 5px}
+  .orbit-card p{font-size:10px;line-height:1.4}
+  .orbit-card--1{top:0;left:50%;transform:translateX(-50%)}
+  .orbit-card--2{top:19%;right:0}
+  .orbit-card--3{top:50%;right:0;transform:translateY(-50%)}
+  .orbit-card--4{top:auto;bottom:19%;right:0}
+  .orbit-card--5{bottom:0;left:50%;transform:translateX(-50%)}
+  .orbit-card--6{top:50%;left:0;transform:translateY(-50%)}
+  .orbit-card--7{top:19%;left:0}
+  .education-orbit:has(.orbit-card--1:hover) .orbit-card--1,.education-orbit:has(.orbit-card--5:hover) .orbit-card--5,.education-orbit:has(.orbit-card--1:focus-visible) .orbit-card--1,.education-orbit:has(.orbit-card--5:focus-visible) .orbit-card--5{transform:translateX(-50%) scale(1.08)}
+  .education-orbit:has(.orbit-card--3:hover) .orbit-card--3,.education-orbit:has(.orbit-card--6:hover) .orbit-card--6,.education-orbit:has(.orbit-card--3:focus-visible) .orbit-card--3,.education-orbit:has(.orbit-card--6:focus-visible) .orbit-card--6{transform:translateY(-50%) scale(1.08)}
+}
