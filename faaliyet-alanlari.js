@@ -1,23 +1,22 @@
 (() => {
   const track = document.getElementById('activity-track');
-  if (!track) return;
+  const viewport = document.querySelector('.activity-viewport');
+  if (!track || !viewport) return;
   const buttons = [...document.querySelectorAll('[data-direction]')];
-  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-  const sync = () => {
-    buttons[0].disabled = track.scrollLeft <= 2;
-    buttons[1].disabled = track.scrollLeft >= track.scrollWidth - track.clientWidth - 2;
+  let index = 0;
+  const render = () => {
+    const step = track.querySelector('.activity-slide').getBoundingClientRect().width;
+    const maxOffset = Math.max(0, track.scrollWidth - viewport.clientWidth);
+    const lastIndex = Math.ceil(maxOffset / step);
+    index = Math.min(index, lastIndex);
+    track.style.transform = `translateX(-${Math.min(index * step, maxOffset)}px)`;
+    buttons[0].disabled = index === 0;
+    buttons[1].disabled = index === lastIndex;
   };
-  const move = direction => track.scrollBy({
-    left: direction * (track.querySelector('.activity-slide').getBoundingClientRect().width),
-    behavior: reducedMotion.matches ? 'instant' : 'smooth'
-  });
-  buttons.forEach(button => button.addEventListener('click', () => move(Number(button.dataset.direction))));
-  track.addEventListener('keydown', event => {
-    if (event.key !== 'ArrowRight' && event.key !== 'ArrowLeft') return;
-    event.preventDefault();
-    move(event.key === 'ArrowRight' ? 1 : -1);
-  });
-  track.addEventListener('scroll', sync, { passive: true });
-  new ResizeObserver(sync).observe(track);
-  sync();
+  buttons.forEach(button => button.addEventListener('click', () => {
+    index = Math.max(0, index + Number(button.dataset.direction));
+    render();
+  }));
+  new ResizeObserver(render).observe(viewport);
+  render();
 })();
