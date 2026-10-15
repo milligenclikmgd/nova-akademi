@@ -81,3 +81,19 @@
   .education-orbit{width:72%;max-width:none;height:468px;min-height:0;aspect-ratio:auto}
   .education-orbit__scale{width:138.8889%;height:138.8889%}
 }
+
+/* Kartlar %15 daha büyük; tipografi daire boyutunu etkilemeden güçlendirildi */
+.orbit-card{width:clamp(195.5px,31.05%,264.5px);min-height:142.6px;padding:17.25px 18.4px 17.25px 70.15px}
+.orbit-card__num{font-size:13px;top:13.8px;left:18.4px}
+.orbit-card:before{left:17.25px;top:49.45px;width:39.1px;height:39.1px;border-radius:12.65px;font-size:20.7px}
+.orbit-card h3{margin:25.3px 0 6.9px;font-size:20.5px;font-weight:800;line-height:1.28}
+.orbit-card p{font-size:16px;font-weight:600;line-height:1.5}
+@media(max-width:600px){
+  .orbit-card{width:clamp(128.8px,37.95%,179.4px);min-height:128.8px;padding:14.95px 10.35px 14.95px 49.45px}
+  .orbit-card__num{top:11.5px;left:11.5px;font-size:12px}
+  .orbit-card:before{left:9.2px;top:43.7px;width:29.9px;height:29.9px;border-radius:10.35px;font-size:16.1px}
+  .orbit-card h3{margin:23px 0 5.75px;font-size:17.5px}
+  .orbit-card p{font-size:15px;line-height:1.42}
+  .orbit-card--3{right:-26px}
+  .orbit-card--6{left:-26px}
+}
