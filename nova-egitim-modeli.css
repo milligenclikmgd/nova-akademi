@@ -97,3 +97,12 @@
   .orbit-card--3{right:-26px}
   .orbit-card--6{left:-26px}
 }
+
+/* Aşama başına özgün, erişilebilir çizgi ikonları */
+.orbit-card:before{display:none;content:none}
+.orbit-card__icon{position:absolute;top:49.45px;left:17.25px;display:grid;place-items:center;width:39.1px;height:39.1px;border-radius:12.65px;background:linear-gradient(135deg,#0875e8,#10a3df);color:#fff}
+.orbit-card__icon svg{display:block;width:24px;height:24px}
+@media(max-width:600px){
+  .orbit-card__icon{top:43.7px;left:9.2px;width:29.9px;height:29.9px;border-radius:10.35px}
+  .orbit-card__icon svg{width:19px;height:19px}
+}
