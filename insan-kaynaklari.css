@@ -144,3 +144,15 @@
  .hr-compass i,.hr-compass b{border-left-width:27px;border-right-width:27px;border-bottom-width:64px}
 }
 @media(prefers-reduced-motion:reduce){.hr-card,.hr-button{transition:none}}
+
+/* Hover hareketleri: ikonlu alanlarda kısa ve hafif geri bildirim */
+.hr-principle .hr-icon,.hr-step__icon,.hr-values svg{transition:transform .28s cubic-bezier(.2,.75,.25,1),background-color .28s ease,box-shadow .28s ease,color .28s ease}
+.hr-principle:hover .hr-icon{transform:translateY(-6px) rotate(-4deg);background:#e2f2ff;box-shadow:0 10px 22px rgba(8,93,174,.16)}
+.hr-principle:hover .hr-icon svg{transform:scale(1.08)}
+.hr-step__icon svg{transition:transform .28s cubic-bezier(.2,.75,.25,1)}
+.hr-step:hover .hr-step__icon{transform:translateY(-5px);background:#e2f2ff;box-shadow:0 9px 20px rgba(8,93,174,.15)}
+.hr-step:hover .hr-step__icon svg{transform:scale(1.1) rotate(-5deg)}
+.hr-values>div:hover svg{transform:translateY(-4px) scale(1.12);color:#0877d8}
+.hr-values>div{transition:color .2s ease}
+.hr-values>div:hover{color:#0877d8}
+@media(prefers-reduced-motion:reduce){.hr-principle .hr-icon,.hr-step__icon,.hr-values svg,.hr-step__icon svg,.hr-values>div{transition:none}.hr-principle:hover .hr-icon,.hr-step:hover .hr-step__icon,.hr-principle:hover .hr-icon svg,.hr-step:hover .hr-step__icon svg,.hr-values>div:hover svg{transform:none}}
