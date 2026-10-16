@@ -127,3 +127,8 @@ body.application-page{margin:0;background:#fff;color:var(--app-navy);font-family
 @media(max-width:620px){.application-hero{height:340px}.application-hero:before{background:linear-gradient(90deg,rgba(246,250,254,.98) 0%,rgba(246,250,254,.92) 52%,rgba(246,250,254,.5) 78%,rgba(246,250,254,.12) 100%)}.application-hero__image{object-position:58% center}.application-hero .application-shell{padding-top:18px}.application-hero__content{margin-top:52px;max-width:94%}.application-hero h1{font-size:39px}.application-hero__content>p:last-child{font-size:13px;max-width:280px}.city-search{width:calc(100% - 36px);min-height:54px;gap:10px;margin-top:-27px;padding:5px 6px 5px 15px}.city-search svg{width:19px;height:19px}.city-search input{height:40px;font-size:12px}.city-search button{min-width:78px;height:40px;font-size:11px}.city-section{padding-top:35px}.city-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.city-art{aspect-ratio:1.17}.city-card__trigger{padding:8px}.city-card__name{font-size:13px}.city-card__chevron{width:23px;height:23px}.city-section__heading h2{font-size:25px}.city-counter{min-width:110px;padding:9px}.city-counter strong{font-size:18px}}
 @media(max-width:360px){.city-grid{grid-template-columns:1fr}.city-art{aspect-ratio:1.45}.city-card__trigger{display:flex;flex-direction:column;align-items:stretch}.city-section__heading{align-items:flex-start}.city-counter{min-width:92px}}
 @media(prefers-reduced-motion:reduce){.city-art img{transition:none}}
+
+/* Şehir adedi rozeti kaldırıldı; başlık tek satırda şehir seçimine odaklanır */
+.city-section__heading{align-items:flex-end}
+.city-section__heading>div:first-child{max-width:680px}
+.city-counter{display:none!important}
