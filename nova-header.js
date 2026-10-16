@@ -40,7 +40,7 @@
     ? `<div class="nova-submenu-group">${link(item,'nova-submenu-level2')}${renderThird(item.children)}</div>`
     : link(item,'nova-submenu-level2')).join('');
   const renderTop=item=>`<div class="nova-nav-item">${link(item,'nova-nav-link')}${item.children?.length?`<div class="nova-submenu">${renderSecond(item.children)}</div>`:''}</div>`;
-  const html=`<header class="nova-main-header"><button class="hamb" type="button" aria-label="Menüyü aç">☰</button><a class="nova-brand" href="index.html#top"><img src="assets/nova-logo2.png?v=20261011-6" alt="NOVA Performans Sanatları Gelişim Merkezi"></a><nav class="nova-nav" aria-label="Ana menü">${navigation.map(renderTop).join('')}</nav><a class="nova-results" href="sinavlar.html">SINAV SONUÇLARI <span aria-hidden="true">↗</span></a><a class="nova-results nova-apply" href="ogrenci-kabul-sureci.html">SINAV BAŞVURUSU <span aria-hidden="true">↗</span></a></header>`;
+  const html=`<header class="nova-main-header"><button class="hamb" type="button" aria-label="Menüyü aç">☰</button><a class="nova-brand" href="index.html#top"><img src="assets/nova-logo2.png?v=20261011-6" alt="NOVA Performans Sanatları Gelişim Merkezi"></a><nav class="nova-nav" aria-label="Ana menü">${navigation.map(renderTop).join('')}</nav><a class="nova-results nova-apply" href="sinav-basvurusu.html">SINAV BAŞVURUSU <span aria-hidden="true">↗</span></a><a class="nova-results" href="sinavlar.html">SINAV SONUÇLARI <span aria-hidden="true">↗</span></a></header>`;
 
   document.querySelectorAll('[data-nova-header]').forEach(slot=>slot.innerHTML=html);
   const close=item=>{item.classList.remove('is-open');item.querySelector('.nova-sub-toggle')?.setAttribute('aria-expanded','false')};

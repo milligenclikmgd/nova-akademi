@@ -182,3 +182,21 @@ footer .footer-logo.footer-logo--white{filter:brightness(0) invert(1)!important;
 @media(max-width:1120px){.nova-main-header .nova-apply{order:3}}
 @media(max-width:580px){.nova-main-header .nova-results,.nova-main-header .nova-apply{padding:9px 8px!important;font-size:7px!important;gap:4px!important}.nova-main-header .nova-apply span{display:none}}
 @media(max-width:380px){.nova-main-header .nova-brand{width:86px!important}.nova-main-header .nova-results,.nova-main-header .nova-apply{padding:8px 6px!important;font-size:6.5px!important}}
+
+/* Başvuru ve sonuç düğmeleri aynı görsel ağırlıkta, iletişim öğesinden ayrı */
+@media(min-width:1121px){
+ html body>[data-nova-header]>.nova-main-header{justify-content:flex-start!important}
+ html body>[data-nova-header] .nova-nav{flex:1 1 auto!important;width:auto!important;min-width:0!important;margin-right:0!important;padding-right:0!important;justify-content:space-between!important}
+ html body>[data-nova-header] .nova-apply{margin-left:clamp(14px,1.4vw,22px)!important}
+ html body>[data-nova-header] .nova-results{margin-left:9px!important}
+}
+.nova-main-header .nova-apply{background:#0d5cab!important;color:#fff!important;border:1px solid #0d5cab!important;box-shadow:0 8px 16px rgba(13,92,171,.16)!important;transition:transform .22s cubic-bezier(.2,.75,.25,1),box-shadow .22s ease,background-color .22s ease!important}
+.nova-main-header .nova-results{transition:transform .22s cubic-bezier(.2,.75,.25,1),box-shadow .22s ease,background-color .22s ease!important}
+.nova-main-header .nova-apply:hover,.nova-main-header .nova-results:hover{transform:translateY(-2px) scale(1.025)!important;background:#083f78!important;box-shadow:0 12px 22px rgba(8,63,120,.24)!important}
+.nova-main-header .nova-apply span,.nova-main-header .nova-results span{display:inline-block;transition:transform .22s ease}
+.nova-main-header .nova-apply:hover span,.nova-main-header .nova-results:hover span{transform:translate(2px,-2px)}
+.nova-main-header .nova-apply:focus-visible,.nova-main-header .nova-results:focus-visible{outline:3px solid rgba(72,208,237,.75);outline-offset:3px}
+@media(max-width:1120px){.nova-main-header .nova-apply{order:2}.nova-main-header .nova-results{order:3}}
+@media(max-width:580px){.nova-main-header .nova-apply,.nova-main-header .nova-results{padding:9px 8px!important;font-size:7px!important;gap:4px!important}.nova-main-header .nova-apply span,.nova-main-header .nova-results span{display:none!important}}
+@media(max-width:380px){.nova-main-header .nova-brand{width:80px!important}.nova-main-header .nova-apply,.nova-main-header .nova-results{padding:7px 5px!important;font-size:6px!important}}
+@media(prefers-reduced-motion:reduce){.nova-main-header .nova-apply,.nova-main-header .nova-results,.nova-main-header .nova-apply span,.nova-main-header .nova-results span{transition:none!important}.nova-main-header .nova-apply:hover,.nova-main-header .nova-results:hover,.nova-main-header .nova-apply:hover span,.nova-main-header .nova-results:hover span{transform:none!important}}

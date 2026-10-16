@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="NOVA Akademi sınav başvuru şehirleri ve sınav seçenekleri.">
+<title>Sınav Başvurusu | NOVA Akademi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="nova-header-v2.css?v=20261016-3">
+<link rel="stylesheet" href="sinav-basvurusu.css?v=20261016-1">
+</head>
+<body class="application-page">
+<div data-nova-header></div>
+<main class="application-main">
+  <section class="application-hero">
+    <div class="application-shell">
+      <nav class="application-breadcrumb" aria-label="Sayfa yolu"><a href="index.html">Ana Sayfa</a><span>›</span><a href="sinavlar.html">Sınav Merkezi</a><span>›</span><span aria-current="page">Sınav Başvurusu</span></nav>
+      <div class="application-hero__content">
+        <p class="application-kicker"><span></span>NOVA · SINAV MERKEZİ</p>
+        <h1>Sınav Başvurusu</h1>
+        <p>Başvuru sürecini başlatmak için sınava katılacağınız şehri seçin.</p>
+      </div>
+      <div class="application-hero__seal" aria-hidden="true"><span>NOVA</span><i></i><b></b></div>
+    </div>
+  </section>
+  <section class="city-section application-shell" aria-labelledby="city-heading">
+    <div class="city-section__heading">
+      <div><p class="application-kicker">BAŞVURU MERKEZLERİ</p><h2 id="city-heading">Şehrinizi Seçin</h2><p>Şehir kartını açarak o şehirdeki sınav başvurularını görüntüleyin.</p></div>
+      <div class="city-counter" aria-label="5 açık başvuru şehri"><strong>05</strong><span>AÇIK<br>ŞEHİR</span></div>
+    </div>
+    <div class="city-grid" id="city-grid" aria-live="polite"></div>
+  </section>
+  <section class="application-help">
+    <div class="application-shell application-help__inner">
+      <span class="help-icon" aria-hidden="true">?</span>
+      <div><strong>Başvuru süreci hakkında</strong><p>Sınav takvimi ve kabul adımlarını incelemek için Öğrenci Kabul Süreci sayfasını ziyaret edin.</p></div>
+      <a href="ogrenci-kabul-sureci.html">Kabul Süreci <span aria-hidden="true">↗</span></a>
+    </div>
+  </section>
+</main>
+<footer class="exam-footer"><a href="index.html">NOVA Akademi</a><span>© 2026 NOVA Sanat ve Spor Kulübü</span><a href="sinavlar.html">Sınav Sonuçları</a></footer>
+<dialog class="application-dialog" id="application-dialog" aria-labelledby="application-dialog-title">
+  <form method="dialog" class="application-dialog__content">
+    <button class="dialog-close" value="close" aria-label="Pencereyi kapat">×</button>
+    <p class="application-kicker">NOVA · SINAV MERKEZİ</p>
+    <span class="dialog-step">BAŞVURU <i>01</i></span>
+    <h2 id="application-dialog-title">Sınav Başvuru Formu</h2>
+    <p class="dialog-intro">Seçiminiz kaydedildi. Başvuru bilgilerini bir sonraki aşamada birlikte belirleyeceğiz.</p>
+    <div class="dialog-selection"><span>ŞEHİR<strong id="dialog-city">—</strong></span><span>SINAV<strong id="dialog-exam">—</strong></span></div>
+    <div class="form-placeholder"><span class="placeholder-icon" aria-hidden="true">✳</span><div><strong>Başvuru formu hazırlanıyor</strong><p>İstenen bilgileri netleştirdiğimizde form alanları burada açılacak.</p></div></div>
+    <button class="dialog-action" value="close">Tamam</button>
+  </form>
+</dialog>
+<script src="nova-header.js?v=20261016-3"></script>
+<script src="sinav-basvurusu.js?v=20261016-1"></script>
+</body>
+</html>
