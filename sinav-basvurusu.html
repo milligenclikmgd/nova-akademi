@@ -9,12 +9,13 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="nova-header-v2.css?v=20261016-3">
-<link rel="stylesheet" href="sinav-basvurusu.css?v=20261016-1">
+<link rel="stylesheet" href="sinav-basvurusu.css?v=20261016-2">
 </head>
 <body class="application-page">
 <div data-nova-header></div>
 <main class="application-main">
   <section class="application-hero">
+    <img class="application-hero__image" src="assets/sinav-basvurusu-hero.webp" alt="Çocuklar geleneksel halk oyunu oynuyor, arkalarında Anadolu manzarası uzanıyor" fetchpriority="high">
     <div class="application-shell">
       <nav class="application-breadcrumb" aria-label="Sayfa yolu"><a href="index.html">Ana Sayfa</a><span>›</span><a href="sinavlar.html">Sınav Merkezi</a><span>›</span><span aria-current="page">Sınav Başvurusu</span></nav>
       <div class="application-hero__content">
@@ -22,13 +23,19 @@
         <h1>Sınav Başvurusu</h1>
         <p>Başvuru sürecini başlatmak için sınava katılacağınız şehri seçin.</p>
       </div>
-      <div class="application-hero__seal" aria-hidden="true"><span>NOVA</span><i></i><b></b></div>
+      
     </div>
   </section>
+  <form class="city-search application-shell" id="city-search-form" role="search">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"></circle><path d="m16 16 5 5"></path></svg>
+    <label class="sr-only" for="city-search-input">Şehir adıyla arayın</label>
+    <input id="city-search-input" type="search" placeholder="Şehir adıyla arayın..." autocomplete="off">
+    <button type="submit">Ara</button>
+  </form>
   <section class="city-section application-shell" aria-labelledby="city-heading">
     <div class="city-section__heading">
       <div><p class="application-kicker">BAŞVURU MERKEZLERİ</p><h2 id="city-heading">Şehrinizi Seçin</h2><p>Şehir kartını açarak o şehirdeki sınav başvurularını görüntüleyin.</p></div>
-      <div class="city-counter" aria-label="5 açık başvuru şehri"><strong>05</strong><span>AÇIK<br>ŞEHİR</span></div>
+      <div class="city-counter" aria-label="Açık başvuru şehirleri"><strong id="city-count">05</strong><span>AÇIK<br>ŞEHİR</span></div>
     </div>
     <div class="city-grid" id="city-grid" aria-live="polite"></div>
   </section>
@@ -54,6 +61,6 @@
   </form>
 </dialog>
 <script src="nova-header.js?v=20261016-3"></script>
-<script src="sinav-basvurusu.js?v=20261016-1"></script>
+<script src="sinav-basvurusu.js?v=20261016-2"></script>
 </body>
 </html>
