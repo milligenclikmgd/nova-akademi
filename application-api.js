@@ -8,6 +8,7 @@ export const defaultSettings = () => ({
   ], cities:[{id:'ankara',name:'Ankara'},{id:'istanbul',name:'İstanbul'},{id:'izmir',name:'İzmir'},{id:'kayseri',name:'Kayseri'},{id:'antalya',name:'Antalya'}]
 });
 export function reply(data,status=200,headers={}) {return new Response(JSON.stringify(data),{status,headers:{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store','X-Content-Type-Options':'nosniff',...headers}})}
+export function publicOriginAllowed(origin,ownOrigin,env){return origin===ownOrigin||origin==='https://nova-akademi.vercel.app'||(!!env.NOVA_SITE_ORIGIN&&origin===env.NOVA_SITE_ORIGIN)}
 const fail=(message,status=400)=>{throw Object.assign(new Error(message),{status})};
 const text=(value,max=200)=>{if(typeof value!=='string'||value.length>max)fail('Geçersiz veya çok uzun bilgi.');return value.trim()};
 const required=(value,label,max=200)=>{const result=text(value,max);if(!result)fail(label+' gerekli.');return result};
@@ -73,7 +74,8 @@ export class ApplicationStore {
  }catch(error){try{if(request.body&&!request.body.locked)await request.body.cancel()}catch{}return reply({error:error.status?error.message:'İşlem tamamlanamadı. Lütfen tekrar deneyin.'},error.status||500)}}
  async handle(request){
   const url=new URL(request.url),path=url.pathname,method=request.method,now=Date.now();
-  if(!['GET','HEAD'].includes(method)&&request.headers.get('Origin')!==url.origin)fail('Bu kaynaktan işlem yapılamaz.',403);
+  const origin=request.headers.get('Origin');
+  if(!['GET','HEAD'].includes(method)&&origin!==url.origin&&!(path==='/api/applications'&&publicOriginAllowed(origin,url.origin,this.env)))fail('Bu kaynaktan işlem yapılamaz.',403);
   if(path==='/api/applications/config'&&method==='GET')return reply({settings:this.getSettings(),ready:(this.env.NOVA_PANEL_PASSWORD||'').length>=16});
   if(path==='/api/panel/login'&&method==='POST'){
    if(!this.env.NOVA_PANEL_PASSWORD||this.env.NOVA_PANEL_PASSWORD.length<16)fail('Panel kurulumu tamamlanmadı. Cloudflare üzerinde NOVA_PANEL_PASSWORD gizli değişkenini en az 16 karakter olarak tanımlayın.',503);

@@ -36,6 +36,11 @@ function body(data,file){const result=new FormData();result.set('data',JSON.stri
  assert.equal((await json('/api/panel/applications/'+one.id,'GET',undefined,true)).application.fee,150.5);
  const list=await json('/api/panel/applications','GET',undefined,true);assert.ok(list.total>=2);assert.ok(!('candidate' in list.applications[0]));
  assert.equal((await json('/api/panel/applications?q='+encodeURIComponent("' OR 1=1 --"),'GET',undefined,true)).total,0);
+ const cors=await request('/api/applications/config','GET',undefined,false,'https://nova-akademi.vercel.app');assert.equal(cors.headers.get('access-control-allow-origin'),'https://nova-akademi.vercel.app');assert.equal(cors.headers.get('access-control-allow-credentials'),null);
+ assert.equal((await request('/api/applications','OPTIONS',undefined,false,'https://nova-akademi.vercel.app')).status,204);
+ assert.equal((await request('/api/panel/login','OPTIONS',undefined,false,'https://nova-akademi.vercel.app')).status,403);
+ assert.equal((await request('/api/panel/settings','PUT',settings,true,'https://nova-akademi.vercel.app')).status,403);
+ const crossApplication=await request('/api/applications','POST',body(form(settings)),false,'https://nova-akademi.vercel.app');assert.equal(crossApplication.status,201);assert.equal(crossApplication.headers.get('access-control-allow-origin'),'https://nova-akademi.vercel.app');
  await json('/api/panel/logout','POST',{},true);await json('/api/panel/session','GET',undefined,true,401);
  for(let attempt=0;attempt<3;attempt++)await json('/api/panel/login','POST',{password:'incorrect'},false,401);
  await json('/api/panel/login','POST',{password:'incorrect'},false,429);

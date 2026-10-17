@@ -1,5 +1,5 @@
 export { ApplicationStore } from './application-api.js';
-import { reply } from './application-api.js';
+import { reply, publicOriginAllowed } from './application-api.js';
 const systemPrompt =
   "Sen NOVA AI'sın. NOVA Sanat ve Spor Kulübü hakkında Türkçe, nazik, kısa ve doğru yanıtlar ver. Bilmediğin bilgiyi uydurma; iletişim sayfasına yönlendir.";
 
@@ -95,8 +95,12 @@ export default {
   async fetch(request, env) {
     const pathname = new URL(request.url).pathname;
     if (pathname === '/api/applications' || pathname.startsWith('/api/applications/') || pathname.startsWith('/api/panel/')) {
-      if (!env.NOVA_APPLICATIONS) return reply({error:'Başvuru veri deposu henüz etkinleştirilmedi.'},503);
-      return env.NOVA_APPLICATIONS.get(env.NOVA_APPLICATIONS.idFromName('nova-applications-v1')).fetch(request);
+      const origin=request.headers.get('Origin'),isPublic=pathname==='/api/applications'||pathname==='/api/applications/config';
+      const cors=isPublic&&origin&&publicOriginAllowed(origin,new URL(request.url).origin,env)?{'Access-Control-Allow-Origin':origin,'Access-Control-Allow-Methods':'GET, POST, OPTIONS','Access-Control-Allow-Headers':'Content-Type','Vary':'Origin'}:{};
+      if(request.method==='OPTIONS')return new Response(null,{status:cors['Access-Control-Allow-Origin']?204:403,headers:cors});
+      const response=!env.NOVA_APPLICATIONS?reply({error:'Başvuru veri deposu henüz etkinleştirilmedi.'},503):await env.NOVA_APPLICATIONS.get(env.NOVA_APPLICATIONS.idFromName('nova-applications-v1')).fetch(request);
+      const headers=new Headers(response.headers);for(const [key,value] of Object.entries(cors))headers.set(key,value);
+      return new Response(response.body,{status:response.status,headers});
     }
     if (pathname === '/panel' || pathname === '/panel/' || pathname === '/panel.html') {
       const target=new URL(request.url);target.pathname='/panel';

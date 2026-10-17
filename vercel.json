@@ -1,0 +1,7 @@
+{
+  "redirects": [
+    {"source": "/panel", "destination": "https://nova-akademi.milligenclikmgd.workers.dev/panel", "permanent": false},
+    {"source": "/panel/", "destination": "https://nova-akademi.milligenclikmgd.workers.dev/panel", "permanent": false},
+    {"source": "/panel.html", "destination": "https://nova-akademi.milligenclikmgd.workers.dev/panel", "permanent": false}
+  ]
+}

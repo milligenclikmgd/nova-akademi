@@ -1,3 +1,4 @@
+window.novaApplicationEndpoint=path=>(location.hostname==="nova-akademi.vercel.app"?"https://nova-akademi.milligenclikmgd.workers.dev":"")+path;
 (()=>{const cities=[
  {id:"ankara",name:"Ankara",active:true,image:"assets/sinav-ankara.webp",alt:"Anıtkabir önünde halk oyunu oynayan çocuklar"},
  {id:"istanbul",name:"İstanbul",active:true,image:"assets/sinav-istanbul.webp",alt:"İstanbul Boğazı ve Kız Kulesi önünde halk oyunu oynayan çocuklar"},
@@ -30,5 +31,5 @@ reserveCitySpace();
 searchForm.addEventListener("submit",event=>{event.preventDefault();render()});searchInput.addEventListener("input",render);render();
 window.addEventListener("resize",reserveCitySpace);
 document.fonts?.ready.then(reserveCitySpace);
-fetch("/api/applications/config",{cache:"no-store"}).then(response=>response.ok?response.json():null).then(result=>{if(result?.settings?.groups){exams=result.settings.groups.map(group=>({id:group.id,title:group.name+" Sınavları"}));render()}}).catch(()=>{});
+fetch(window.novaApplicationEndpoint("/api/applications/config"),{cache:"no-store"}).then(response=>response.ok?response.json():null).then(result=>{if(result?.settings?.groups){exams=result.settings.groups.map(group=>({id:group.id,title:group.name+" Sınavları"}));render()}}).catch(()=>{});
 })();

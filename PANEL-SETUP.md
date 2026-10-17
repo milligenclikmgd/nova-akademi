@@ -2,6 +2,8 @@
 
 Panel adresi `/panel` (ana site menüsünde bağlantısı yoktur). Panel dosyası bir giriş ekranıdır; başvuru verileri ve dekontlar yalnızca sunucuda doğrulanan yönetici oturumuyla alınabilir.
 
+Ana site `https://nova-akademi.vercel.app` üzerinde de yayınlandığından bu alan adındaki başvuru ekranı kayıt isteklerini doğrudan Cloudflare Worker'a gönderir. CORS yalnızca bu alan adı ve Worker'ın kendi kaynağı için açılır; yönetici API'leri çapraz kaynağa açılmaz. Vercel'de `/panel` aynı Worker üzerindeki panele yönlenir. Böylece oturum çerezi panelin kendi alan adında kalır ve başvurular tek depoda toplanır. Vercel ana alan adı değişirse istemci alan adı eşlemesini güncelleyin ve Cloudflare'da `NOVA_SITE_ORIGIN` ortam değişkenini yeni tam köken adresi olarak tanımlayın.
+
 ## İlk kurulum
 
 1. Mevcut Cloudflare Worker projesini bu deponun `wrangler.jsonc` dosyasıyla deploy edin. SQLite destekli `NOVA_APPLICATIONS` Durable Object bağlaması ve `nova-applications-v1` migration'ı deploy sırasında oluşturulur. Var olan Gemini değişkeni korunur.
