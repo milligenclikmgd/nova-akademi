@@ -132,3 +132,10 @@ body.application-page{margin:0;background:#fff;color:var(--app-navy);font-family
 .city-section__heading{align-items:flex-end}
 .city-section__heading>div:first-child{max-width:680px}
 .city-counter{display:none!important}
+
+/* Ortak footer'ın ana sayfadaki temel yerleşimi. */
+.application-page footer#iletisim{align-items:start;line-height:1.7;font-weight:400}
+.application-page footer#iletisim div{display:grid;align-content:start;gap:14px;font-size:13px}
+.application-page footer#iletisim .footer-logo{padding:8px}
+/* Açılan tek şehir paneli için başlangıçtan itibaren yer ayrılır. */
+.city-grid{align-content:start}
