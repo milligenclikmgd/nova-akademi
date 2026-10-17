@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="nova-header-v2.css?v=20261017-1">
-<link rel="stylesheet" href="sinav-basvurusu.css?v=20261017-2">
+<link rel="stylesheet" href="sinav-basvurusu.css?v=20261017-3">
 <link rel="stylesheet" href="nova-footer.css?v=20261011-3">
 </head>
 <body class="application-page">
@@ -49,18 +49,67 @@
 </main>
 <footer id="iletisim"></footer>
 <dialog class="application-dialog" id="application-dialog" aria-labelledby="application-dialog-title">
-  <form method="dialog" class="application-dialog__content">
-    <button class="dialog-close" value="close" aria-label="Pencereyi kapat">×</button>
+  <form id="candidate-form" class="application-dialog__content">
+    <button class="dialog-close" type="button" aria-label="Pencereyi kapat">×</button>
     <p class="application-kicker">NOVA · SINAV MERKEZİ</p>
-    <span class="dialog-step">BAŞVURU <i>01</i></span>
     <h2 id="application-dialog-title">Sınav Başvuru Formu</h2>
-    <p class="dialog-intro">Seçiminiz kaydedildi. Başvuru bilgilerini bir sonraki aşamada birlikte belirleyeceğiz.</p>
-    <div class="dialog-selection"><span>ŞEHİR<strong id="dialog-city">—</strong></span><span>SINAV<strong id="dialog-exam">—</strong></span></div>
-    <div class="form-placeholder"><span class="placeholder-icon" aria-hidden="true">✳</span><div><strong>Başvuru formu hazırlanıyor</strong><p>İstenen bilgileri netleştirdiğimizde form alanları burada açılacak.</p></div></div>
-    <button class="dialog-action" value="close">Tamam</button>
+    <p class="dialog-intro"><strong id="dialog-city">—</strong> başvuru merkezi</p>
+    <ol class="form-progress" aria-label="Başvuru adımları"><li>Sınav</li><li>Aday</li><li>Veli</li><li>Ödeme</li></ol>
+    <p id="form-message" class="form-message" role="alert" hidden></p>
+    <div id="form-fields">
+      <fieldset class="form-step" data-step="0">
+        <legend>Sınav ve branş seçimi</legend>
+        <div class="form-grid">
+          <label class="form-wide">Ana başlık<select name="group" required></select></label>
+          <label class="form-wide">Sınav / Alt branş<select name="branch" required></select></label>
+          <label class="form-wide">Başvuru türü<select name="feeType" required><option value="candidate">Adaylık başvurusu</option><option value="registration">Kesin kayıt</option></select></label>
+        </div>
+        <p class="field-help">Ücret bilgisi son adımda gösterilir. Ücreti tanımlanmayan başvurular henüz açık değildir.</p>
+      </fieldset>
+      <fieldset class="form-step" data-step="1" hidden>
+        <legend>Aday bilgileri</legend>
+        <div class="form-grid">
+          <label>Adı<input name="firstName" autocomplete="given-name" maxlength="80" required></label>
+          <label>Soyadı<input name="lastName" autocomplete="family-name" maxlength="80" required></label>
+          <label>Doğum tarihi<input name="dob" type="date" required></label>
+          <label>Cinsiyet <small>İsteğe bağlı</small><select name="gender"><option value="">Seçin</option><option>Kadın</option><option>Erkek</option><option>Belirtmek istemiyorum</option></select></label>
+          <label>T.C. kimlik numarası <small>Varsa</small><input name="tc" inputmode="numeric" pattern="[1-9][0-9]{10}" maxlength="11" minlength="11"></label>
+          <label>Pasaport / yabancı kimlik no. <small>Varsa</small><input name="passport" maxlength="40"></label>
+          <label>Uyruğu <small>İsteğe bağlı</small><input name="nationality" maxlength="60"></label>
+          <label>Aday telefonu <small>Varsa</small><input name="phone" type="tel" maxlength="30"></label>
+          <label class="form-wide">Aday e-posta adresi <small>Varsa</small><input name="email" type="email" maxlength="150"></label>
+          <label>İkamet ili<input name="province" autocomplete="address-level1" maxlength="80" required></label>
+          <label>İlçe<input name="district" autocomplete="address-level2" maxlength="80" required></label>
+          <label class="form-wide">Açık adres<textarea name="address" autocomplete="street-address" maxlength="500" rows="3" required></textarea></label>
+          <label>Okulu <small>Varsa</small><input name="school" maxlength="150"></label>
+          <label>Sınıfı <small>Varsa</small><input name="grade" maxlength="40"></label>
+        </div>
+      </fieldset>
+      <fieldset class="form-step" data-step="2" hidden>
+        <legend>Anne, baba ve veli bilgileri</legend>
+        <label>Bilgilerini gireceğiniz kişiler<select name="familyMode" required><option value="parents">Anne ve baba</option><option value="mother">Yalnız anne</option><option value="father">Yalnız baba</option><option value="guardian">Diğer veli / vasi</option></select></label>
+        <div id="family-fields"></div>
+        <label>İletişim kurulacak kişi<select name="primaryContact" required></select></label>
+      </fieldset>
+      <fieldset class="form-step" data-step="3" hidden>
+        <legend>Ücret ve ödeme bilgileri</legend>
+        <div class="fee-summary"><span id="fee-label">Adaylık ücreti</span><strong id="application-fee">—</strong><p id="fee-selection"></p></div>
+        <p id="payment-instructions" class="payment-instructions"></p>
+        <div class="payment-choice" role="group" aria-label="Ücret ödendi mi?">
+          <label><input type="radio" name="paid" value="no" required> Ücret ödenmedi</label>
+          <label><input type="radio" name="paid" value="yes" required> Ücret ödendi</label>
+        </div>
+        <div id="receipt-field" hidden><label>PDF dekont<input name="receipt" type="file" accept="application/pdf,.pdf"></label><p class="field-help">En fazla 5 MB. Ödeme beyanınız dekontla birlikte panelde kontrol edilir.</p></div>
+        <label class="confirmation"><input name="confirmation" type="checkbox" required><span>Başvuru bilgilerini kontrol ettim ve doğruluğunu onaylıyorum.</span></label>
+        <p class="field-help">Başvurunuz ve yüklediğiniz dekont yönetim panelinde görüntülenir.</p>
+      </fieldset>
+      <div class="form-actions"><button type="button" id="form-back" class="form-secondary">Geri</button><button type="button" id="form-next" class="form-primary">Devam et →</button><button type="submit" id="form-submit" class="form-primary" hidden>Başvuruyu gönder</button></div>
+    </div>
+    <div id="form-success" class="form-success" role="status" hidden><span aria-hidden="true">✓</span><h3>Başvurunuz alındı</h3><p>Başvuru numaranız</p><strong id="application-reference"></strong><button type="button" id="form-done" class="form-primary">Tamam</button></div>
   </form>
 </dialog>
 <script src="nova-header.js?v=20261017-1"></script>
-<script src="sinav-basvurusu.js?v=20261017-2"></script>
+<script src="sinav-basvurusu.js?v=20261017-3"></script>
+<script src="nova-application-form.js?v=20261017-1"></script>
 </body>
 </html>

@@ -5,6 +5,11 @@
   "assets": {
     "directory": "./",
     "binding": "ASSETS",
-    "run_worker_first": ["/api/*"]
-  }
+    "run_worker_first": ["/api/*", "/panel", "/panel/", "/panel.html"]
+  },
+  "durable_objects": {
+    "bindings": [{"name": "NOVA_APPLICATIONS", "class_name": "ApplicationStore"}]
+  },
+  "migrations": [{"tag": "nova-applications-v1", "new_sqlite_classes": ["ApplicationStore"]}]
 }
+

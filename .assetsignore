@@ -4,4 +4,14 @@
 /node_modules/
 /worker.js
 /wrangler.jsonc
+/application-api.js
+/PANEL-SETUP.md
+/.dev.vars
+/.dev.vars.*
+/.env
+/.env.*
+/.wrangler/
+/.gitignore
+/tests/
 /.vercel-deploy-trigger
+

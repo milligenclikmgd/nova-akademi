@@ -1,3 +1,5 @@
+export { ApplicationStore } from './application-api.js';
+import { reply } from './application-api.js';
 const systemPrompt =
   "Sen NOVA AI'sın. NOVA Sanat ve Spor Kulübü hakkında Türkçe, nazik, kısa ve doğru yanıtlar ver. Bilmediğin bilgiyi uydurma; iletişim sayfasına yönlendir.";
 
@@ -92,9 +94,23 @@ async function handleNovaAi(request, env) {
 export default {
   async fetch(request, env) {
     const pathname = new URL(request.url).pathname;
+    if (pathname === '/api/applications' || pathname.startsWith('/api/applications/') || pathname.startsWith('/api/panel/')) {
+      if (!env.NOVA_APPLICATIONS) return reply({error:'Başvuru veri deposu henüz etkinleştirilmedi.'},503);
+      return env.NOVA_APPLICATIONS.get(env.NOVA_APPLICATIONS.idFromName('nova-applications-v1')).fetch(request);
+    }
+    if (pathname === '/panel' || pathname === '/panel/' || pathname === '/panel.html') {
+      const target=new URL(request.url);target.pathname='/panel';
+      const response=await env.ASSETS.fetch(new Request(target,request));
+      const headers=new Headers(response.headers);
+      headers.set('Cache-Control','no-store');headers.set('X-Robots-Tag','noindex, nofollow');
+      headers.set('X-Frame-Options','DENY');headers.set('X-Content-Type-Options','nosniff');headers.set('Referrer-Policy','no-referrer');
+      headers.set('Content-Security-Policy',"default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'");
+      return new Response(response.body,{status:response.status,headers});
+    }
     if (pathname === "/api/nova-ai" || pathname === "/api/nova-ai/") {
       return handleNovaAi(request, env);
     }
     return env.ASSETS.fetch(request);
   },
 };
+
