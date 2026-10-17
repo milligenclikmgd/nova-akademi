@@ -7,7 +7,7 @@ Ana site `https://nova-akademi.vercel.app` üzerinde de yayınlandığından bu 
 ## İlk kurulum
 
 1. Mevcut Cloudflare Worker projesini bu deponun `wrangler.jsonc` dosyasıyla deploy edin. SQLite destekli `NOVA_APPLICATIONS` Durable Object bağlaması ve `nova-applications-v1` migration'ı deploy sırasında oluşturulur. Var olan Gemini değişkeni korunur.
-2. Cloudflare → Workers & Pages → `nova-akademi` → Settings → Variables and Secrets bölümünde `NOVA_PANEL_PASSWORD` adında **Secret** ekleyin. En az 16 karakterlik, benzersiz bir parola seçin. Parolayı GitHub'a, HTML'e veya normal bir ortam değişkenine yazmayın. CLI alternatifi: `npx wrangler secret put NOVA_PANEL_PASSWORD` (parola gizli istemde girilir).
+2. Cloudflare → Workers & Pages → `nova-akademi` → Settings → Variables and Secrets bölümünde `NOVA_PANEL_PASSWORD` adında **Secret** ekleyin. En az 8 karakterlik, benzersiz bir parola seçin. Parolayı GitHub'a, HTML'e veya normal bir ortam değişkenine yazmayın. CLI alternatifi: `npx wrangler secret put NOVA_PANEL_PASSWORD` (parola gizli istemde girilir).
 3. `/panel` adresinde bu parolayla giriş yapın. Sınavlar ve Ücretler bölümünden ana/alt başlıkları düzenleyin. Adaylık ve kesin kayıt ücretlerini ayrı ayrı tanımlayın; boş ücret o başvuru türünü kapatır, 0 ücretsizdir.
 4. Ödeme açıklaması ve banka bilgilerini girin. Başvuru alımını açıp ayarları kaydedin.
 5. Kendi deneme adayınızla bir başvuru yapıp panelde formu ve dekontu kontrol edin. Gerçek kişilerle ilgili verilerle test yapmayın.

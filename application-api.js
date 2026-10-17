@@ -1,4 +1,5 @@
 const MAX_PDF = 5 * 1024 * 1024;
+const MIN_PANEL_PASSWORD_LENGTH = 8;
 const COOKIE = '__Host-nova-panel';
 export const defaultSettings = () => ({
   revision: 1, accepting: false, paymentInstructions: '',
@@ -76,9 +77,9 @@ export class ApplicationStore {
   const url=new URL(request.url),path=url.pathname,method=request.method,now=Date.now();
   const origin=request.headers.get('Origin');
   if(!['GET','HEAD'].includes(method)&&origin!==url.origin&&!(path==='/api/applications'&&publicOriginAllowed(origin,url.origin,this.env)))fail('Bu kaynaktan işlem yapılamaz.',403);
-  if(path==='/api/applications/config'&&method==='GET')return reply({settings:this.getSettings(),ready:(this.env.NOVA_PANEL_PASSWORD||'').length>=16});
+  if(path==='/api/applications/config'&&method==='GET')return reply({settings:this.getSettings(),ready:(this.env.NOVA_PANEL_PASSWORD||'').length>=MIN_PANEL_PASSWORD_LENGTH});
   if(path==='/api/panel/login'&&method==='POST'){
-   if(!this.env.NOVA_PANEL_PASSWORD||this.env.NOVA_PANEL_PASSWORD.length<16)fail('Panel kurulumu tamamlanmadı. Cloudflare üzerinde NOVA_PANEL_PASSWORD gizli değişkenini en az 16 karakter olarak tanımlayın.',503);
+   if(!this.env.NOVA_PANEL_PASSWORD||this.env.NOVA_PANEL_PASSWORD.length<MIN_PANEL_PASSWORD_LENGTH)fail('Panel kurulumu tamamlanmadı. Cloudflare üzerinde NOVA_PANEL_PASSWORD gizli değişkenini en az 8 karakter olarak tanımlayın.',503);
    this.rate('login:'+(request.headers.get('CF-Connecting-IP')||'local'),5);
    const input=await readJson(request);
    if(typeof input?.password!=='string'||input.password.length>256||!await sameSecret(input.password,this.env.NOVA_PANEL_PASSWORD))fail('Parola hatalı.',401);
@@ -121,7 +122,7 @@ export class ApplicationStore {
    fail('İşlem bulunamadı.',404);
   }
   if(path==='/api/applications'&&method==='POST'){
-   if((this.env.NOVA_PANEL_PASSWORD||'').length<16)fail('Başvuru sistemi henüz açılmadı.',503);
+   if((this.env.NOVA_PANEL_PASSWORD||'').length<MIN_PANEL_PASSWORD_LENGTH)fail('Başvuru sistemi henüz açılmadı.',503);
    this.rate('apply:'+(request.headers.get('CF-Connecting-IP')||'local'),15);
    if(Number(request.headers.get('Content-Length'))>MAX_PDF+65536)fail('Dekont en fazla 5 MB olabilir.',413);
    const payload=await boundedBody(request,MAX_PDF+65536);
