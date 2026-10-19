@@ -48,8 +48,8 @@
     pointViewport.scrollLeft = 0;
     cardViewport.scrollLeft = 0;
     const point = points[active], card = cards[active];
-    pointTrack.style.transform = `translateX(${pointViewport.clientWidth / 2 - point.offsetLeft - point.offsetWidth / 2}px)`;
-    cardTrack.style.transform = `translateX(${cardViewport.clientWidth / 2 - card.offsetLeft - card.offsetWidth / 2}px)`;
+    pointTrack.style.transform = `translateX(${Math.round(pointViewport.clientWidth / 2 - point.offsetLeft - point.offsetWidth / 2)}px)`;
+    cardTrack.style.transform = `translateX(${Math.round(cardViewport.clientWidth / 2 - card.offsetLeft - card.offsetWidth / 2)}px)`;
     points.forEach((button, index) => {
       button.classList.toggle('is-active', index === active);
       if (index === active) button.setAttribute('aria-current', 'step');
