@@ -17,3 +17,31 @@
 
 /* Sanat alanları: diğer sayfalardan ayrışan geniş, asimetrik görsel kartlar */
 .numbers-page .arts-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:18px!important}.numbers-page .art-card{height:245px!important;border-radius:14px!important;box-shadow:0 15px 35px rgba(7,38,83,.12)!important}.numbers-page .art-card:nth-child(3){grid-column:span 2!important;height:290px!important}.numbers-page .art-card:nth-child(4),.numbers-page .art-card:nth-child(5){height:245px!important}.numbers-page .art-card__content{padding:26px!important}.numbers-page .art-card:hover img{transform:scale(1.06)}@media(max-width:650px){.numbers-page .arts-grid{grid-template-columns:1fr!important}.numbers-page .art-card:nth-child(3){grid-column:auto!important;height:245px!important}}
+
+
+/* 2026–2027 hedefleri: UPSD esintili, kare mozaik sayaçlar. */
+.square-goals-section{padding:62px 0 66px;background:#f4f8fc}
+.square-goals-intro{max-width:760px;margin:0 auto 34px;text-align:center}
+.square-goals-intro h2{margin:0 0 12px;color:var(--navy);font-size:clamp(27px,3.4vw,42px);letter-spacing:-.055em;line-height:1.12}
+.square-goals-intro>p:last-child{max-width:680px;margin:0 auto;color:var(--muted);font-size:14px;line-height:1.75}
+.square-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.square-stat{aspect-ratio:1/1;min-width:0;padding:clamp(16px,2vw,27px);display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden;color:#fff;background:#0a66c2;opacity:0;transform:translateY(22px);transition:opacity .6s ease,transform .7s cubic-bezier(.16,1,.3,1)}
+.square-goals-section.is-visible .square-stat{opacity:1;transform:none}
+.square-goals-section.is-visible .square-stat:nth-child(1){transition-delay:.06s}
+.square-goals-section.is-visible .square-stat:nth-child(2){transition-delay:.13s}
+.square-goals-section.is-visible .square-stat:nth-child(3){transition-delay:.20s}
+.square-goals-section.is-visible .square-stat:nth-child(4){transition-delay:.27s}
+.square-stat:after{content:"";position:absolute;width:150px;height:150px;right:-62px;top:-70px;border:1px solid #ffffff35;border-radius:50%;pointer-events:none}
+.square-stat--girls{background:#4f80ad}
+.square-stat--boys{background:#367aaf}
+.square-stat--arts{background:#071e3b}
+.square-stat__label{position:relative;z-index:1;max-width:190px;font-size:10px;line-height:1.4;font-weight:800;letter-spacing:.09em}
+.square-stat__number{position:relative;z-index:1;margin:auto 0 8px;font-size:clamp(43px,5.2vw,72px);line-height:.95;font-weight:800;letter-spacing:-.075em}
+.square-stat__caption{position:relative;z-index:1;max-width:230px;color:#d6e9fb;font-size:12px;line-height:1.45}
+@media(max-width:850px){.square-goals-section{padding:52px 0}.square-stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.square-stat{padding:20px}.square-stat__number{font-size:clamp(42px,8vw,60px)}}
+@media(max-width:480px){.square-goals-intro{margin-bottom:26px}.square-goals-intro>p:last-child{font-size:12px}.square-stats{gap:7px}.square-stat{padding:14px;min-height:0}.square-stat__label{font-size:9px}.square-stat__number{font-size:clamp(38px,11vw,48px);margin-bottom:5px}.square-stat__caption{font-size:10px;line-height:1.35}.square-stat--arts .square-stat__caption{font-size:9px}}
+/* Sanat kartlarında kadrajı yüzlere doğru yükselt, açılan açıklamayı rahat okut. */
+.numbers-page .art-card img{object-position:center 24%}
+.numbers-page .art-card[aria-expanded="true"] small{font-size:14px;line-height:1.55;max-width:calc(100% - 34px);bottom:16px}
+@media(max-width:650px){.numbers-page .art-card[aria-expanded="true"] small{font-size:13px;line-height:1.45;bottom:13px}}
+@media(prefers-reduced-motion:reduce){.square-stat{transition:none}}
