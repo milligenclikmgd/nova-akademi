@@ -72,3 +72,5 @@
 @media(min-width:1121px){
   .assessment-follow__visual{height:auto!important;min-height:0!important;align-self:stretch!important}
 }
+
+.assessment-follow .assessment-follow__grid p.assessment-kicker{font-size:14px!important}
