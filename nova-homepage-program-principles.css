@@ -2,15 +2,15 @@
 .pg-principles--home{
   display:grid;
   grid-template-columns:repeat(4,minmax(0,1fr));
-  width:min(1160px,calc(100% - 48px));
-  margin:18px auto 26px;
-  padding:37px 0 36px;
+  width:min(1240px,calc(100% - 48px));
+  margin:0 auto 26px;
+  padding:22px 0 36px;
   background:#fff;
 }
 .pg-principles--home .pg-principle{
   min-height:128px;
   text-align:center;
-  padding:0 18px;
+  padding:0 28px;
   border-right:1px solid #e4ebf2;
   transition:transform .32s cubic-bezier(.2,.8,.2,1);
 }
