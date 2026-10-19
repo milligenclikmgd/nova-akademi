@@ -30,3 +30,19 @@
 @media(max-width:900px){.data-card-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.data-card{min-height:410px}}
 @media(max-width:600px){.data-card-grid{grid-template-columns:1fr;gap:14px}.data-card{min-height:0;padding:20px 18px 16px;border-radius:20px}.data-card__top{margin-bottom:16px}.data-card h3{font-size:18px}.data-card p{font-size:15px;line-height:1.7}.data-card__image{height:auto;min-height:0;max-height:none;aspect-ratio:1.65/1;flex-basis:auto;margin-top:18px}.data-card::after{right:30px;bottom:28px;width:38px;height:38px}}
 @media(prefers-reduced-motion:reduce){.data-card__image,.data-card::after{transition:none}.data-card:hover .data-card__image{transform:none}}
+
+/* Üç sütunlu bölümlerde sol başlık çizgisi ve büyük harf düzeni */
+.data-trio__label:before{content:"";display:block;width:42px;height:3px;margin:0 0 18px;background:#159be1}
+.data-trio__label .data-eyebrow{display:none}
+.data-trio__title,.data-process .data-trio__label h2,.data-closing .data-trio__label h2{text-transform:uppercase}
+.data-trio__title{display:block;margin:0;color:#123d72;font-size:clamp(25px,2.5vw,36px);line-height:1.16;letter-spacing:-.05em;font-weight:800}
+.data-global .data-trio__title{color:#fff}
+.data-process .data-trio__label h2{margin:0}
+.data-closing .data-trio__label h2{margin:0;font-size:clamp(20px,1.8vw,27px);line-height:1.2}
+.data-trio__title-nowrap{white-space:nowrap}
+.data-global .data-trio__label:before{background:#55c2ee}
+@media(max-width:600px){
+ .data-trio__label:before{margin-bottom:15px}
+ .data-trio__title{font-size:28px}
+ .data-closing .data-trio__label h2{font-size:24px}
+}
