@@ -18,7 +18,7 @@
       if (video.paused) start();
     });
     video.addEventListener('volumechange', syncSound);
-    video.addEventListener('playing', () => {status.textContent = 'NOVA’yı keşfedin';});
+    video.addEventListener('playing', () => {status.textContent = '';});
     video.addEventListener('error', () => {status.textContent = 'Video oynatılamadı. Lütfen daha sonra tekrar deneyin.';});
     const base = location.hostname === 'nova-akademi.vercel.app' ? 'https://nova-akademi.milligenclikmgd.workers.dev' : '';
     fetch(base + '/api/site-media/activity-video', {cache:'no-store',signal:AbortSignal.timeout(8000)})

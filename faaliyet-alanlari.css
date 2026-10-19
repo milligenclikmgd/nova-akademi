@@ -23,3 +23,18 @@
 
 /* İş birliği görselinin bayrakları ve protokolü tam kadrajda kalır. */
 .activity-row>img.activity-partnership-image{height:auto;aspect-ratio:1122/1402;object-fit:contain}
+
+/* Diğer kurumsal sayfalarla aynı ölçekte, metin ve video yan yana. */
+.activity-band{min-height:320px;padding:36px 0}
+.activity-hero-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,480px);align-items:center;gap:64px}
+.activity-hero-copy{max-width:560px}
+.activity-band h1{font-size:clamp(32px,3.6vw,50px)}
+.activity-band .activity-intro{max-width:460px}
+.activity-hero-media{position:relative;width:100%;margin:0;border-radius:12px}
+.activity-hero-media video{aspect-ratio:16/9;max-height:270px}
+.activity-video-tools{position:absolute;inset:12px 12px auto;justify-content:flex-end;padding:0;pointer-events:none}
+.activity-video-tools button{min-height:34px;padding:6px 14px;background:#082f5cdd;font-size:11px;pointer-events:auto}
+#activity-video-status:empty{display:none}
+#activity-video-status:not(:empty){padding:8px 10px;border-radius:6px;background:#082f5cee;color:#fff}
+@media(max-width:800px){.activity-hero-layout{grid-template-columns:minmax(0,1fr) minmax(0,360px);gap:28px}.activity-band{min-height:280px;padding:30px 0}.activity-band .activity-intro{font-size:13px}}
+@media(max-width:620px){.activity-hero-layout{grid-template-columns:1fr;gap:22px}.activity-band{min-height:0;padding:28px 0}.activity-hero-media{max-width:360px}.activity-band h1{font-size:32px}.activity-band .activity-intro{margin-top:12px}.activity-video-tools{inset:10px 10px auto}}
