@@ -46,3 +46,17 @@
  .data-trio__title{font-size:28px}
  .data-closing .data-trio__label h2{font-size:24px}
 }
+
+/* Üç sütunlu alanların sol başlıklarında ortak punto */
+.data-trio__title,
+.data-process .data-trio__label h2,
+.data-closing .data-trio__label h2{
+  font-size:clamp(24px,2.2vw,30px)!important;
+  line-height:1.16;
+  font-weight:800;
+}
+@media(max-width:600px){
+  .data-trio__title,
+  .data-process .data-trio__label h2,
+  .data-closing .data-trio__label h2{font-size:24px!important}
+}
