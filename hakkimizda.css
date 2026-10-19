@@ -110,3 +110,13 @@
   .about-page .visual-global{min-height:auto!important}
 }
 
+
+/* Sabit başlık satırları ve üstten hizalanmış, daha kısa kapak. */
+.about-page .about-hero{min-height:355px;padding-bottom:28px;background-position:center top}
+.about-page .about-hero h1{font-size:clamp(42px,4.45vw,64px)}
+.about-page .about-title-line{display:block;white-space:nowrap}
+.about-page .history-title-line{display:block;white-space:nowrap}
+@media(max-width:620px){
+  .about-page .about-hero{min-height:300px;padding-bottom:20px;background-position:66% top}
+  .about-page .about-hero h1{font-size:clamp(28px,8vw,38px)}
+}
