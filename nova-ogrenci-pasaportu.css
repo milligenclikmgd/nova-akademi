@@ -5,3 +5,13 @@
 
 /* Öğrenci Pasaportu — Hakkımızda ile aynı üç sütunlu anlatım */
 .passport-opening{padding-bottom:28px!important}.passport-opening h1{font-size:clamp(28px,3.8vw,46px)!important}.passport-about{padding:26px 0 82px;background:#fff}.passport-about__row{width:min(1160px,calc(100% - 48px));margin:0 auto;padding:58px 0;display:grid;grid-template-columns:1.02fr 1.28fr .9fr;gap:52px;border-top:1px solid #dce6ee;align-items:start}.passport-about__row:first-child{border-top:0}.passport-about h2{margin:0;color:#082f5c;font-size:clamp(25px,2.45vw,38px);line-height:1.12;letter-spacing:-.04em}.passport-about p{margin:0 0 17px;color:#3c5971;font-size:14px;line-height:1.84}.passport-about strong{display:block;color:#082f5c;font-size:14px;margin-bottom:3px}.passport-about img{width:100%;height:255px;display:block;object-fit:cover;border-radius:3px;box-shadow:0 18px 36px rgba(9,45,88,.12)}.passport-route-copy{margin-top:26px!important;padding:16px 0 0;border-top:2px solid #0c82c8}.passport-route-copy strong{color:#1478bd!important;line-height:1.65}.passport-why,.passport-route,.passport-section{display:none!important}@media(max-width:800px){.passport-about__row{grid-template-columns:1fr;gap:20px;padding:38px 0}.passport-about img{height:230px;order:3}}
+
+/* Üç sütunlu pasaport bölümlerinde bölüm başlıkları ve kapsam listesi */
+.passport-page .passport-about h2{text-transform:uppercase;letter-spacing:-.025em}
+.passport-page .passport-about h2::before{content:"";display:block;width:44px;height:3px;margin:0 0 16px;background:#1098dc}
+.passport-page .passport-opening:after{background-image:url('assets/nova-passport-01-digital-record.webp');background-position:center 45%}
+.passport-page .passport-about img{object-position:center 42%}
+.passport-page .passport-about__content{position:relative;padding-left:20px}
+.passport-page .passport-about__content::before{content:"";position:absolute;left:2px;top:4px;bottom:18px;width:1px;background:#bfd3e1}
+.passport-page .passport-about__content p{position:relative}
+.passport-page .passport-about__content p::before{content:"";position:absolute;left:-20px;top:.68em;width:6px;height:6px;border-radius:50%;background:#1486c3;box-shadow:0 0 0 3px #fff}

@@ -106,3 +106,8 @@
   .orbit-card__icon{top:43.7px;left:9.2px;width:29.9px;height:29.9px;border-radius:10.35px}
   .orbit-card__icon svg{width:19px;height:19px}
 }
+
+/* Üç sütunlu eğitim modeli bölümlerinin ortak başlık dili */
+.education-row h2{display:block;text-transform:uppercase;letter-spacing:-.025em}
+.education-row h2::before{content:"";display:block;width:44px;height:3px;margin:0 0 16px;background:#1098dc}
+.education-row img{object-position:center center}

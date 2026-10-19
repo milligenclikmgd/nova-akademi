@@ -4,3 +4,8 @@ body:has(.partners-marquee) .hero{margin-bottom:0!important}
 body:has(.partners-marquee) .partners-marquee{height:112px!important;min-height:112px!important;margin:0!important;padding:0!important}
 body:has(.partners-marquee) .partners-marquee-inner{height:112px!important;min-height:112px!important;margin-top:0!important;margin-bottom:0!important;padding-top:0!important;padding-bottom:0!important}
 @media(max-width:640px){body:has(.partners-marquee) .partners-marquee,body:has(.partners-marquee) .partners-marquee-inner{height:86px!important;min-height:86px!important}}
+
+/* UNICEF ve UNESCO logoları kırpılmış şeffaf dosyalarla daha görünür */
+.partner-card-logo img[src*="unesco-clear"],.partner-card-logo img[src*="unicef-clear"]{max-height:98px;max-width:100%}
+.partner-marquee-item img[src*="unesco-clear"],.partner-marquee-item img[src*="unicef-clear"]{max-height:66px}
+@media(max-width:640px){.partner-card-logo img[src*="unesco-clear"],.partner-card-logo img[src*="unicef-clear"]{max-height:80px}.partner-marquee-item img[src*="unesco-clear"],.partner-marquee-item img[src*="unicef-clear"]{max-height:44px}}
