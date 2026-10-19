@@ -135,3 +135,13 @@
 .bio-panel .bio-cv p{font-size:23px;line-height:1.85}
 @media(max-width:900px){.bio-panel{width:70vw;padding:72px 42px 52px}.bio-panel .bio-name{font-size:48px}.bio-panel .bio-role{font-size:21px}.bio-panel .bio-cv p{font-size:20px}}
 @media(max-width:600px){.bio-panel{width:100vw;padding:70px 28px 40px;border-radius:18px 0 0 18px}.bio-panel .bio-name{font-size:38px}.bio-panel .bio-role{font-size:19px;line-height:1.45;margin-bottom:28px}.bio-panel .bio-cv h3{font-size:15px}.bio-panel .bio-cv p{font-size:18px;line-height:1.75}}
+
+
+/* CV başlık ve metinlerini site header'ının altına alıp bir kademe küçült. */
+.bio-panel{padding-top:142px}
+.bio-panel .bio-name{font-size:clamp(38px,3.5vw,48px)}
+.bio-panel .bio-role{font-size:clamp(19px,1.55vw,22px)}
+.bio-panel .bio-cv h3{font-size:15px}
+.bio-panel .bio-cv p{font-size:20px;line-height:1.78}
+@media(max-width:900px){.bio-panel{padding-top:122px}.bio-panel .bio-name{font-size:44px}.bio-panel .bio-role{font-size:20px}.bio-panel .bio-cv p{font-size:19px}}
+@media(max-width:600px){.bio-panel{padding-top:100px}.bio-panel .bio-name{font-size:35px}.bio-panel .bio-role{font-size:18px;margin-bottom:24px}.bio-panel .bio-cv p{font-size:17px;line-height:1.7}}
