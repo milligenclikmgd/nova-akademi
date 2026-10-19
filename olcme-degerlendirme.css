@@ -68,7 +68,7 @@
 
 /* Assessment follow-up sizing and full-height image alignment */
 .assessment-follow h2{font-size:clamp(31px,3.5vw,48px)!important}
-.assessment-follow .assessment-kicker{font-size:9px!important}
+.assessment-follow p.assessment-kicker{font-size:14px!important}
 @media(min-width:1121px){
   .assessment-follow__visual{height:auto!important;min-height:0!important;align-self:stretch!important}
 }
