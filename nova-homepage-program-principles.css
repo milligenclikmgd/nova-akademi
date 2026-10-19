@@ -1,0 +1,77 @@
+/* Program Geliştirme ilkeleri, ana sayfa slider modülü */
+.pg-principles--home{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  width:min(1160px,calc(100% - 48px));
+  margin:18px auto 26px;
+  padding:37px 0 36px;
+  background:#fff;
+}
+.pg-principles--home .pg-principle{
+  min-height:128px;
+  text-align:center;
+  padding:0 18px;
+  border-right:1px solid #e4ebf2;
+  transition:transform .32s cubic-bezier(.2,.8,.2,1);
+}
+.pg-principles--home .pg-principle:last-child{border-right:0}
+.pg-principles--home .pg-principle__icon{
+  display:grid;
+  place-items:center;
+  margin:0 auto 11px;
+  width:62px;
+  height:62px;
+  border-radius:50%;
+  background:#edf6fd;
+  color:#0759ae;
+  transition:transform .32s cubic-bezier(.2,.8,.2,1),background .32s,box-shadow .32s;
+}
+.pg-principles--home .pg-principle__icon svg{
+  width:31px;
+  height:31px;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:2.1;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+.pg-principles--home .pg-principle h3{
+  margin:0 0 7px;
+  color:#102f5f;
+  font-size:14px;
+  letter-spacing:-.025em;
+}
+.pg-principles--home .pg-principle p{
+  margin:0;
+  color:#617083;
+  font-size:11px;
+  line-height:1.55;
+}
+@media(hover:hover){
+  .pg-principles--home .pg-principle:hover{transform:translateY(-5px)}
+  .pg-principles--home .pg-principle:hover .pg-principle__icon{
+    transform:scale(1.08);
+    background:#dcefff;
+    box-shadow:0 10px 22px rgba(11,93,169,.16);
+  }
+}
+@media(max-width:720px){
+  .pg-principles--home{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    padding:30px 0;
+  }
+  .pg-principles--home .pg-principle{
+    min-height:121px;
+    padding:0 8px 18px;
+  }
+  .pg-principles--home .pg-principle:nth-child(2n){border-right:0}
+  .pg-principles--home .pg-principle:nth-child(-n+2){border-bottom:1px solid #e4ebf2}
+  .pg-principles--home .pg-principle:nth-child(n+3){padding-top:20px;padding-bottom:0}
+  .pg-principles--home .pg-principle__icon{width:54px;height:54px}
+  .pg-principles--home .pg-principle h3{font-size:12px}
+  .pg-principles--home .pg-principle p{font-size:10px}
+}
+@media(prefers-reduced-motion:reduce){
+  .pg-principles--home .pg-principle,
+  .pg-principles--home .pg-principle__icon{transition:none!important}
+}
