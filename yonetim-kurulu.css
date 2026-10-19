@@ -55,3 +55,20 @@
  .bio-panel .bio-cv p{font-size:16px;line-height:1.75}
 }
 @media(max-width:360px){.board h2{font-size:12px}}
+
+/* Buz mavisi fonda orijinal portrelerden oluşan ince, yatay kurul fotoğrafı */
+.board-hero{height:clamp(330px,23vw,420px);min-height:0;background:#eff7fb;color:#08265a}
+.board-hero__image{object-fit:contain;object-position:center bottom}
+.board-hero:before{background:linear-gradient(90deg,#eff7fb 0%,rgba(239,247,251,.98) 31%,rgba(239,247,251,.86) 37%,rgba(239,247,251,.16) 44%,transparent 49%)}
+.board-hero h1{max-width:34%}
+@media(max-width:900px){
+ .board-hero{height:clamp(300px,26vw,360px)}
+ .board-hero h1{max-width:36%}
+}
+@media(max-width:600px){
+ .board-hero{height:270px}
+ .board-hero__image{object-fit:contain;object-position:center bottom}
+ .board-hero:before{background:linear-gradient(90deg,rgba(239,247,251,.99) 0%,rgba(239,247,251,.93) 35%,rgba(239,247,251,.56) 42%,transparent 50%)}
+ .board-hero h1{max-width:40%;font-size:clamp(30px,8.3vw,36px)}
+ .board-hero span{max-width:40%;font-size:10px;line-height:1.45}
+}
