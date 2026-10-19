@@ -1,5 +1,6 @@
+import { MAX_VIDEO_BYTES } from './site-media.js';
 export { ApplicationStore } from './application-api.js';
-import { reply, publicOriginAllowed } from './application-api.js';
+import { reply, publicOriginAllowed, boundedBody } from './application-api.js';
 const systemPrompt =
   "Sen NOVA AI'sın. NOVA Sanat ve Spor Kulübü hakkında Türkçe, nazik, kısa ve doğru yanıtlar ver. Bilmediğin bilgiyi uydurma; iletişim sayfasına yönlendir.";
 
@@ -98,6 +99,15 @@ export default {
       const origin=request.headers.get('Origin'),isPublic=pathname==='/api/applications'||pathname==='/api/applications/config'||pathname.startsWith('/api/site-media/');
       const cors=isPublic&&origin&&publicOriginAllowed(origin,new URL(request.url).origin,env)?{'Access-Control-Allow-Origin':origin,'Access-Control-Allow-Methods':'GET, HEAD, POST, OPTIONS','Access-Control-Allow-Headers':'Content-Type, Range, If-Range','Access-Control-Expose-Headers':'Content-Range, Accept-Ranges, Content-Length, ETag','Vary':'Origin'}:{};
       if(request.method==='OPTIONS')return new Response(null,{status:cors['Access-Control-Allow-Origin']?204:403,headers:cors});
+      // Buffer bounded video uploads before crossing the Durable Object bridge.
+      // A rejected upload must not leave the forwarded request stream running.
+      if(pathname==='/api/panel/activity-video'&&request.method==='PUT'){
+        try{
+          if(origin!==new URL(request.url).origin){if(request.body)await request.body.cancel();return reply({error:'Bu kaynaktan işlem yapılamaz.'},403)}
+          const payload=await boundedBody(request,MAX_VIDEO_BYTES);
+          request=new Request(request,{body:payload});
+        }catch(error){try{if(request.body&&!request.body.locked)await request.body.cancel()}catch{}return reply({error:error.status?error.message:'Video yüklenemedi.'},error.status||500)}
+      }
       const response=!env.NOVA_APPLICATIONS?reply({error:'Başvuru veri deposu henüz etkinleştirilmedi.'},503):await env.NOVA_APPLICATIONS.get(env.NOVA_APPLICATIONS.idFromName('nova-applications-v1')).fetch(request);
       const headers=new Headers(response.headers);for(const [key,value] of Object.entries(cors))headers.set(key,value);
       return new Response(response.body,{status:response.status,headers});

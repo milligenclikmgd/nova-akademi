@@ -1,4 +1,4 @@
-import {initializeSiteMedia, videoSettings, saveActivityVideo, removeActivityVideo, serveActivityVideo} from './site-media.js';
+import {MAX_VIDEO_BYTES, initializeSiteMedia, videoSettings, saveActivityVideo, removeActivityVideo, serveActivityVideo} from './site-media.js';
 const MAX_PDF = 5 * 1024 * 1024;
 const MIN_PANEL_PASSWORD_LENGTH = 8;
 const COOKIE = '__Host-nova-panel';
@@ -53,7 +53,7 @@ export function validateApplication(input,settings){
 }
 async function digest(value){return [...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(value)))].map(x=>x.toString(16).padStart(2,'0')).join('')}
 async function sameSecret(a,b){const aa=await digest(a),bb=await digest(b);let delta=0;for(let i=0;i<aa.length;i++)delta|=aa.charCodeAt(i)^bb.charCodeAt(i);return delta===0}
-async function boundedBody(request,max){if(Number(request.headers.get('Content-Length'))>max)fail('İstek çok büyük.',413);const reader=request.body?.getReader(),chunks=[];let size=0;if(!reader)return new Uint8Array();while(true){const {done,value}=await reader.read();if(done)break;size+=value.byteLength;if(size>max){await reader.cancel();fail('İstek çok büyük.',413)}chunks.push(value)}const result=new Uint8Array(size);let offset=0;for(const chunk of chunks){result.set(chunk,offset);offset+=chunk.byteLength}return result}
+export async function boundedBody(request,max){if(Number(request.headers.get('Content-Length'))>max)fail('İstek çok büyük.',413);const reader=request.body?.getReader(),chunks=[];let size=0;if(!reader)return new Uint8Array();while(true){const {done,value}=await reader.read();if(done)break;size+=value.byteLength;if(size>max){await reader.cancel();fail('İstek çok büyük.',413)}chunks.push(value)}const result=new Uint8Array(size);let offset=0;for(const chunk of chunks){result.set(chunk,offset);offset+=chunk.byteLength}return result}
 async function readJson(request){const raw=new TextDecoder().decode(await boundedBody(request,32768));try{return JSON.parse(raw)}catch{fail('Geçerli bir form gerekli.')}}
 function cookieToken(request){return (request.headers.get('Cookie')||'').split(';').map(item=>item.trim()).find(item=>item.startsWith(COOKIE+'='))?.slice(COOKIE.length+1)||''}
 export class ApplicationStore {
@@ -72,7 +72,7 @@ export class ApplicationStore {
  async authorized(request){const token=cookieToken(request);if(!token)return false;const hash=await this.sessionKey(token);const now=Date.now();this.sql.exec('DELETE FROM sessions WHERE expires < ?',now);return this.sql.exec('SELECT token FROM sessions WHERE token=? AND expires>?',hash,now).toArray().length>0}
  async fetch(request){try{
   /* DO aktarımındaki gövdeyi yanıt vermeden önce sınırlandırarak tüket. */
-  if(request.body&&new URL(request.url).pathname!=='/api/panel/activity-video'){const max=new URL(request.url).pathname==='/api/applications'?MAX_PDF+65536:32768;const payload=await boundedBody(request,max);request=new Request(request,{body:payload})}
+  if(request.body){const path=new URL(request.url).pathname;const max=path==='/api/applications'?MAX_PDF+65536:path==='/api/panel/activity-video'?MAX_VIDEO_BYTES:32768;const payload=await boundedBody(request,max);request=new Request(request,{body:payload})}
   return await this.handle(request);
  }catch(error){try{if(request.body&&!request.body.locked)await request.body.cancel()}catch{}return reply({error:error.status?error.message:'İşlem tamamlanamadı. Lütfen tekrar deneyin.'},error.status||500)}}
  async handle(request){
