@@ -4,7 +4,7 @@
   grid-template-columns:repeat(4,minmax(0,1fr));
   width:min(1240px,calc(100% - 48px));
   margin:0 auto 26px;
-  padding:22px 0 36px;
+  padding:22px 0 36px!important;
   background:#fff;
 }
 .pg-principles--home .pg-principle{
