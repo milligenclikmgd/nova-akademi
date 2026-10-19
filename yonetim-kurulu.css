@@ -113,3 +113,9 @@
  .bio-panel{transform:translate(-50%,-46%) scale(.96)}
  .bio-panel.show{transform:translate(-50%,-50%) scale(1)}
 }
+
+
+/* Daha kompakt hero; ekip küçültülüp NOVA yıldızı daha net görünür. */
+.board-hero{height:clamp(320px,27vw,390px);min-height:0}
+@media(max-width:900px){.board-hero{height:clamp(290px,32vw,340px)}}
+@media(max-width:600px){.board-hero{height:260px}}
