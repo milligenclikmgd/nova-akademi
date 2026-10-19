@@ -20,3 +20,6 @@
 @media(max-width:1000px) and (min-width:801px){.activity-row{grid-template-columns:190px minmax(0,1fr) 220px;gap:28px}}
 @media(max-width:800px){.activity-row{grid-template-columns:1fr;gap:22px}.activity-row>h2{font-size:23px;max-width:550px}.activity-row>img{height:320px;max-width:600px}.activity-hero-media video{aspect-ratio:16/9}}
 @media(max-width:560px){.activity-band{padding:30px 0 22px}.activity-band .activity-intro{font-size:13px}.activity-hero-media{margin-top:20px;border-radius:10px}.activity-video-tools{padding:10px 12px}.activity-row>h2{font-size:21px}.activity-row>img{height:270px}}
+
+/* İş birliği görselinin bayrakları ve protokolü tam kadrajda kalır. */
+.activity-row>img.activity-partnership-image{height:auto;aspect-ratio:1122/1402;object-fit:contain}
