@@ -105,3 +105,11 @@
  .bio-panel .bio-cv h3{font-size:14px}
  .bio-panel .bio-cv p{font-size:18px;line-height:1.75}
 }
+
+/* Ortalanmış CV penceresi kapalıyken görünmez kalır. */
+.bio-panel{opacity:0;visibility:hidden;pointer-events:none;transform:translate(-50%,-46%) scale(.96);transition:transform .42s cubic-bezier(.16,1,.3,1),opacity .25s ease,visibility .25s}
+.bio-panel.show{opacity:1;visibility:visible;pointer-events:auto;transform:translate(-50%,-50%) scale(1)}
+@media(max-width:600px){
+ .bio-panel{transform:translate(-50%,-46%) scale(.96)}
+ .bio-panel.show{transform:translate(-50%,-50%) scale(1)}
+}
