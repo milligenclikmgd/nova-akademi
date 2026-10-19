@@ -45,3 +45,17 @@
 .numbers-page .art-card[aria-expanded="true"] small{font-size:14px;line-height:1.55;max-width:calc(100% - 34px);bottom:16px}
 @media(max-width:650px){.numbers-page .art-card[aria-expanded="true"] small{font-size:13px;line-height:1.45;bottom:13px}}
 @media(prefers-reduced-motion:reduce){.square-stat{transition:none}}
+
+
+/* Sanat kartları: kaynakların portre oranına göre kadraj ve yüz odağı. */
+.numbers-page .arts-grid{grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:12px!important}
+.numbers-page .art-card,.numbers-page .art-card:nth-child(3),.numbers-page .art-card:nth-child(4),.numbers-page .art-card:nth-child(5){grid-column:auto!important;width:100%;height:auto!important;aspect-ratio:3/4!important}
+.numbers-page .art-card{padding:15px!important}
+.numbers-page .art-card img{object-fit:cover;object-position:center 35%}
+.numbers-page .art-card--1 img{object-position:center 25%}
+.numbers-page .art-card--2 img{object-position:center 42%}
+.numbers-page .art-card--3 img{object-position:center 31%}
+.numbers-page .art-card--4 img{object-position:center 43%}
+.numbers-page .art-card--5 img{object-position:center 50%}
+@media(max-width:900px){.numbers-page .arts-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}.numbers-page .art-card,.numbers-page .art-card:nth-child(3),.numbers-page .art-card:nth-child(4),.numbers-page .art-card:nth-child(5){height:auto!important;aspect-ratio:3/4!important}}
+@media(max-width:480px){.numbers-page .arts-grid{grid-template-columns:1fr!important}.numbers-page .art-card,.numbers-page .art-card:nth-child(3),.numbers-page .art-card:nth-child(4),.numbers-page .art-card:nth-child(5){height:auto!important;aspect-ratio:3/4!important}}
