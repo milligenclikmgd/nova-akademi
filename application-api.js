@@ -1,3 +1,4 @@
+import {initializeSiteMedia, videoSettings, saveActivityVideo, removeActivityVideo, serveActivityVideo} from './site-media.js';
 const MAX_PDF = 5 * 1024 * 1024;
 const MIN_PANEL_PASSWORD_LENGTH = 8;
 const COOKIE = '__Host-nova-panel';
@@ -57,6 +58,7 @@ async function readJson(request){const raw=new TextDecoder().decode(await bounde
 function cookieToken(request){return (request.headers.get('Cookie')||'').split(';').map(item=>item.trim()).find(item=>item.startsWith(COOKIE+'='))?.slice(COOKIE.length+1)||''}
 export class ApplicationStore {
  constructor(ctx,env){this.ctx=ctx;this.env=env;this.sql=ctx.storage.sql;
+  initializeSiteMedia(this.sql);
   this.sql.exec('CREATE TABLE IF NOT EXISTS settings (id INTEGER PRIMARY KEY, data TEXT NOT NULL)');
   this.sql.exec('CREATE TABLE IF NOT EXISTS sessions (token TEXT PRIMARY KEY, expires INTEGER NOT NULL)');
   this.sql.exec('CREATE TABLE IF NOT EXISTS limits (key TEXT PRIMARY KEY, count INTEGER NOT NULL, expires INTEGER NOT NULL)');
@@ -70,13 +72,15 @@ export class ApplicationStore {
  async authorized(request){const token=cookieToken(request);if(!token)return false;const hash=await this.sessionKey(token);const now=Date.now();this.sql.exec('DELETE FROM sessions WHERE expires < ?',now);return this.sql.exec('SELECT token FROM sessions WHERE token=? AND expires>?',hash,now).toArray().length>0}
  async fetch(request){try{
   /* DO aktarımındaki gövdeyi yanıt vermeden önce sınırlandırarak tüket. */
-  if(request.body){const max=new URL(request.url).pathname==='/api/applications'?MAX_PDF+65536:32768;const payload=await boundedBody(request,max);request=new Request(request,{body:payload})}
+  if(request.body&&new URL(request.url).pathname!=='/api/panel/activity-video'){const max=new URL(request.url).pathname==='/api/applications'?MAX_PDF+65536:32768;const payload=await boundedBody(request,max);request=new Request(request,{body:payload})}
   return await this.handle(request);
  }catch(error){try{if(request.body&&!request.body.locked)await request.body.cancel()}catch{}return reply({error:error.status?error.message:'İşlem tamamlanamadı. Lütfen tekrar deneyin.'},error.status||500)}}
  async handle(request){
   const url=new URL(request.url),path=url.pathname,method=request.method,now=Date.now();
   const origin=request.headers.get('Origin');
   if(!['GET','HEAD'].includes(method)&&origin!==url.origin&&!(path==='/api/applications'&&publicOriginAllowed(origin,url.origin,this.env)))fail('Bu kaynaktan işlem yapılamaz.',403);
+  if(path==='/api/site-media/activity-video'&&method==='GET')return reply(videoSettings(this.sql));
+  if(path==='/api/site-media/activity-video/file'&&['GET','HEAD'].includes(method))return serveActivityVideo(request,this.sql);
   if(path==='/api/applications/config'&&method==='GET')return reply({settings:this.getSettings(),ready:(this.env.NOVA_PANEL_PASSWORD||'').length>=MIN_PANEL_PASSWORD_LENGTH});
   if(path==='/api/panel/login'&&method==='POST'){
    if(!this.env.NOVA_PANEL_PASSWORD||this.env.NOVA_PANEL_PASSWORD.length<MIN_PANEL_PASSWORD_LENGTH)fail('Panel kurulumu tamamlanmadı. Cloudflare üzerinde NOVA_PANEL_PASSWORD gizli değişkenini en az 8 karakter olarak tanımlayın.',503);
@@ -88,6 +92,11 @@ export class ApplicationStore {
   }
   if(path.startsWith('/api/panel/')){
    if(!await this.authorized(request))fail('Panel oturumunuz sona erdi. Lütfen giriş yapın.',401);
+   if(path==='/api/panel/activity-video'){
+    if(method==='GET')return reply(videoSettings(this.sql));
+    if(method==='PUT')return saveActivityVideo(request,this);
+    if(method==='DELETE'){await boundedBody(request,1024);return removeActivityVideo(this)}
+   }
    if(path==='/api/panel/session'&&method==='GET')return reply({ok:true});
    if(path==='/api/panel/logout'&&method==='POST'){await boundedBody(request,1024);this.sql.exec('DELETE FROM sessions WHERE token=?',await this.sessionKey(cookieToken(request)));return reply({ok:true},200,{'Set-Cookie':COOKIE+'=; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=0'})}
    if(path==='/api/panel/settings'&&method==='GET')return reply({settings:this.getSettings()});

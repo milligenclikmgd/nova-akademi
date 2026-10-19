@@ -94,9 +94,9 @@ async function handleNovaAi(request, env) {
 export default {
   async fetch(request, env) {
     const pathname = new URL(request.url).pathname;
-    if (pathname === '/api/applications' || pathname.startsWith('/api/applications/') || pathname.startsWith('/api/panel/')) {
-      const origin=request.headers.get('Origin'),isPublic=pathname==='/api/applications'||pathname==='/api/applications/config';
-      const cors=isPublic&&origin&&publicOriginAllowed(origin,new URL(request.url).origin,env)?{'Access-Control-Allow-Origin':origin,'Access-Control-Allow-Methods':'GET, POST, OPTIONS','Access-Control-Allow-Headers':'Content-Type','Vary':'Origin'}:{};
+    if (pathname === '/api/applications' || pathname.startsWith('/api/applications/') || pathname.startsWith('/api/panel/') || pathname.startsWith('/api/site-media/')) {
+      const origin=request.headers.get('Origin'),isPublic=pathname==='/api/applications'||pathname==='/api/applications/config'||pathname.startsWith('/api/site-media/');
+      const cors=isPublic&&origin&&publicOriginAllowed(origin,new URL(request.url).origin,env)?{'Access-Control-Allow-Origin':origin,'Access-Control-Allow-Methods':'GET, HEAD, POST, OPTIONS','Access-Control-Allow-Headers':'Content-Type, Range, If-Range','Access-Control-Expose-Headers':'Content-Range, Accept-Ranges, Content-Length, ETag','Vary':'Origin'}:{};
       if(request.method==='OPTIONS')return new Response(null,{status:cors['Access-Control-Allow-Origin']?204:403,headers:cors});
       const response=!env.NOVA_APPLICATIONS?reply({error:'Başvuru veri deposu henüz etkinleştirilmedi.'},503):await env.NOVA_APPLICATIONS.get(env.NOVA_APPLICATIONS.idFromName('nova-applications-v1')).fetch(request);
       const headers=new Headers(response.headers);for(const [key,value] of Object.entries(cors))headers.set(key,value);
@@ -108,7 +108,7 @@ export default {
       const headers=new Headers(response.headers);
       headers.set('Cache-Control','no-store');headers.set('X-Robots-Tag','noindex, nofollow');
       headers.set('X-Frame-Options','DENY');headers.set('X-Content-Type-Options','nosniff');headers.set('Referrer-Policy','no-referrer');
-      headers.set('Content-Security-Policy',"default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'");
+      headers.set('Content-Security-Policy',"default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; media-src 'self' blob:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'");
       return new Response(response.body,{status:response.status,headers});
     }
     if (pathname === "/api/nova-ai" || pathname === "/api/nova-ai/") {
