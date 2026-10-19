@@ -124,3 +124,14 @@
 /* Hero görselinin yan kenarlarını buz mavisi zemine yumuşakça karıştır. */
 .board-hero{background:linear-gradient(90deg,#e8f4fb 0%,#eff7fb 14%,#eff7fb 86%,#e8f4fb 100%)}
 .board-hero__image{-webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 2.5%,#000 97.5%,transparent 100%);mask-image:linear-gradient(90deg,transparent 0%,#000 2.5%,#000 97.5%,transparent 100%)}
+
+
+/* CV alanını sağdan giren geniş panel olarak göster ve metinleri büyüt. */
+.bio-panel{top:0;right:0;left:auto;width:50vw;height:100vh;min-height:0;max-height:100vh;transform:translateX(104%);padding:76px clamp(38px,5vw,84px) 60px;border-radius:22px 0 0 22px;overflow:auto}
+.bio-panel.show{transform:translateX(0)}
+.bio-panel .bio-name{font-size:clamp(42px,3.8vw,56px);line-height:1.12;margin:0 0 16px}
+.bio-panel .bio-role{font-size:clamp(21px,1.8vw,25px);line-height:1.5;margin:0 0 40px}
+.bio-panel .bio-cv h3{font-size:17px;margin-bottom:18px}
+.bio-panel .bio-cv p{font-size:23px;line-height:1.85}
+@media(max-width:900px){.bio-panel{width:70vw;padding:72px 42px 52px}.bio-panel .bio-name{font-size:48px}.bio-panel .bio-role{font-size:21px}.bio-panel .bio-cv p{font-size:20px}}
+@media(max-width:600px){.bio-panel{width:100vw;padding:70px 28px 40px;border-radius:18px 0 0 18px}.bio-panel .bio-name{font-size:38px}.bio-panel .bio-role{font-size:19px;line-height:1.45;margin-bottom:28px}.bio-panel .bio-cv h3{font-size:15px}.bio-panel .bio-cv p{font-size:18px;line-height:1.75}}
