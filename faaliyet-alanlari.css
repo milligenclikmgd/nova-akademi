@@ -67,3 +67,12 @@
 .activity-timeline-card p{min-height:4.35em}
 @media(max-width:900px){.activity-timeline-card img{height:auto;aspect-ratio:16/10}.activity-timeline-card p{min-height:2.9em}}
 @media(max-width:800px){.activity-row>img{height:auto;max-height:460px;aspect-ratio:auto}}
+
+
+/* Stratejik plan: daha sıkı hero ve aynı öğrencinin görsel hikâyesi. */
+body[data-page-key="stratejik-plan"] .activity-band{min-height:0;padding:30px 0 26px}
+body[data-page-key="stratejik-plan"] .activity-row{grid-template-columns:220px minmax(0,1fr) 340px;gap:42px}
+body[data-page-key="stratejik-plan"] .activity-row>img{width:100%;height:auto;aspect-ratio:3/2;object-fit:cover;object-position:center top}
+body[data-page-key="stratejik-plan"] .activity-timeline-card img{aspect-ratio:3/2;object-fit:cover;object-position:center top}
+@media(max-width:1000px) and (min-width:801px){body[data-page-key="stratejik-plan"] .activity-row{grid-template-columns:190px minmax(0,1fr) 280px;gap:28px}}
+@media(max-width:800px){body[data-page-key="stratejik-plan"] .activity-band{padding:26px 0 22px}body[data-page-key="stratejik-plan"] .activity-row{grid-template-columns:1fr;gap:22px}body[data-page-key="stratejik-plan"] .activity-row>img{width:100%;height:auto;max-height:none;aspect-ratio:3/2}}
