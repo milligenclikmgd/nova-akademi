@@ -13,3 +13,20 @@
 
 /* Kapanış bölümündeki iç ızgaranın dış bölüme sıkışmasını önle. */
 .data-closing{display:block}.data-closing .data-trio__inner{min-width:0}
+
+/* Referanstaki görsel kart sistemi */
+.data-card-grid{grid-template-columns:repeat(5,minmax(0,1fr));gap:18px}
+.data-card{position:relative;display:flex;flex-direction:column;min-height:418px;padding:22px 20px 18px;overflow:hidden;border:1px solid #e4eef4;border-radius:24px;background:linear-gradient(160deg,#fff 0%,#fafdff 100%);box-shadow:0 12px 30px #1a426610}
+.data-card__content{display:flex;flex:1;flex-direction:column;min-width:0}
+.data-card__top{margin-bottom:18px}
+.data-card__top>span{font-size:24px;color:#75b4e3}
+.data-card h3{font-size:18px;line-height:1.35;margin:0 0 10px;letter-spacing:-.035em}
+.data-card p{font-size:14px;line-height:1.65;color:#5c6d80}
+.data-card__image{display:block;width:100%;height:178px;min-height:0;max-height:none;flex:0 0 178px;align-self:stretch;object-fit:cover;object-position:center;border-radius:16px;margin-top:20px;transition:transform .35s ease}
+.data-card::after{content:"→";position:absolute;right:32px;bottom:31px;display:grid;place-items:center;width:40px;height:40px;border-radius:50%;background:#063967;color:#fff;font-size:22px;line-height:1;box-shadow:0 5px 14px #062d6030;pointer-events:none;transition:transform .25s,background .25s}
+.data-card:hover::after{transform:translateX(2px);background:#1479bb}
+.data-card:hover .data-card__image{transform:scale(1.025)}
+@media(max-width:1400px){.data-card-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.data-card{grid-template-columns:none;min-height:410px}.data-card__image{width:100%;height:178px;min-height:0}}
+@media(max-width:900px){.data-card-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.data-card{min-height:410px}}
+@media(max-width:600px){.data-card-grid{grid-template-columns:1fr;gap:14px}.data-card{min-height:0;padding:20px 18px 16px;border-radius:20px}.data-card__top{margin-bottom:16px}.data-card h3{font-size:18px}.data-card p{font-size:15px;line-height:1.7}.data-card__image{height:auto;min-height:0;max-height:none;aspect-ratio:1.65/1;flex-basis:auto;margin-top:18px}.data-card::after{right:30px;bottom:28px;width:38px;height:38px}}
+@media(prefers-reduced-motion:reduce){.data-card__image,.data-card::after{transition:none}.data-card:hover .data-card__image{transform:none}}
