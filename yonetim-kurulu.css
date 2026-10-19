@@ -119,3 +119,8 @@
 .board-hero{height:clamp(320px,27vw,390px);min-height:0}
 @media(max-width:900px){.board-hero{height:clamp(290px,32vw,340px)}}
 @media(max-width:600px){.board-hero{height:260px}}
+
+
+/* Hero görselinin yan kenarlarını buz mavisi zemine yumuşakça karıştır. */
+.board-hero{background:linear-gradient(90deg,#e8f4fb 0%,#eff7fb 14%,#eff7fb 86%,#e8f4fb 100%)}
+.board-hero__image{-webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 2.5%,#000 97.5%,transparent 100%);mask-image:linear-gradient(90deg,transparent 0%,#000 2.5%,#000 97.5%,transparent 100%)}
