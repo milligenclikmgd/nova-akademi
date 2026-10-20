@@ -88,3 +88,49 @@
  .scan-card p{font-size:14px!important;line-height:1.62!important}
  .scan-card__image{height:150px!important;flex-basis:150px!important}
 }
+
+
+/* Tüm değerlendirme aşamaları birlikte görünür; kartlar geniş grid içinde okunur */
+.scan-window{overflow:visible!important;padding:12px 0 24px!important}
+.scan-track{
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  grid-auto-rows:minmax(390px,auto)!important;
+  gap:20px!important;
+  width:100%!important;
+  transform:none!important;
+  transition:none!important;
+}
+.scan-card{
+  width:auto!important;
+  min-width:0!important;
+  min-height:390px!important;
+  flex:none!important;
+  padding:23px 21px 18px!important;
+  opacity:1!important;
+  transform:translateY(0)!important;
+}
+.scan-card.is-active{
+  transform:translateY(-3px)!important;
+}
+.scan-card:hover,.scan-card:focus-within{
+  transform:translateY(-8px)!important;
+}
+@media(max-width:900px){
+  .scan-track{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    grid-auto-rows:minmax(380px,auto)!important;
+  }
+  .scan-card{min-height:380px!important}
+}
+@media(max-width:560px){
+  .scan-track{
+    grid-template-columns:minmax(0,1fr)!important;
+    grid-auto-rows:minmax(0,auto)!important;
+    gap:16px!important;
+  }
+  .scan-card{
+    min-height:0!important;
+    padding:21px 18px 18px!important;
+  }
+}
