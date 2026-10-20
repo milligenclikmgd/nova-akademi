@@ -105,3 +105,27 @@ body.admission-page footer{padding-top:56px;padding-bottom:62px}
  .admission-step__label{font-size:12px}
  .admission-detail-panel{height:535px;min-height:535px}
 }
+/* Wider, roomier admission stages; keep a plain fixed blank area below */
+.admission-shell{width:min(1380px,calc(100% - 24px))}
+.admission-journey__head{width:min(1380px,100%)}
+.admission-road-scroll{position:relative;left:50%;transform:translateX(-50%);width:calc(100% + 56px);max-width:calc(100vw - 20px)}
+.admission-road{width:100%;min-width:0;gap:18px}
+.admission-step summary{min-height:204px;padding:32px 11px 18px;gap:15px}
+.admission-step__icon{width:76px;height:76px}
+.admission-step__icon svg{width:33px;height:33px}
+.admission-step__label{max-width:136px;font-size:14px}
+.admission-detail-spacer{height:260px}
+@media(max-width:760px){
+ .admission-shell{width:calc(100% - 24px)}
+ .admission-road-scroll{left:50%;width:calc(100vw - 20px);max-width:calc(100vw - 20px)}
+ .admission-road{width:max-content;min-width:1510px;gap:18px}
+ .admission-step summary{min-height:194px;padding:31px 11px 18px;gap:14px}
+ .admission-step__icon{width:70px;height:70px}
+ .admission-step__icon svg{width:31px;height:31px}
+ .admission-step__label{font-size:13px;max-width:136px}
+ .admission-detail-spacer{height:180px}
+}
+@media(max-width:420px){
+ .admission-road{min-width:1480px;gap:17px}
+ .admission-step__label{font-size:12px}
+}
