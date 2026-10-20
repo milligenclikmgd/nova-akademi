@@ -129,3 +129,19 @@ body.admission-page footer{padding-top:56px;padding-bottom:62px}
  .admission-road{min-width:1480px;gap:17px}
  .admission-step__label{font-size:12px}
 }
+/* Hover detail card appears in a reserved, fixed-height stage below the cards */
+.admission-detail-panel{height:430px;min-height:430px;opacity:0;visibility:hidden;pointer-events:none;transform:translateY(16px);filter:blur(9px);transition:opacity .3s ease,transform .42s cubic-bezier(.2,.8,.2,1),filter .38s ease,visibility 0s linear .42s}
+.admission-detail-panel.is-active{opacity:1;visibility:visible;pointer-events:auto;transform:translateY(0);filter:blur(0);transition:opacity .3s ease,transform .42s cubic-bezier(.2,.8,.2,1),filter .38s ease,visibility 0s}
+.admission-detail-panel__content{align-self:center}
+.admission-detail-panel h3{font-size:clamp(25px,2.7vw,34px)}
+.admission-detail-panel p{font-size:17px;line-height:1.75}
+.admission-detail-panel__visual{max-height:355px}
+.admission-detail-spacer{height:110px}
+@media(max-width:760px){
+ .admission-detail-panel{height:510px;min-height:510px;grid-template-columns:1fr;align-content:center;gap:18px;padding:24px 20px 20px;transform:translateY(12px);filter:blur(7px)}
+ .admission-detail-panel__content{padding:0 32px 0 0}
+ .admission-detail-panel h3{font-size:25px}
+ .admission-detail-panel p{font-size:16px}
+ .admission-detail-panel__visual{aspect-ratio:1.7;max-height:none}
+ .admission-detail-spacer{height:80px}
+}
