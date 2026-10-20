@@ -34,3 +34,57 @@
 @media(max-width:900px){.scan-hero__inner{width:calc(100% - 48px);grid-template-columns:1fr 1fr;min-height:430px;gap:14px}.scan-hero__copy h1{font-size:40px}.scan-hero__copy h2{font-size:27px}.scan-hero__lead{font-size:13px}.scan-hero__visual{height:380px}.scan-process .scan-shell{width:calc(100% - 40px)}.scan-card{min-width:calc((100% - 24px)/3);min-height:315px}}
 @media(max-width:640px){.scan-hero__inner{width:calc(100% - 32px);display:flex;flex-direction:column;align-items:stretch;gap:0;padding-top:24px}.scan-hero__copy{padding:18px 0 10px}.scan-hero__copy h1{font-size:clamp(36px,10vw,47px)}.scan-hero__copy h2{font-size:26px}.scan-hero__lead{font-size:13px}.scan-hero__visual{width:calc(100% + 32px);height:auto;aspect-ratio:1.35/1;margin:0 -16px;border-radius:0;mask-image:linear-gradient(180deg,#000 0%,#000 83%,transparent 100%)}.scan-process{padding:42px 0 48px}.scan-process .scan-shell{width:calc(100% - 32px)}.scan-process__head{display:flex;align-items:start}.scan-process__head p{max-width:180px;text-align:right;margin-top:0}.scan-card{min-width:calc((100% - 12px)/2);min-height:310px;padding:14px 12px 11px}.scan-card__button h3{font-size:12px}.scan-card p{font-size:10.5px;line-height:1.48}.scan-card__image{height:82px;flex-basis:82px}}
 @media(max-width:420px){.scan-card{min-width:100%;min-height:300px}.scan-process__head{display:block}.scan-process__head p{max-width:none;text-align:left;margin-top:8px}}
+
+
+/* Kabul Süreci > Değerlendirme: daha geniş kartlar ve okunabilir içerik */
+.scan-process{padding:62px 0 70px!important}
+.scan-process .scan-shell{width:min(1500px,calc(100% - 56px))!important}
+.scan-window{padding:12px 0 24px!important}
+.scan-track{gap:18px!important}
+.scan-card{
+  flex:0 0 calc((100% - 36px)/3)!important;
+  min-width:calc((100% - 36px)/3)!important;
+  min-height:390px!important;
+  padding:22px 20px 18px!important;
+  border:1px solid #d9e8f2!important;
+  border-top:5px solid #147fc0!important;
+  border-radius:17px!important;
+  background:#fff!important;
+  box-shadow:0 8px 22px rgba(15,72,119,.08)!important;
+  opacity:.9!important;
+  transform:translateY(0) scale(.985)!important;
+  transition:transform .3s cubic-bezier(.2,.75,.25,1),box-shadow .3s ease,opacity .3s ease!important;
+}
+.scan-card:nth-child(n){border-top-color:#147fc0!important}
+.scan-card.is-active{
+  border-top-color:#147fc0!important;
+  opacity:1!important;
+  transform:translateY(-3px) scale(1)!important;
+  box-shadow:0 14px 30px rgba(15,72,119,.13)!important;
+}
+.scan-card:hover,.scan-card:focus-within{
+  z-index:2;
+  opacity:1!important;
+  transform:translateY(-8px) scale(1.015)!important;
+  box-shadow:0 22px 38px rgba(15,72,119,.16)!important;
+}
+.scan-card__button{grid-template-columns:42px minmax(0,1fr) 18px!important;gap:13px!important;margin-bottom:20px!important}
+.scan-card__button span{width:40px!important;height:40px!important;font-size:12px!important;background:#e9f4fb!important;color:#147fc0!important}
+.scan-card__button h3{font-size:18px!important;line-height:1.32!important;letter-spacing:-.025em!important}
+.scan-card__button i{font-size:19px!important;color:#147fc0!important}
+.scan-card p{font-size:14px!important;line-height:1.65!important;color:#536b82!important;margin:0 0 18px!important}
+.scan-card__image{height:126px!important;flex:0 0 126px!important;border-radius:12px!important}
+.scan-process__head{margin-bottom:20px!important}
+.scan-process__head>span{font-size:12px!important;color:#147fc0!important}
+.scan-process__head p{font-size:14px!important}
+@media(max-width:900px){
+ .scan-card{flex-basis:calc((100% - 18px)/2)!important;min-width:calc((100% - 18px)/2)!important;min-height:375px!important}
+}
+@media(max-width:560px){
+ .scan-process .scan-shell{width:calc(100% - 32px)!important}
+ .scan-card{flex-basis:100%!important;min-width:100%!important;min-height:0!important;padding:21px 18px 18px!important}
+ .scan-card__button{grid-template-columns:38px minmax(0,1fr) 16px!important;gap:10px!important;margin-bottom:17px!important}
+ .scan-card__button h3{font-size:17px!important}
+ .scan-card p{font-size:14px!important;line-height:1.62!important}
+ .scan-card__image{height:150px!important;flex-basis:150px!important}
+}
