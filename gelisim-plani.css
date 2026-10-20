@@ -231,3 +231,14 @@ body.growth-page{overflow-x:hidden}
  .growth-detail-slot{width:calc(100% - 6px);min-height:392px}
 }
 @media(prefers-reduced-motion:reduce){.growth-stage,.growth-detail-panel.is-active{animation:none!important}}
+
+/* Keep the last four milestones together on the second desktop row. */
+@media(min-width:921px){
+ .growth-stage:nth-of-type(5){grid-column:4;grid-row:2}
+ .growth-stage:nth-of-type(6){grid-column:3;grid-row:2}
+ .growth-stage:nth-of-type(7){grid-column:2;grid-row:2}
+ .growth-stage:nth-of-type(8){grid-column:1;grid-row:2}
+}
+@media(max-width:920px){
+ .growth-stage:nth-of-type(n){grid-row:auto}
+}
