@@ -87,3 +87,7 @@
  .journey-card{min-height:465px}
 }
 @media(prefers-reduced-motion:reduce){.journey-card,.journey-card__image,.growth-hero__cta{transition:none!important;animation:none!important}.journey-route__particle{display:none}}
+
+/* Keep this page's ten milestones on one continuous horizontal journey. */
+#growth-roadmap .journey-timeline-viewport .journey-card-grid{grid-template-columns:repeat(10,minmax(210px,1fr));width:100%;min-width:2260px;}
+#growth-roadmap .journey-timeline-viewport .journey-card{display:flex;grid-template-columns:none;}
