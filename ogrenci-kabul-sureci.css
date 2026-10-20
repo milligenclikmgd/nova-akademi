@@ -5,30 +5,30 @@
 .admission-hero{position:relative;background:linear-gradient(115deg,#fff 0%,#f7fafc 58%,#edf4f9 100%);border-bottom:1px solid #e0e9f0}
 .admission-hero__grid{min-height:410px;display:grid;grid-template-columns:1fr 1.02fr;align-items:center;gap:56px;padding:34px 0}
 .admission-hero__copy{position:relative;z-index:1}
-.admission-eyebrow{margin:0;color:var(--adm-blue);font-size:10px;font-weight:800;letter-spacing:.18em}
-.admission-hero h1{max-width:600px;margin:17px 0 14px;color:var(--adm-navy);font-size:clamp(42px,4.4vw,58px);line-height:1.05;letter-spacing:-.065em;font-weight:800}
+.admission-eyebrow{margin:0;color:var(--adm-blue);font-size:12px;font-weight:800;letter-spacing:.16em}
+.admission-hero h1{max-width:600px;margin:17px 0 14px;color:var(--adm-navy);font-size:clamp(46px,4.8vw,66px);line-height:1.05;letter-spacing:-.065em;font-weight:800}
 .admission-hero h1 em{color:var(--adm-blue);font-style:normal}
-.admission-hero__prompt{margin:0;color:var(--adm-muted);font-size:17px;line-height:1.6;font-weight:500}
-.admission-hero__visual{height:360px;overflow:hidden;border:1px solid #d5e4ef;border-radius:18px;background:#edf4f9;box-shadow:0 20px 54px rgba(31,65,94,.11)}
+.admission-hero__prompt{margin:0;color:var(--adm-muted);font-size:19px;line-height:1.65;font-weight:500}
+.admission-hero__visual{height:390px;overflow:hidden;border:1px solid #d5e4ef;border-radius:18px;background:#edf4f9;box-shadow:0 20px 54px rgba(31,65,94,.11)}
 .admission-hero__visual img{display:block;width:100%;height:100%;object-fit:cover;object-position:center 56%}
 .admission-journey{position:relative;padding:58px 0 68px;background:linear-gradient(180deg,#f5f9fc 0%,#fff 100%)}
 .admission-journey__head{max-width:1240px;margin:0 auto 23px;padding:0 0 20px;border-bottom:1px solid #dce7ef}
-.admission-journey__eyebrow{margin:0 0 10px;color:var(--adm-blue);font-size:10px;font-weight:800;letter-spacing:.17em}
-.admission-journey__head h2{margin:0;color:var(--adm-navy);font-size:clamp(26px,3vw,36px);line-height:1.12;letter-spacing:-.045em;font-weight:800}
-.admission-journey__intro{max-width:680px;margin:12px 0 0;color:var(--adm-muted);font-size:15px;line-height:1.65}
+.admission-journey__eyebrow{margin:0 0 10px;color:var(--adm-blue);font-size:12px;font-weight:800;letter-spacing:.16em}
+.admission-journey__head h2{margin:0;color:var(--adm-navy);font-size:clamp(30px,3.3vw,42px);line-height:1.12;letter-spacing:-.045em;font-weight:800}
+.admission-journey__intro{max-width:680px;margin:12px 0 0;color:var(--adm-muted);font-size:17px;line-height:1.7}
 .admission-road-scroll{width:min(1240px,100%);margin:0 auto;overflow-x:auto;overflow-y:visible;overscroll-behavior-x:contain;scrollbar-width:thin;scrollbar-color:#8eb7d5 #edf3f7}
 .admission-road-scroll:focus-visible{outline:2px solid #5b9bc9;outline-offset:5px;border-radius:8px}
 .admission-road{position:relative;display:grid;grid-template-columns:repeat(9,minmax(0,1fr));gap:14px;min-width:1210px;height:auto;margin:0;padding:20px 4px 12px;isolation:isolate;overflow:visible}
 .admission-road:before{content:"";position:absolute;z-index:-1;left:5.5%;right:5.5%;top:21px;height:1px;background:linear-gradient(90deg,#81add0,#c7d9e8 50%,#81add0)}
 .admission-road__path,.admission-road__start,.admission-road__finish{display:none}
 .admission-step{position:relative;z-index:2;min-width:0;margin:0;outline:none;transition:filter .25s,opacity .25s,transform .25s}
-.admission-step summary{position:relative;display:flex;min-height:168px;flex-direction:column;align-items:center;gap:12px;padding:27px 9px 14px;list-style:none;text-align:center;cursor:pointer;color:var(--adm-navy);border:1px solid #dce7ef;border-radius:11px;background:linear-gradient(160deg,#fff,#f9fcfe);box-shadow:0 7px 18px rgba(28,74,110,.055);transition:transform .28s cubic-bezier(.2,.8,.2,1),border-color .25s,background .25s,box-shadow .28s}
+.admission-step summary{position:relative;display:flex;min-height:194px;flex-direction:column;align-items:center;gap:14px;padding:31px 10px 17px;list-style:none;text-align:center;cursor:pointer;color:var(--adm-navy);border:1px solid #dce7ef;border-radius:11px;background:linear-gradient(160deg,#fff,#f9fcfe);box-shadow:0 7px 18px rgba(28,74,110,.055);transition:transform .28s cubic-bezier(.2,.8,.2,1),border-color .25s,background .25s,box-shadow .28s}
 .admission-step summary::-webkit-details-marker{display:none}
-.admission-step__number{position:absolute;top:-20px;left:50%;z-index:2;width:40px;height:40px;display:grid;place-items:center;transform:translateX(-50%);border:1px solid #bbd3e6;border-radius:50%;background:#fff;color:var(--adm-blue);font-size:12px;font-weight:800;box-shadow:0 4px 12px rgba(29,89,136,.1);transition:background .24s,border-color .24s,color .24s,box-shadow .24s}
-.admission-step__icon{width:61px;height:61px;display:grid;place-items:center;border:1px solid #d3e5f2;border-radius:50%;background:#eef6fb;color:#145f99;transition:transform .28s,border-color .24s,background .24s,color .24s}
-.admission-step__icon svg{width:27px;height:27px;fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+.admission-step__number{position:absolute;top:-20px;left:50%;z-index:2;width:48px;height:48px;display:grid;place-items:center;transform:translateX(-50%);border:1px solid #bbd3e6;border-radius:50%;background:#fff;color:var(--adm-blue);font-size:14px;font-weight:800;box-shadow:0 4px 12px rgba(29,89,136,.1);transition:background .24s,border-color .24s,color .24s,box-shadow .24s}
+.admission-step__icon{width:74px;height:74px;display:grid;place-items:center;border:1px solid #d3e5f2;border-radius:50%;background:#eef6fb;color:#145f99;transition:transform .28s,border-color .24s,background .24s,color .24s}
+.admission-step__icon svg{width:32px;height:32px;fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
 .admission-step__icon svg path:first-child:last-child{fill:none}
-.admission-step__label{display:block;max-width:120px;color:#183b5c;font-size:12px;font-weight:750;line-height:1.45;letter-spacing:-.015em;transition:color .2s}
+.admission-step__label{display:block;max-width:130px;color:#183b5c;font-size:14px;font-weight:750;line-height:1.45;letter-spacing:-.015em;transition:color .2s}
 .admission-step summary:focus-visible{outline:3px solid #7eb1d4;outline-offset:3px}
 .admission-step:hover,.admission-step:focus-within,.admission-step[open]{z-index:5}
 .admission-step:hover summary,.admission-step:focus-within summary{transform:translateY(-3px) scale(1.035);border-color:#80afd1;box-shadow:0 12px 24px rgba(26,92,145,.14)}
@@ -48,15 +48,60 @@
 .admission-detail-panel:before{top:-15px;border-left:15px solid transparent;border-right:15px solid transparent;border-bottom:15px solid #c9ddec}
 .admission-detail-panel:after{top:-13px;border-left:13px solid transparent;border-right:13px solid transparent;border-bottom:13px solid #fff}
 .admission-detail-panel__content{padding:2px 30px 2px 8px}
-.admission-detail-panel__number{display:block;margin:0 0 11px;color:var(--adm-blue);font-size:10px;font-weight:800;letter-spacing:.16em}
-.admission-detail-panel h3{margin:0 0 10px;color:var(--adm-navy);font-size:clamp(21px,2.5vw,29px);line-height:1.25;letter-spacing:-.035em}
-.admission-detail-panel p{max-width:600px;margin:0;color:#536e85;font-size:15px;line-height:1.75;user-select:text}
+.admission-detail-panel__number{display:block;margin:0 0 11px;color:var(--adm-blue);font-size:12px;font-weight:800;letter-spacing:.15em}
+.admission-detail-panel h3{margin:0 0 10px;color:var(--adm-navy);font-size:clamp(25px,2.7vw,34px);line-height:1.25;letter-spacing:-.035em}
+.admission-detail-panel p{max-width:600px;margin:0;color:#536e85;font-size:17px;line-height:1.75;user-select:text}
 .admission-detail-panel__visual{position:relative;width:100%;aspect-ratio:1.56;overflow:hidden;border:1px solid #d3e3ef;border-radius:12px;background:#e9f2f8;box-shadow:0 10px 25px rgba(24,66,98,.12)}
 .admission-detail-panel__visual img{position:absolute;top:0;left:0;width:300%;height:300%;max-width:none;object-fit:fill;transform:translate(var(--sprite-x,0%),var(--sprite-y,0%));}
 .admission-detail-panel__close{position:absolute;z-index:3;top:13px;right:13px;width:30px;height:30px;border:1px solid #d4e2ed;border-radius:8px;background:rgba(255,255,255,.96);color:#35617f;font-size:18px;line-height:1;cursor:pointer;transition:background .2s,color .2s,border-color .2s,transform .2s}
 .admission-detail-panel__close:hover{border-color:#78acd0;background:#eaf4fa;color:#0e64a2;transform:scale(1.05)}
-.admission-road__hint{margin:18px auto 0;text-align:center;color:#73899c;font-size:11px;line-height:1.6}
+.admission-road__hint{margin:18px auto 0;text-align:center;color:#73899c;font-size:13px;line-height:1.6}
 body.admission-page footer{padding-top:56px;padding-bottom:62px}
 @media(max-width:760px){body.admission-page footer{padding-top:44px;padding-bottom:48px}.admission-shell{width:calc(100% - 34px)}.admission-hero__grid{display:flex;flex-direction:column;align-items:stretch;gap:21px;padding:28px 0 25px}.admission-hero h1{font-size:clamp(38px,9vw,50px)}.admission-hero__prompt{font-size:15px}.admission-hero__visual{height:220px;border-radius:15px}.admission-journey{padding:42px 0 50px}.admission-journey__head{margin-bottom:20px;padding-bottom:18px}.admission-journey__intro{font-size:14px}.admission-road-scroll{width:calc(100% - 34px);padding:18px 0 14px;scroll-padding-inline:25px}.admission-road{min-width:1320px;grid-template-columns:repeat(9,minmax(0,1fr));gap:14px;padding:20px 6px 12px}.admission-road:before{top:21px;left:5%;right:5%}.admission-step summary{min-height:160px;padding:26px 8px 13px;gap:10px}.admission-step__number{width:38px;height:38px;font-size:11px}.admission-step__icon{width:56px;height:56px}.admission-step__icon svg{width:24px;height:24px}.admission-step__label{font-size:11px}.admission-step:not(:last-child):after{right:-10px;top:74px;width:9px;height:9px}.admission-detail-panel{grid-template-columns:1fr;width:calc(100% - 34px);gap:18px;margin-top:24px;padding:22px 18px 18px}.admission-detail-panel__content{padding:0 32px 0 0}.admission-detail-panel__number{margin-bottom:8px}.admission-detail-panel h3{font-size:21px}.admission-detail-panel p{font-size:14px;line-height:1.65}.admission-detail-panel__visual{aspect-ratio:1.6}.admission-detail-panel__close{top:10px;right:10px;width:28px;height:28px}.admission-road__hint{width:calc(100% - 34px);text-align:left;font-size:10px}}
 @media(max-width:420px){.admission-shell{width:calc(100% - 28px)}.admission-hero__visual{height:190px}.admission-road-scroll{width:calc(100% - 28px)}.admission-road{min-width:1280px;gap:12px}.admission-step__label{font-size:10px}.admission-detail-panel{width:calc(100% - 28px)}}
 @media(prefers-reduced-motion:reduce){.admission-page *, .admission-page *::before,.admission-page *::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+
+/* Larger admission typography and stable reserved space for selected-stage details */
+.admission-shell{width:min(1380px,calc(100% - 48px))}
+.admission-journey__head,.admission-road-scroll{width:min(1300px,100%)}
+.admission-detail-panel{height:448px;min-height:448px;opacity:1;transform:none}
+.admission-detail-panel.is-visible{opacity:1;transform:none}
+.admission-detail-panel.is-empty{display:grid;grid-template-columns:1fr;place-items:center}
+.admission-detail-panel.is-empty:before,.admission-detail-panel.is-empty:after{display:none}
+.admission-detail-panel__placeholder{display:none}
+.admission-detail-panel.is-empty .admission-detail-panel__placeholder{display:block;max-width:620px;padding:20px;text-align:center}
+.admission-detail-panel__placeholder span{display:block;margin-bottom:12px;color:var(--adm-blue);font-size:12px;font-weight:800;letter-spacing:.16em}
+.admission-detail-panel__placeholder p{margin:0;color:#647b90;font-size:18px;line-height:1.6}
+.admission-detail-panel.is-empty .admission-detail-panel__content,.admission-detail-panel.is-empty .admission-detail-panel__visual,.admission-detail-panel.is-empty .admission-detail-panel__close{display:none}
+.admission-road__hint{font-size:14px}
+@media(max-width:760px){
+ .admission-shell{width:calc(100% - 34px)}
+ .admission-hero h1{font-size:clamp(42px,10vw,56px)}
+ .admission-eyebrow,.admission-journey__eyebrow{font-size:11px}
+ .admission-hero__prompt{font-size:17px}
+ .admission-hero__visual{height:250px}
+ .admission-journey{padding:48px 0 54px}
+ .admission-journey__head h2{font-size:clamp(30px,7vw,40px)}
+ .admission-journey__intro{font-size:16px}
+ .admission-road{min-width:1390px;gap:14px}
+ .admission-step summary{min-height:184px;padding:30px 9px 16px;gap:12px}
+ .admission-step__number{width:44px;height:44px;font-size:13px}
+ .admission-step__icon{width:66px;height:66px}
+ .admission-step__icon svg{width:29px;height:29px}
+ .admission-step__label{font-size:13px;max-width:132px}
+ .admission-detail-panel{height:555px;min-height:555px;grid-template-columns:1fr;align-content:center;gap:18px;padding:24px 20px 20px}
+ .admission-detail-panel__content{padding:0 34px 0 0}
+ .admission-detail-panel__number{font-size:11px;margin-bottom:9px}
+ .admission-detail-panel h3{font-size:25px}
+ .admission-detail-panel p{font-size:16px;line-height:1.7}
+ .admission-detail-panel__visual{aspect-ratio:1.7}
+ .admission-detail-panel__placeholder p{font-size:17px}
+ .admission-road__hint{font-size:13px}
+}
+@media(max-width:420px){
+ .admission-shell{width:calc(100% - 28px)}
+ .admission-hero__visual{height:220px}
+ .admission-road{min-width:1360px;gap:13px}
+ .admission-step__label{font-size:12px}
+ .admission-detail-panel{height:535px;min-height:535px}
+}
