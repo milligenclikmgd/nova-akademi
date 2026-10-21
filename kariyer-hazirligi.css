@@ -77,3 +77,19 @@
  .career-principle__mark{font-size:74px}
  .career-principle h2{font-size:28px}
 }
+
+/* Fotoğraflar kendi oranlarında düzenlenir; portrelerde yüzler korunur */
+.career-stage{grid-template-columns:minmax(0,1fr) minmax(260px,320px)}
+.career-stage__visual{width:260px;height:390px}
+.career-stage__visual img{object-fit:cover;object-position:center 20%}
+.career-stage--landscape .career-stage__visual{width:100%;height:auto;aspect-ratio:3/2}
+.career-stage--landscape .career-stage__visual img{object-position:center;object-fit:cover}
+@media(max-width:820px){
+ .career-stage{grid-template-columns:minmax(0,1fr) minmax(220px,280px)}
+ .career-stage__visual{width:220px;height:330px}
+ .career-stage--landscape .career-stage__visual{width:100%;height:auto;aspect-ratio:3/2}
+}
+@media(max-width:600px){
+ .career-stage__visual{width:min(100%,260px);height:390px}
+ .career-stage--landscape .career-stage__visual{width:min(100%,360px);height:auto;aspect-ratio:3/2}
+}
