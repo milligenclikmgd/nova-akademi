@@ -1,4 +1,4 @@
-:root{--career-navy:#0b3153;--career-blue:#167bb8;--career-gold:#b58a55;--career-ink:#284b64;--career-muted:#647d8f;--career-line:#dde6eb;--career-paper:#fbfaf7;--career-soft:#f2f6f8}
+:root{--career-navy:#0b3153;--career-blue:#147cb8;--career-gold:#4f9fd0;--career-ink:#24465f;--career-muted:#5d7890;--career-line:#d8e6f0;--career-paper:#f3f8fc;--career-soft:#eaf3fa}
 .career-page{margin:0;background:#fff;color:var(--career-ink);font-family:Manrope,Arial,sans-serif}
 .career-shell{width:min(1200px,90%);margin-inline:auto}
 .career-hero{position:relative;isolation:isolate;min-height:450px;display:flex;align-items:center;overflow:hidden;background:#092844;color:#fff}
@@ -7,38 +7,38 @@
 .career-hero__shade{background:linear-gradient(90deg,rgba(5,29,51,.84) 0%,rgba(5,29,51,.74) 29%,rgba(5,29,51,.18) 58%,rgba(5,29,51,.04) 100%)}
 .career-hero__inner{position:relative;display:flex;align-items:center;min-height:450px;padding-block:55px}
 .career-hero__copy{width:min(510px,48%);padding:6px 0}
-.career-eyebrow,.career-section-label{margin:0 0 16px;color:#d1ae79;font-size:11px;font-weight:800;letter-spacing:.17em}
+.career-eyebrow,.career-section-label{margin:0 0 16px;color:#a8daf7;font-size:11px;font-weight:800;letter-spacing:.17em}
 .career-hero h1{max-width:520px;margin:0;color:#fff;font-size:clamp(43px,5.4vw,68px);font-weight:600;line-height:1.02;letter-spacing:-.065em}
 .career-hero__copy>p:not(.career-eyebrow){max-width:495px;margin:22px 0 0;color:rgba(255,255,255,.86);font-size:16px;line-height:1.8}
 .career-hero__link{display:inline-flex;align-items:center;gap:16px;margin-top:27px;padding:12px 0;color:#fff;font-size:13px;font-weight:700;text-decoration:none;border-bottom:1px solid rgba(213,178,130,.75);transition:gap .2s ease,color .2s ease}
-.career-hero__link span{color:#d7b17e;font-size:19px;line-height:1}
-.career-hero__link:hover{gap:22px;color:#f1d6ae}
+.career-hero__link span{color:#8ccaf0;font-size:19px;line-height:1}
+.career-hero__link:hover{gap:22px;color:#c5e7fb}
 .career-hero__caption{position:absolute;right:max(5%,calc((100vw - 1200px)/2));bottom:24px;color:rgba(255,255,255,.77);font-size:9px;font-weight:800;letter-spacing:.18em}
 .career-route{padding:31px 0 34px;background:#fff;border-bottom:1px solid var(--career-line)}
-.career-route .career-section-label{margin:0 0 21px;color:#73899a;font-size:9px;letter-spacing:.16em}
+.career-route .career-section-label{margin:0 0 21px;color:#6f8ba1;font-size:9px;letter-spacing:.16em}
 .career-route__line{position:relative;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px;margin:0;padding:0;list-style:none}
-.career-route__line:before{content:"";position:absolute;top:12px;left:5px;right:5px;height:1px;background:linear-gradient(90deg,#bd9b6c,#d7e2e8 45%,#bd9b6c)}
+.career-route__line:before{content:"";position:absolute;top:12px;left:5px;right:5px;height:1px;background:linear-gradient(90deg,#58a8dc,#d8e9f4 45%,#58a8dc)}
 .career-route__step{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:12px}
-.career-route__step span{display:grid;place-items:center;width:25px;height:25px;border:1px solid #d7c19e;border-radius:50%;background:white;color:#946c3b;font-size:9px;font-weight:800}
+.career-route__step span{display:grid;place-items:center;width:25px;height:25px;border:1px solid #74b8e2;border-radius:50%;background:white;color:#167bb8;font-size:9px;font-weight:800}
 .career-route__step b{color:#183f5e;font-size:12px;font-weight:700;line-height:1.4}
 .career-stages{padding:27px 0 66px;background:var(--career-paper)}
-.career-stages__intro{max-width:650px;margin:0 0 14px;color:#657b8b;font-size:14px;line-height:1.7}
+.career-stages__intro{max-width:650px;margin:0 0 14px;color:#5f7d94;font-size:14px;line-height:1.7}
 .career-stage-list{border-top:1px solid var(--career-line)}
 .career-stage{display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:clamp(40px,8vw,108px);align-items:center;padding:34px 5.5%;border-bottom:1px solid var(--career-line)}
 .career-stage--reverse .career-stage__copy{grid-column:2;grid-row:1}
 .career-stage--reverse .career-stage__visual{grid-column:1;grid-row:1;justify-self:end}
 .career-stage__copy{max-width:620px}
-.career-stage__index{display:flex;align-items:center;gap:9px;margin:0 0 13px;color:#8d7654;font-size:10px;font-weight:800;letter-spacing:.13em}
+.career-stage__index{display:flex;align-items:center;gap:9px;margin:0 0 13px;color:#3488bc;font-size:10px;font-weight:800;letter-spacing:.13em}
 .career-stage__index span{color:var(--career-blue);font-size:14px;letter-spacing:.08em}
 .career-stage__index i{display:block;width:26px;height:1px;background:var(--career-gold)}
 .career-stage h3{margin:0;color:var(--career-navy);font-size:clamp(22px,2.4vw,31px);font-weight:700;line-height:1.2;letter-spacing:-.045em}
-.career-stage__description{max-width:610px;margin:13px 0 0;color:#5b7182;font-size:14px;line-height:1.82}
-.career-stage__visual{width:260px;height:360px;margin:0;overflow:hidden;border-radius:10px;background:#edf1f2;box-shadow:0 12px 30px rgba(17,52,76,.08)}
-.career-stage__visual img{display:block;width:100%;height:100%;object-fit:contain;object-position:center;background:#f0f3f3;transition:transform .35s ease}
+.career-stage__description{max-width:610px;margin:13px 0 0;color:#55728a;font-size:14px;line-height:1.82}
+.career-stage__visual{width:260px;height:360px;margin:0;overflow:hidden;border-radius:10px;background:#eaf3f8;box-shadow:0 12px 30px rgba(17,52,76,.08)}
+.career-stage__visual img{display:block;width:100%;height:100%;object-fit:contain;object-position:center;background:#f3f8fc;transition:transform .35s ease}
 .career-stage:hover .career-stage__visual img{transform:scale(1.025)}
 .career-principle{padding:58px 0 72px;background:#edf5f8}
 .career-principle__inner{display:grid;grid-template-columns:105px minmax(0,760px);gap:24px;align-items:center}
-.career-principle__mark{color:#b68b55;font-family:Georgia,serif;font-size:118px;line-height:.7}
+.career-principle__mark{color:#4f9fd0;font-family:Georgia,serif;font-size:118px;line-height:.7}
 .career-principle .career-section-label{margin-bottom:13px;color:#6e8595}
 .career-principle h2{max-width:760px;margin:0;color:var(--career-navy);font-size:clamp(26px,3.5vw,43px);font-weight:600;line-height:1.18;letter-spacing:-.052em}
 @media(max-width:820px){
