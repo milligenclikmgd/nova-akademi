@@ -7,3 +7,38 @@
 .pf-card,.pf-card:nth-child(n){background:#0c74bd!important;border-color:#4599ce}.pf-card:before{background-image:linear-gradient(135deg,rgba(0,78,171,.58),rgba(18,151,222,.48)),var(--pf-card-image)!important;background-blend-mode:color,normal!important;filter:blur(5px) saturate(.95) brightness(1.17)!important}.pf-card:hover:before{filter:blur(4px) saturate(1) brightness(1.2)!important}.pf-card h3{color:#fff}.pf-card p{color:#e1f4ff}.pf-card__top>span{color:#d0efff}.pf-icon{background:rgba(255,255,255,.12);border-color:#b7e5ff}
 /* Öğrenci Yolculuğu — Hakkımızda dili */
 .performance-page .pf-intro{display:grid;grid-template-columns:230px minmax(0,1fr) 270px;gap:52px;align-items:start;padding:92px 0;border-bottom:1px solid #dfe9f0}.performance-page .pf-intro>div{padding-top:7px}.performance-page .pf-intro h2{display:none}.performance-page .pf-intro .pf-kicker{display:block;color:#082f5c;font-size:clamp(19px,1.72vw,27px);font-weight:800;letter-spacing:-.045em;line-height:1.08}.performance-page .pf-intro .pf-kicker:before{content:"";display:block;width:44px;height:3px;margin:0 0 16px;background:#0a9de6}.performance-page .pf-intro>p{margin:0;color:#49677e;font-size:14px;line-height:1.9}.performance-page .pf-intro:after{content:"";min-height:286px;border-radius:15px;background:url('assets/egitim-model-performans.webp') center/cover no-repeat;box-shadow:0 18px 42px rgba(10,56,89,.16)}.performance-page .pf-board{padding-top:84px}@media(max-width:900px){.performance-page .pf-intro{grid-template-columns:155px minmax(0,1fr);gap:32px}.performance-page .pf-intro:after{grid-column:2;max-width:360px}}@media(max-width:620px){.performance-page .pf-intro{display:block;padding:58px 0}.performance-page .pf-intro>div{margin-bottom:17px}.performance-page .pf-intro:after{display:block;margin-top:25px;min-height:220px}}
+
+
+/* Performans Takibi: kurumsal üç sütunlu aşama anlatımı */
+.performance-page .pf-board{width:min(1360px,94%);padding:68px 0 92px}
+.performance-page .pf-rows{display:flex;flex-direction:column}
+.performance-page .pf-row{display:grid;grid-template-columns:minmax(210px,.86fr) minmax(280px,1.08fr) minmax(300px,1fr);gap:clamp(30px,4.4vw,68px);align-items:center;padding:34px 0;border-bottom:1px solid #e1ebf2}
+.performance-page .pf-row:first-child{border-top:1px solid #e1ebf2}
+.performance-page .pf-row__title{align-self:stretch;display:flex;flex-direction:column;align-items:flex-start;justify-content:center}
+.performance-page .pf-row__rule{display:block;width:48px;height:3px;margin:0 0 18px;background:#1388d1}
+.performance-page .pf-row__title h2{margin:0;color:#0b3154;font-size:clamp(18px,1.65vw,25px);font-weight:800;line-height:1.23;letter-spacing:-.035em}
+.performance-page .pf-row__copy p{margin:0;color:#49677e;font-size:clamp(14px,1.12vw,16px);line-height:1.85}
+.performance-page .pf-row__visual{width:100%;height:clamp(205px,21vw,280px);margin:0;overflow:hidden;border-radius:8px;background:#e9f2f8;box-shadow:0 12px 28px rgba(8,47,83,.12)}
+.performance-page .pf-row__visual img{display:block;width:100%;height:100%;object-fit:cover;object-position:center}
+.performance-page .pf-row--01 .pf-row__visual img{object-position:47% 50%}
+.performance-page .pf-row--02 .pf-row__visual img{object-position:50% 50%}
+.performance-page .pf-row--03 .pf-row__visual img{object-position:62% 50%}
+.performance-page .pf-row--04 .pf-row__visual img{object-position:52% 50%}
+.performance-page .pf-row--05 .pf-row__visual img{object-position:40% 50%}
+.performance-page .pf-row--06 .pf-row__visual img{object-position:42% 50%}
+.performance-page .pf-row--07 .pf-row__visual img{object-position:55% 50%}
+.performance-page .pf-row--08 .pf-row__visual img{object-position:45% 50%}
+.performance-page .pf-row--09 .pf-row__visual img{object-position:50% 50%}
+@media(max-width:900px){
+  .performance-page .pf-board{width:min(760px,90%);padding:46px 0 72px}
+  .performance-page .pf-row{grid-template-columns:minmax(190px,.8fr) minmax(260px,1.2fr);gap:24px 34px;padding:28px 0}
+  .performance-page .pf-row__visual{grid-column:2;height:230px}
+}
+@media(max-width:620px){
+  .performance-page .pf-board{width:min(520px,90%);padding:34px 0 56px}
+  .performance-page .pf-row{grid-template-columns:1fr;gap:15px;padding:25px 0}
+  .performance-page .pf-row__title h2{font-size:20px}
+  .performance-page .pf-row__rule{margin-bottom:12px}
+  .performance-page .pf-row__visual{grid-column:auto;height:230px;margin-top:4px}
+  .performance-page .pf-row__copy p{font-size:15px}
+}
