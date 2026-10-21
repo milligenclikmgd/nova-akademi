@@ -30,13 +30,23 @@ export function validateSettings(input,previous){
   })};
  });
  if(input.accepting===true&&groups.every(group=>group.branches.every(branch=>branch.candidateFee===null&&branch.registrationFee===null)))fail('Başvuruları açmadan önce en az bir ücret girin.');
- return {...previous,groups,accepting:input.accepting===true,paymentInstructions:text(input.paymentInstructions,2000),revision:previous.revision+1};
+ const cityIds=new Set(defaultSettings().cities.map(city=>city.id)),branchIds=new Set(groups.flatMap(group=>group.branches.map(branch=>branch.id))),submittedCityExams=input.cityExams??previous.cityExams??{};
+ if(!submittedCityExams||typeof submittedCityExams!=='object'||Array.isArray(submittedCityExams))fail('Şehir sınav eşleştirmelerini kontrol edin.');
+ const cityExams={};
+ for(const [cityId,assigned] of Object.entries(submittedCityExams)){
+  if(!cityIds.has(cityId)||!Array.isArray(assigned)||assigned.length>groups.reduce((total,group)=>total+group.branches.length,0))fail('Geçersiz sınav merkezi eşleştirmesi.');
+  const unique=[...new Set(assigned)];
+  if(unique.some(branchId=>typeof branchId!=='string'||!branchIds.has(branchId)))fail('Şehir için seçilen sınavlardan biri artık mevcut değil.');
+  if(unique.length)cityExams[cityId]=unique;
+ }
+ return {...previous,groups,cityExams,accepting:input.accepting===true,paymentInstructions:text(input.paymentInstructions,2000),revision:previous.revision+1};
 }
 export function validateApplication(input,settings){
  if(!settings.accepting)fail('Başvurular henüz açılmadı.',409);
  if(input?.revision!==settings.revision)fail('Branş veya ücret bilgisi güncellendi. Formu yeniden açın; yeni ücreti kontrol ederek başvurun.',409);
  const city=defaultSettings().cities.find(item=>item.id===input.city),group=settings.groups.find(item=>item.id===input.group),branch=group?.branches.find(item=>item.id===input.branch);
  if(!city||!group||!branch||!['candidate','registration'].includes(input.feeType))fail('Şehir, sınav ve branş seçimini kontrol edin.');
+ if(!(settings.cityExams?.[city.id]||[]).includes(branch.id))fail('Bu şehirde seçtiğiniz sınav tanımlı değil.',409);
  const fee=input.feeType==='candidate'?branch.candidateFee:branch.registrationFee;
  if(fee===null)fail('Bu başvuru türü henüz açılmadı.',409);
  const c=input.candidate||{},dob=required(c.dob,'Doğum tarihi',10),date=new Date(dob+'T00:00:00Z'),today=new Date();
@@ -66,7 +76,7 @@ export class ApplicationStore {
   this.sql.exec('CREATE TABLE IF NOT EXISTS receipts (application_id TEXT NOT NULL, part INTEGER NOT NULL, data BLOB NOT NULL, PRIMARY KEY(application_id,part))');
   this.sql.exec('CREATE INDEX IF NOT EXISTS applications_created ON applications(created_at)');
  }
- getSettings(){return JSON.parse(this.sql.exec('SELECT data FROM settings WHERE id=1').toArray()[0]?.data||JSON.stringify(defaultSettings()))}
+ getSettings(){const settings=JSON.parse(this.sql.exec('SELECT data FROM settings WHERE id=1').toArray()[0]?.data||JSON.stringify(defaultSettings()));if(!settings.cities)settings.cities=defaultSettings().cities;if(!settings.cityExams||typeof settings.cityExams!=='object'||Array.isArray(settings.cityExams))settings.cityExams={};return settings}
  rate(key,maximum){const now=Date.now();this.sql.exec('DELETE FROM limits WHERE expires < ?',now);this.sql.exec('INSERT INTO limits(key,count,expires) VALUES(?,1,?) ON CONFLICT(key) DO UPDATE SET count=count+1',key,now+15*60*1000);if(this.sql.exec('SELECT count FROM limits WHERE key=?',key).one().count>maximum)fail('Çok fazla deneme. 15 dakika sonra tekrar deneyin.',429)}
  sessionKey(token){return digest(token+'|'+(this.env.NOVA_PANEL_PASSWORD||''))}
  async authorized(request){const token=cookieToken(request);if(!token)return false;const hash=await this.sessionKey(token);const now=Date.now();this.sql.exec('DELETE FROM sessions WHERE expires < ?',now);return this.sql.exec('SELECT token FROM sessions WHERE token=? AND expires>?',hash,now).toArray().length>0}
