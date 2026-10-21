@@ -93,3 +93,7 @@
  .career-stage__visual{width:min(100%,260px);height:390px}
  .career-stage--landscape .career-stage__visual{width:min(100%,360px);height:auto;aspect-ratio:3/2}
 }
+/* Yatay fotoğrafların maksimum boyutu her iki dizilimde de sabit */
+.career-stage--landscape .career-stage__visual{max-width:320px;justify-self:end}
+@media(max-width:820px){.career-stage--landscape .career-stage__visual{max-width:280px}}
+@media(max-width:600px){.career-stage--landscape .career-stage__visual{max-width:min(100%,360px)}}
