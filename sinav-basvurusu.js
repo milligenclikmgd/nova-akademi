@@ -48,7 +48,7 @@ window.novaApplicationEndpoint=path=>(location.hostname==="nova-akademi.vercel.a
    if(!response.ok)throw Error("Harita kaynağı yüklenemedi.");
    const source=await response.text(),doc=new DOMParser().parseFromString(source,"image/svg+xml");
    if(doc.querySelector("parsererror"))throw Error("Harita dosyası okunamadı.");
-   const svg=document.importNode(doc.documentElement,true);svg.setAttribute("class","turkey-province-svg");svg.setAttribute("role","img");svg.setAttribute("aria-label","Türkiye il sınırları ve sınav merkezleri");
+   const svg=document.importNode(doc.documentElement,true);svg.setAttribute("class","turkey-province-svg");svg.setAttribute("role","group");svg.setAttribute("aria-label","Türkiye il sınırları ve sınav merkezleri");
    mount.replaceChildren(svg);
    provinceNodes=new Map([...svg.querySelectorAll(".turkey > g[id]")].map(group=>[group.id,group]));
    map.dataset.mapState="ready";styleMap();
