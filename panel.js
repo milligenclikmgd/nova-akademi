@@ -36,8 +36,11 @@
   settings.cities.forEach((city,index)=>{
    const details=node('details',undefined,'city-exam-editor');details.dataset.cityId=city.id;if(index===0)details.open=true;
    const summary=node('summary'),selected=(cityExamDraft[city.id]||[]).length;summary.append(node('strong',city.name),node('span',selected+' sınav seçili','city-exam-count'));details.append(summary);
-   const content=node('div',undefined,'city-exam-options');
-   const selectAll=node('button','Tüm sınavları seç','secondary city-exam-select-all');selectAll.type='button';selectAll.addEventListener('click',()=>{const all=groups.flatMap(group=>group.branches.map(branch=>branch.id));cityExamDraft[city.id]=all;details.querySelectorAll('input[type=checkbox]').forEach(input=>{input.checked=true});summary.querySelector('.city-exam-count').textContent=all.length+' sınav seçili'});content.append(selectAll);
+   const content=node('div',undefined,'city-exam-options'),actions=node('div',undefined,'city-exam-actions');
+   const allBranchIds=()=>groups.flatMap(group=>group.branches.map(branch=>branch.id));
+   const updateCitySelection=selected=>{cityExamDraft[city.id]=selected;details.querySelectorAll('input[type=checkbox]').forEach(input=>{input.checked=selected.includes(input.value)});summary.querySelector('.city-exam-count').textContent=selected.length+' sınav seçili'};
+   const selectAll=node('button','Tüm sınavları seç','secondary city-exam-select-all');selectAll.type='button';selectAll.addEventListener('click',()=>updateCitySelection(allBranchIds()));
+   const clearAll=node('button','Temizle','secondary city-exam-clear');clearAll.type='button';clearAll.addEventListener('click',()=>updateCitySelection([]));actions.append(selectAll,clearAll);content.append(actions);
    groups.forEach(group=>{if(!group.branches.length)return;const section=node('fieldset',undefined,'city-exam-group'),legend=node('legend',group.name);section.append(legend);group.branches.forEach(branch=>{
     const id='city-exam-'+city.id+'-'+branch.id,label=node('label',undefined,'city-exam-option'),input=node('input');input.type='checkbox';input.value=branch.id;input.checked=(cityExamDraft[city.id]||[]).includes(branch.id);input.id=id;label.htmlFor=id;label.append(input,node('span',branch.name));section.append(label)
    });content.append(section)});
