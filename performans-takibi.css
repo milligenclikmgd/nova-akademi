@@ -42,3 +42,22 @@
   .performance-page .pf-row__visual{grid-column:auto;height:230px;margin-top:4px}
   .performance-page .pf-row__copy p{font-size:15px}
 }
+
+
+/* Sıkılaştırılmış performans satırları ve iki satırlı başlıklar */
+.performance-page .pf-row{grid-template-columns:minmax(250px,.88fr) minmax(340px,1.22fr) minmax(220px,.72fr);gap:clamp(20px,2.6vw,38px);padding:20px 0}
+.performance-page .pf-row__title h2{max-width:275px;font-size:clamp(17px,1.42vw,20px);line-height:1.25;letter-spacing:-.05em}
+.performance-page .pf-row__visual{justify-self:end;width:100%;max-width:270px;height:178px;border-radius:7px}
+.performance-page .pf-row--01 .pf-row__visual{max-width:220px;height:150px}
+@media(max-width:900px){
+ .performance-page .pf-row{grid-template-columns:minmax(195px,.85fr) minmax(260px,1.15fr);gap:18px 26px;padding:20px 0}
+ .performance-page .pf-row__title h2{font-size:clamp(17px,2.05vw,19px)}
+ .performance-page .pf-row__visual{grid-column:2;justify-self:start;max-width:270px;height:178px}
+ .performance-page .pf-row--01 .pf-row__visual{max-width:220px;height:150px}
+}
+@media(max-width:620px){
+ .performance-page .pf-row{grid-template-columns:1fr;gap:12px;padding:19px 0}
+ .performance-page .pf-row__title h2{max-width:none;font-size:19px}
+ .performance-page .pf-row__visual{grid-column:auto;max-width:100%;height:185px;margin-top:2px}
+ .performance-page .pf-row--01 .pf-row__visual{max-width:220px;height:150px}
+}
