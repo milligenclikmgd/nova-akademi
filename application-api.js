@@ -7,7 +7,7 @@ export const defaultSettings = () => ({
   groups: [
     {id:'sanat',name:'Sahne Sanatları ve Senfoni Orkestrası',branches:[{id:'dans-sahne',name:'Dans ve Sahne Sanatları Sınavı',candidateFee:null,registrationFee:null},{id:'senfoni',name:'Senfoni Orkestrası Sınavı',candidateFee:null,registrationFee:null}]},
     {id:'spor',name:'Spor Akademisi',branches:[{id:'basketbol',name:'Basketbol Sınavı',candidateFee:null,registrationFee:null},{id:'voleybol',name:'Voleybol Sınavı',candidateFee:null,registrationFee:null},{id:'futbol',name:'Futbol Sınavı',candidateFee:null,registrationFee:null},{id:'futsal',name:'Futsal Sınavı',candidateFee:null,registrationFee:null}]}
-  ], cities:[{id:'ankara',name:'Ankara'},{id:'istanbul',name:'İstanbul'},{id:'izmir',name:'İzmir'},{id:'kayseri',name:'Kayseri'},{id:'antalya',name:'Antalya'}]
+  ], cities:[{id:'ankara',name:'Ankara'},{id:'istanbul',name:'İstanbul'},{id:'sakarya',name:'Sakarya'},{id:'bursa',name:'Bursa'},{id:'izmir',name:'İzmir'},{id:'antalya',name:'Antalya'},{id:'mersin',name:'Mersin'},{id:'adana',name:'Adana'},{id:'antep',name:'Antep'},{id:'diyarbakir',name:'Diyarbakır'},{id:'erzurum',name:'Erzurum'},{id:'van',name:'Van'},{id:'samsun',name:'Samsun'},{id:'trabzon',name:'Trabzon'},{id:'ordu',name:'Ordu'},{id:'eskisehir',name:'Eskişehir'}]
 });
 export function reply(data,status=200,headers={}) {return new Response(JSON.stringify(data),{status,headers:{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store','X-Content-Type-Options':'nosniff',...headers}})}
 export function publicOriginAllowed(origin,ownOrigin,env){return origin===ownOrigin||origin==='https://nova-akademi.vercel.app'||(!!env.NOVA_SITE_ORIGIN&&origin===env.NOVA_SITE_ORIGIN)}
@@ -35,7 +35,7 @@ export function validateSettings(input,previous){
 export function validateApplication(input,settings){
  if(!settings.accepting)fail('Başvurular henüz açılmadı.',409);
  if(input?.revision!==settings.revision)fail('Branş veya ücret bilgisi güncellendi. Formu yeniden açın; yeni ücreti kontrol ederek başvurun.',409);
- const city=settings.cities.find(item=>item.id===input.city),group=settings.groups.find(item=>item.id===input.group),branch=group?.branches.find(item=>item.id===input.branch);
+ const city=defaultSettings().cities.find(item=>item.id===input.city),group=settings.groups.find(item=>item.id===input.group),branch=group?.branches.find(item=>item.id===input.branch);
  if(!city||!group||!branch||!['candidate','registration'].includes(input.feeType))fail('Şehir, sınav ve branş seçimini kontrol edin.');
  const fee=input.feeType==='candidate'?branch.candidateFee:branch.registrationFee;
  if(fee===null)fail('Bu başvuru türü henüz açılmadı.',409);

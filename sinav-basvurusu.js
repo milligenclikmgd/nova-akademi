@@ -1,35 +1,30 @@
 window.novaApplicationEndpoint=path=>(location.hostname==="nova-akademi.vercel.app"?"https://nova-akademi.milligenclikmgd.workers.dev":"")+path;
-(()=>{const cities=[
- {id:"ankara",name:"Ankara",active:true,image:"assets/sinav-ankara.webp",alt:"Anıtkabir önünde halk oyunu oynayan çocuklar"},
- {id:"istanbul",name:"İstanbul",active:true,image:"assets/sinav-istanbul.webp",alt:"İstanbul Boğazı ve Kız Kulesi önünde halk oyunu oynayan çocuklar"},
- {id:"izmir",name:"İzmir",active:true,image:"assets/sinav-izmir.webp",alt:"İzmir Saat Kulesi önünde halk oyunu oynayan çocuklar"},
- {id:"kayseri",name:"Kayseri",active:true,image:"assets/sinav-kayseri.webp",alt:"Erciyes Dağı manzarasında halk oyunu oynayan çocuklar"},
- {id:"antalya",name:"Antalya",active:true,image:"assets/sinav-antalya.webp",alt:"Antalya Kaleiçi ve Akdeniz manzarasında halk oyunu oynayan çocuklar"}
-];
-let exams=[{id:"sanat",title:"Sahne Sanatları ve Senfoni Orkestrası Sınavları"},{id:"spor",title:"Spor Akademisi Sınavları"}];
-const grid=document.querySelector("#city-grid"),searchForm=document.querySelector("#city-search-form"),searchInput=document.querySelector("#city-search-input"),dialog=document.querySelector("#application-dialog");
-const normalize=value=>value.toLocaleLowerCase("tr-TR").normalize("NFC").trim();
-const escapeHtml=value=>String(value).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#39;');
-
-/* Tüm kapalı satırlar ve en yüksek açık panel için alanı baştan ayır. */
-const reserveCitySpace=()=>{
- const cards=[...grid.querySelectorAll(".city-card")];
- if(!cards.length)return;
- const style=getComputedStyle(grid),columns=style.gridTemplateColumns.split(" ").length;
- const rows=Math.ceil(cities.filter(city=>city.active).length/columns);
- const triggerHeight=Math.max(...cards.map(card=>card.querySelector(".city-card__trigger").getBoundingClientRect().height));
- const panelHeight=Math.max(...cards.map(card=>card.querySelector(".city-exams").getBoundingClientRect().height))+1;
- grid.style.minHeight=Math.ceil(rows*(triggerHeight+4)+(rows-1)*(parseFloat(style.rowGap)||0)+panelHeight)+"px";
-};
-
-const render=()=>{const activeCities=cities.filter(city=>city.active),term=normalize(searchInput.value),shown=activeCities.filter(city=>normalize(city.name).includes(term));grid.replaceChildren();if(!shown.length){const empty=document.createElement("p");empty.className="city-card__empty";empty.textContent="Aradığınız şehir açık başvuru merkezleri arasında bulunamadı.";grid.append(empty);return}
-for(const city of shown){const card=document.createElement("article");card.className="city-card";const panelId="city-panel-"+city.id;card.innerHTML='<button class="city-card__trigger" type="button" aria-expanded="false" aria-controls="'+panelId+'"><span class="city-art"><img src="'+city.image+'" alt="'+city.alt+'" loading="lazy"></span><span class="city-name-row city-card__name-row"><strong class="city-card__name">'+city.name+'</strong><span class="city-card__chevron" aria-hidden="true">›</span></span></button><div class="city-card__panel" id="'+panelId+'"><div class="city-card__panel-inner"><div class="city-exams">'+exams.map((exam,index)=>'<article class="city-exam" style="--exam-index:'+index+'"><h3>'+escapeHtml(exam.title)+'</h3><button class="city-exam__apply" type="button" data-city="'+city.id+'" data-exam="'+exam.id+'">BAŞVUR</button></article>').join("")+'</div></div></div>';
-const trigger=card.querySelector(".city-card__trigger"),panel=card.querySelector(".city-card__panel");panel.style.gridTemplateRows="0fr";panel.inert=true;panel.setAttribute("aria-hidden","true");trigger.addEventListener("click",()=>{const next=!card.classList.contains("is-open");grid.querySelectorAll(".city-card.is-open").forEach(open=>{open.classList.remove("is-open");open.querySelector(".city-card__trigger").setAttribute("aria-expanded","false");const closed=open.querySelector(".city-card__panel");closed.style.gridTemplateRows="0fr";closed.inert=true;closed.setAttribute("aria-hidden","true")});if(next){card.classList.add("is-open");trigger.setAttribute("aria-expanded","true");panel.style.gridTemplateRows="1fr";panel.inert=false;panel.setAttribute("aria-hidden","false")}});
-card.querySelectorAll(".city-exam__apply").forEach(button=>button.addEventListener("click",()=>{window.openNovaApplication?.(city,button.dataset.exam)}));grid.append(card)}
-reserveCitySpace();
-};
-searchForm.addEventListener("submit",event=>{event.preventDefault();render()});searchInput.addEventListener("input",render);render();
-window.addEventListener("resize",reserveCitySpace);
-document.fonts?.ready.then(reserveCitySpace);
-fetch(window.novaApplicationEndpoint("/api/applications/config"),{cache:"no-store"}).then(response=>response.ok?response.json():null).then(result=>{if(result?.settings?.groups){exams=result.settings.groups.map(group=>({id:group.id,title:group.name+" Sınavları"}));render()}}).catch(()=>{});
+(()=> {
+ const cities=[{"id":"istanbul","name":"İstanbul","lat":41.0082,"lon":28.9784},{"id":"sakarya","name":"Sakarya","lat":40.7569,"lon":30.405},{"id":"bursa","name":"Bursa","lat":40.195,"lon":29.0601},{"id":"izmir","name":"İzmir","lat":38.4237,"lon":27.1428},{"id":"eskisehir","name":"Eskişehir","lat":39.7667,"lon":30.5206},{"id":"ankara","name":"Ankara","lat":39.9334,"lon":32.8597},{"id":"antalya","name":"Antalya","lat":36.8969,"lon":30.7133},{"id":"mersin","name":"Mersin","lat":36.8121,"lon":34.6415},{"id":"adana","name":"Adana","lat":37.0017,"lon":35.3213},{"id":"antep","name":"Antep","lat":37.0662,"lon":37.3781},{"id":"diyarbakir","name":"Diyarbakır","lat":37.9144,"lon":40.211},{"id":"erzurum","name":"Erzurum","lat":39.905,"lon":41.2679},{"id":"van","name":"Van","lat":38.501,"lon":43.38},{"id":"samsun","name":"Samsun","lat":41.2867,"lon":36.3361},{"id":"ordu","name":"Ordu","lat":40.9839,"lon":37.8797},{"id":"trabzon","name":"Trabzon","lat":41.0015,"lon":39.7168}];
+ const grid=document.querySelector("#map-cities"),cityIndex=document.querySelector("#city-index"),picker=document.querySelector("#city-picker");
+ const title=document.querySelector("#city-picker-title"),back=document.querySelector("#picker-back");
+ const views=[...picker.querySelectorAll("[data-picker-view]")];
+ let selectedCity=null;
+ const project=(lon,lat)=>({x:(lon-25.8)*42.4/820*100,y:(42.2-lat)*54/350*100});
+ const setView=name=>{views.forEach(view=>view.hidden=view.dataset.pickerView!==name);back.hidden=name==="groups";picker.dataset.view=name};
+ const openPicker=city=>{selectedCity=city;title.textContent=city.name;setView("groups");picker.showModal()};
+ grid.querySelectorAll(".map-city").forEach(button=>button.addEventListener("click",()=>openPicker(cities.find(city=>city.id===button.dataset.cityId))));
+ for(const city of cities){
+  const chip=document.createElement("button");chip.type="button";chip.className="city-index__item";chip.innerHTML='<span class="city-index__pin" aria-hidden="true"></span>'+city.name;
+  chip.addEventListener("click",()=>openPicker(city));cityIndex.append(chip);
+ }
+ document.querySelector("#picker-close").addEventListener("click",()=>picker.close());
+ back.addEventListener("click",()=>setView("groups"));
+ picker.addEventListener("click",event=>{if(event.target===picker)picker.close()});
+ picker.querySelectorAll("[data-group]").forEach(button=>button.addEventListener("click",()=>{
+  if(button.dataset.group==="sanat")setView("arts");
+  else launchForm(button.dataset.group,"");
+ }));
+ function launchForm(group,branch){
+  if(!selectedCity)return;
+  const city=selectedCity;
+  picker.addEventListener("close",()=>window.openNovaApplication?.(city,group,branch),{once:true});
+  picker.close();
+ }
+ picker.querySelectorAll("[data-branch]").forEach(button=>button.addEventListener("click",()=>launchForm("sanat",button.dataset.branch)));
 })();

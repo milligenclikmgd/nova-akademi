@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="nova-header-v2.css?v=20261017-1">
-<link rel="stylesheet" href="sinav-basvurusu.css?v=20261017-4">
+<link rel="stylesheet" href="sinav-basvurusu.css?v=20261021-1">
 <link rel="stylesheet" href="nova-footer.css?v=20261017-1">
 </head>
 <body class="application-page">
@@ -27,18 +27,62 @@
       
     </div>
   </section>
-  <form class="city-search application-shell" id="city-search-form" role="search">
-    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"></circle><path d="m16 16 5 5"></path></svg>
-    <label class="sr-only" for="city-search-input">Şehir adıyla arayın</label>
-    <input id="city-search-input" type="search" placeholder="Şehir adıyla arayın..." autocomplete="off">
-    <button type="submit">Ara</button>
-  </form>
   <section class="city-section application-shell" aria-labelledby="city-heading">
     <div class="city-section__heading">
-      <div><p class="application-kicker">BAŞVURU MERKEZLERİ</p><h2 id="city-heading">Şehrinizi Seçin</h2><p>Şehir kartını açarak o şehirdeki sınav başvurularını görüntüleyin.</p></div>
+      <div><p class="application-kicker"><span></span>BAŞVURU MERKEZLERİ</p><h2 id="city-heading">Sınav Merkezini Seçin</h2><p>Haritadaki mavi işaretli şehirlerden birini seçerek sınav seçeneklerini görüntüleyin.</p></div>
+      <div class="city-legend" aria-label="Harita açıklaması"><span><i></i>Sınav merkezi bulunan iller</span><span><i class="city-legend__inactive"></i>Türkiye haritası</span></div>
     </div>
-    <div class="city-grid" id="city-grid" aria-live="polite"></div>
+    <div class="turkey-map" id="turkey-map"><div class="turkey-map__canvas">
+      <svg class="turkey-map__shape" viewBox="0 0 820 350" role="img" aria-label="Sınav başvuru şehirlerinin gösterildiği Türkiye haritası">
+  <defs><linearGradient id="turkey-land-gradient" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#dbeaf6"/><stop offset="1" stop-color="#c6dcee"/></linearGradient><filter id="turkey-map-shadow" x="-10%" y="-10%" width="120%" height="130%"><feDropShadow dx="0" dy="9" stdDeviation="9" flood-color="#52799a" flood-opacity=".12"/></filter></defs>
+  <path d="M8.5 99.9 L14.8 72.9 L22.0 54.0 L36.0 40.5 L57.2 37.8 L78.4 51.3 L95.4 62.1 L114.5 56.7 L137.8 51.3 L159.0 47.5 L178.1 58.3 L205.6 51.3 L231.1 40.5 L262.9 29.7 L298.9 27.0 L328.6 21.6 L362.5 22.7 L394.3 24.3 L430.4 25.9 L464.3 24.3 L498.2 27.0 L532.1 31.3 L561.8 40.5 L587.2 45.9 L614.8 49.7 L646.6 48.6 L676.3 49.7 L706.0 44.3 L735.6 47.5 L767.4 54.0 L795.0 60.5 L807.7 74.5 L804.8 92.9 L812.0 109.1 L798.0 130.7 L795.0 153.9 L780.2 178.2 L768.3 205.2 L763.2 234.9 L746.2 253.8 L722.9 265.7 L697.5 261.9 L672.0 276.5 L640.2 281.9 L610.6 290.5 L583.0 295.9 L551.2 301.3 L521.5 292.7 L491.8 298.1 L468.5 308.9 L441.0 325.1 L413.4 325.1 L379.5 328.3 L343.4 330.5 L309.5 334.8 L273.5 334.8 L239.6 332.1 L212.0 325.1 L182.3 322.9 L154.8 307.8 L127.2 301.3 L99.6 303.5 L76.3 308.9 L53.0 300.8 L30.5 290.5 L13.6 272.7 L10.6 247.3 L20.4 225.7 L16.1 204.1 L21.2 184.7 L12.7 164.7 L10.2 142.0 L15.3 119.9 Z" fill="url(#turkey-land-gradient)" stroke="#a9c1d5" stroke-width="2.2" stroke-linejoin="round" filter="url(#turkey-map-shadow)"/>
+</svg><div class="turkey-map__pins" id="map-cities" aria-label="Sınav merkezi bulunan şehirler"><button class="map-city" type="button" data-city-id="istanbul" style="left:16.43%;top:18.39%" aria-label="İstanbul sınav merkezini seç"><span class="map-city__dot"></span><span class="map-city__label">İstanbul</span></button>
+<button class="map-city" type="button" data-city-id="sakarya" style="left:23.81%;top:22.26%" aria-label="Sakarya sınav merkezini seç"><span class="map-city__dot"></span><span class="map-city__label">Sakarya</span></button>
+<button class="map-city" type="button" data-city-id="bursa" style="left:16.86%;top:30.93%" aria-label="Bursa sınav merkezini seç"><span class="map-city__dot"></span><span class="map-city__label">Bursa</span></button>
+<button class="map-city" type="button" data-city-id="izmir" style="left:6.94%;top:58.26%" aria-label="İzmir sınav merkezini seç"><span class="map-city__dot"></span><span class="map-city__label">İzmir</span></button>
+<button class="map-city" type="button" data-city-id="eskisehir" style="left:24.41%;top:37.54%" aria-label="Eskişehir sınav merkezini seç"><span class="map-city__dot"></span><span class="map-city__label">Eskişehir</span></button>
+<button class="map-city" type="button" data-city-id="ankara" style="left:36.50%;top:34.97%" aria-label="Ankara sınav merkezini seç"><span class="map-city__dot"></span><span class="map-city__label">Ankara</span></button>
+<button class="map-city" type="button" data-city-id="antalya" style="left:25.41%;top:81.82%" aria-label="Antalya sınav merkezini seç"><span class="map-city__dot"></span><span class="map-city__label">Antalya</span></button>
+<button class="map-city" type="button" data-city-id="mersin" style="left:45.72%;top:83.13%" aria-label="Mersin sınav merkezini seç"><span class="map-city__dot"></span><span class="map-city__label">Mersin</span></button>
+<button class="map-city" type="button" data-city-id="adana" style="left:49.23%;top:80.20%" aria-label="Adana sınav merkezini seç"><span class="map-city__dot"></span><span class="map-city__label">Adana</span></button>
+<button class="map-city" type="button" data-city-id="antep" style="left:59.87%;top:79.21%" aria-label="Antep sınav merkezini seç"><span class="map-city__dot"></span><span class="map-city__label">Antep</span></button>
+<button class="map-city" type="button" data-city-id="diyarbakir" style="left:74.52%;top:66.12%" aria-label="Diyarbakır sınav merkezini seç"><span class="map-city__dot"></span><span class="map-city__label">Diyarbakır</span></button>
+<button class="map-city" type="button" data-city-id="erzurum" style="left:79.98%;top:35.41%" aria-label="Erzurum sınav merkezini seç"><span class="map-city__dot"></span><span class="map-city__label">Erzurum</span></button>
+<button class="map-city" type="button" data-city-id="van" style="left:90.90%;top:57.07%" aria-label="Van sınav merkezini seç"><span class="map-city__dot"></span><span class="map-city__label">Van</span></button>
+<button class="map-city" type="button" data-city-id="samsun" style="left:54.48%;top:14.09%" aria-label="Samsun sınav merkezini seç"><span class="map-city__dot"></span><span class="map-city__label">Samsun</span></button>
+<button class="map-city" type="button" data-city-id="ordu" style="left:62.46%;top:18.76%" aria-label="Ordu sınav merkezini seç"><span class="map-city__dot"></span><span class="map-city__label">Ordu</span></button>
+<button class="map-city" type="button" data-city-id="trabzon" style="left:71.96%;top:18.49%" aria-label="Trabzon sınav merkezini seç"><span class="map-city__dot"></span><span class="map-city__label">Trabzon</span></button></div>
+    </div></div>
+    <div class="city-index" id="city-index" aria-label="Sınav merkezi bulunan iller"></div>
   </section>
+  <dialog class="city-picker" id="city-picker" aria-labelledby="city-picker-title">
+    <div class="city-picker__card">
+      <header class="city-picker__header">
+        <button class="city-picker__back" id="picker-back" type="button" aria-label="Sınav alanlarına dön" hidden>←</button>
+        <div><p class="application-kicker"><span></span>SEÇİLİ SINAV MERKEZİ</p><h2 id="city-picker-title">—</h2></div>
+        <button class="city-picker__close" id="picker-close" type="button" aria-label="Pencereyi kapat">×</button>
+      </header>
+      <div class="city-picker__views">
+        <section class="city-picker__view" data-picker-view="groups">
+          <p class="city-picker__prompt">Katılmak istediğiniz sınav alanını seçin.</p>
+          <button class="exam-choice" type="button" data-group="sanat">
+            <span class="exam-choice__icon" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M6 23.5 20.8 8.7l3.5 3.5L9.5 27H6v-3.5Z"/><path d="m18.9 10.6 3.5 3.5M5 6h11M5 11h7M5 16h4M21 22h6M19 26h8"/></svg></span>
+            <span><strong>Dans ve Senfoni Orkestra Sınavları</strong><small>Dans, senfoni orkestrası ve sahne sanatları sınavları</small></span><span class="exam-choice__arrow" aria-hidden="true">›</span>
+          </button>
+          <button class="exam-choice" type="button" data-group="spor">
+            <span class="exam-choice__icon" aria-hidden="true"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="11.5"/><path d="m12.5 5.2 3.5 2.5 3.5-2.5m-7 21.6 3.5-2.5 3.5 2.5M4.9 12l4 1.2 1.2 4-2.4 3M27.1 12l-4 1.2-1.2 4 2.4 3M16 7.7l3.1 2.3-1.2 3.7h-3.8l-1.2-3.7L16 7.7Z"/></svg></span>
+            <span><strong>Spor Akademisi</strong><small>Spor branşları ve yetenek değerlendirme sınavları</small></span><span class="exam-choice__arrow" aria-hidden="true">›</span>
+          </button>
+        </section>
+        <section class="city-picker__view" data-picker-view="arts" hidden>
+          <p class="city-picker__prompt">Sınav türünü seçin.</p>
+          <button class="branch-choice" type="button" data-branch="dance"><span class="branch-choice__number">01</span><strong>DANS</strong><span aria-hidden="true">↗</span></button>
+          <button class="branch-choice" type="button" data-branch="symphony"><span class="branch-choice__number">02</span><strong>SENFONİ ORKESTRASI</strong><span aria-hidden="true">↗</span></button>
+          <button class="branch-choice" type="button" data-branch="stage"><span class="branch-choice__number">03</span><strong>SAHNE SANATLARI</strong><span aria-hidden="true">↗</span></button>
+        </section>
+      </div>
+    </div>
+  </dialog>
   <section class="application-help">
     <div class="application-shell application-help__inner">
       <span class="help-icon" aria-hidden="true">?</span>
@@ -109,7 +153,7 @@
   </form>
 </dialog>
 <script src="nova-header.js?v=20261017-1"></script>
-<script src="sinav-basvurusu.js?v=20261017-4"></script>
+<script src="sinav-basvurusu.js?v=20261021-1"></script>
 <script src="nova-application-form.js?v=20261017-2"></script>
 </body>
 </html>
