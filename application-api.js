@@ -105,6 +105,9 @@ export class ApplicationStore {
   const legacy=this.sql.exec('SELECT id,city FROM applications WHERE reference IS NULL ORDER BY created_at,id').toArray(),sequences={};
   for(const row of legacy){sequences[row.city]=(sequences[row.city]||0)+1;this.sql.exec('UPDATE applications SET reference=? WHERE id=?','01-'+cityCode(row.city)+'-'+String(sequences[row.city]).padStart(3,'0'),row.id)}
   this.sql.exec('CREATE TABLE IF NOT EXISTS receipts (application_id TEXT NOT NULL, part INTEGER NOT NULL, data BLOB NOT NULL, PRIMARY KEY(application_id,part))');
+  this.sql.exec('CREATE TABLE IF NOT EXISTS exam_results (application_id TEXT PRIMARY KEY, result TEXT NOT NULL, updated_at TEXT NOT NULL)');
+  this.sql.exec('CREATE TABLE IF NOT EXISTS definitive_registrations (application_id TEXT PRIMARY KEY, updated_at TEXT NOT NULL, data TEXT NOT NULL, health_name TEXT NOT NULL, health_type TEXT NOT NULL, health_size INTEGER NOT NULL, status TEXT NOT NULL)');
+  this.sql.exec('CREATE TABLE IF NOT EXISTS registration_health (application_id TEXT NOT NULL, part INTEGER NOT NULL, data BLOB NOT NULL, PRIMARY KEY(application_id,part))');
   this.sql.exec('CREATE INDEX IF NOT EXISTS applications_created ON applications(created_at)');
  }
  getSettings(){const settings=JSON.parse(this.sql.exec('SELECT data FROM settings WHERE id=1').toArray()[0]?.data||JSON.stringify(defaultSettings()));settings.cities=defaultSettings().cities;if(!settings.applicationContract)settings.applicationContract=defaultSettings().applicationContract;if(!settings.cityExams||typeof settings.cityExams!=='object'||Array.isArray(settings.cityExams))settings.cityExams={};settings.groups=(settings.groups||defaultSettings().groups).map(group=>({...group,branches:group.branches.map(branch=>({...branch,paymentInstructions:branch.paymentInstructions??settings.paymentInstructions??'',applicationContract:branch.applicationContract??settings.applicationContract}))}));return settings}
@@ -113,13 +116,13 @@ export class ApplicationStore {
  async authorized(request){const token=cookieToken(request);if(!token)return false;const hash=await this.sessionKey(token);const now=Date.now();this.sql.exec('DELETE FROM sessions WHERE expires < ?',now);return this.sql.exec('SELECT token FROM sessions WHERE token=? AND expires>?',hash,now).toArray().length>0}
  async fetch(request){try{
   /* DO aktarımındaki gövdeyi yanıt vermeden önce sınırlandırarak tüket. */
-  if(request.body){const path=new URL(request.url).pathname;const max=path==='/api/applications'?MAX_PDF+65536:path==='/api/panel/activity-video'?MAX_VIDEO_BYTES:32768;const payload=await boundedBody(request,max);request=new Request(request,{body:payload})}
+  if(request.body){const path=new URL(request.url).pathname;const max=['/api/applications','/api/enrollment'].includes(path)?MAX_PDF+65536:path==='/api/panel/activity-video'?MAX_VIDEO_BYTES:32768;const payload=await boundedBody(request,max);request=new Request(request,{body:payload})}
   return await this.handle(request);
  }catch(error){try{if(request.body&&!request.body.locked)await request.body.cancel()}catch{}return reply({error:error.status?error.message:'İşlem tamamlanamadı. Lütfen tekrar deneyin.'},error.status||500)}}
  async handle(request){
   const url=new URL(request.url),path=url.pathname,method=request.method,now=Date.now();
   const origin=request.headers.get('Origin');
-  if(!['GET','HEAD'].includes(method)&&origin!==url.origin&&!(path==='/api/applications'&&publicOriginAllowed(origin,url.origin,this.env)))fail('Bu kaynaktan işlem yapılamaz.',403);
+  if(!['GET','HEAD'].includes(method)&&origin!==url.origin&&!( ['/api/applications','/api/enrollment','/api/enrollment/lookup'].includes(path)&&publicOriginAllowed(origin,url.origin,this.env)))fail('Bu kaynaktan işlem yapılamaz.',403);
   if(path==='/api/site-media/activity-video'&&method==='GET')return reply(videoSettings(this.sql));
   if(path==='/api/site-media/activity-video/file'&&['GET','HEAD'].includes(method))return serveActivityVideo(request,this.sql);
   if(path==='/api/applications/config'&&method==='GET')return reply({settings:this.getSettings(),ready:(this.env.NOVA_PANEL_PASSWORD||'').length>=MIN_PANEL_PASSWORD_LENGTH});
@@ -129,6 +132,38 @@ export class ApplicationStore {
    const row=this.sql.exec('SELECT reference,created_at,city,status,data,rejection_explanation FROM applications WHERE reference=?',reference).toArray()[0];if(!row)return reply({found:false});
    const item=JSON.parse(row.data),status=['onaylandi','reddedildi'].includes(row.status)?row.status:'kontrol-ediliyor';
    return reply({found:true,reference:row.reference,city:item.cityName,branch:item.branchName,status,createdAt:row.created_at,rejectionExplanation:status==='reddedildi'?row.rejection_explanation:''});
+  }
+  if(path==='/api/results'&&method==='GET'){
+   const cityId=(url.searchParams.get('city')||'').toLowerCase(),branchId=(url.searchParams.get('branch')||'').slice(0,80),settings=this.getSettings(),city=settings.cities.find(item=>item.id===cityId),branch=settings.groups.flatMap(group=>group.branches).find(item=>item.id===branchId);
+   if(!city||!branch||(settings.cityExams?.[cityId]||[]).indexOf(branchId)<0)return reply({error:'Bu şehir ve sınav için sonuç bulunamadı.'},404);
+   const rows=this.sql.exec('SELECT a.name,a.data,r.result FROM exam_results r JOIN applications a ON a.id=r.application_id WHERE a.city=? AND r.result IN (\'asil\',\'yedek1\',\'yedek2\',\'yedek3\')',cityId).toArray().filter(row=>JSON.parse(row.data).branch===branchId);
+   const order={asil:0,yedek1:1,yedek2:2,yedek3:3},results=rows.map(row=>({name:row.name,result:row.result})).sort((a,b)=>order[a.result]-order[b.result]||a.name.localeCompare(b.name,'tr'));
+   return reply({city:city.name,branch:branch.name,results});
+  }
+  if(path==='/api/enrollment/lookup'&&method==='POST'){
+   this.rate('enroll-lookup:'+(request.headers.get('CF-Connecting-IP')||'local'),8);const input=await readJson(request),reference=required(String(input.reference||'').toUpperCase(),'Başvuru numarası',32),tc=required(String(input.tc||''),'T.C. kimlik numarası',11);
+   const row=this.sql.exec('SELECT a.id,a.reference,a.data,r.result FROM applications a JOIN exam_results r ON r.application_id=a.id WHERE a.reference=? AND r.result=\'asil\'',reference).toArray()[0];
+   if(!row||JSON.parse(row.data).candidate?.tc!==tc)return reply({error:'Başvuru numarası veya T.C. kimlik numarası eşleşmedi.'},404);
+   const registration=this.sql.exec('SELECT data,status FROM definitive_registrations WHERE application_id=?',row.id).toArray()[0];
+   return reply({reference:row.reference,application:registration?JSON.parse(registration.data):JSON.parse(row.data),registrationStatus:registration?.status||''});
+  }
+  if(path==='/api/enrollment'&&method==='POST'){
+   this.rate('enroll-submit:'+(request.headers.get('CF-Connecting-IP')||'local'),5);let form;try{form=await new Response(await boundedBody(request,MAX_PDF+65536),{headers:{'Content-Type':request.headers.get('Content-Type')||''}}).formData()}catch{fail('Geçerli kayıt formu gönderin.')}
+   let input;try{input=JSON.parse(String(form.get('data')||''))}catch{fail('Kayıt bilgileri eksik.')};const reference=required(String(input.reference||'').toUpperCase(),'Başvuru numarası',32),tc=required(String(input.tc||''),'T.C. kimlik numarası',11),row=this.sql.exec('SELECT a.id,a.data,r.result FROM applications a JOIN exam_results r ON r.application_id=a.id WHERE a.reference=? AND r.result=\'asil\'',reference).toArray()[0];
+   if(!row||JSON.parse(row.data).candidate?.tc!==tc)fail('Başvuru doğrulanamadı.',404);if(input.confirmation!==true)fail('Bilgilerin doğruluğunu onaylayın.');
+   const file=form.get('healthReport');if(!file||typeof file==='string'||!file.size||file.size>MAX_PDF)fail('En fazla 5 MB sağlık raporu yükleyin.');const type=file.type,bytes=new Uint8Array(await file.arrayBuffer()),signature=new TextDecoder().decode(bytes.slice(0,5)),valid=(type==='application/pdf'&&signature==='%PDF-')||(type==='image/png'&&bytes[0]===137&&bytes[1]===80)||(type==='image/jpeg'&&bytes[0]===255&&bytes[1]===216);if(!valid)fail('Sağlık raporu PDF, JPG veya PNG olmalı.');
+   const original=JSON.parse(row.data),submitted=input.application||{},candidateInput=submitted.candidate||{},candidate={...original.candidate};
+   if(candidateInput.tc!==tc)fail('T.C. kimlik numarası değiştirilemez.');
+   for(const [key,label,max] of [['firstName','Ad',80],['lastName','Soyad',80],['phone','Telefon',30],['province','İkamet ili',80],['district','İlçe',80],['address','Açık adres',500]])candidate[key]=required(candidateInput[key],label,max);
+   candidate.school=text(candidateInput.school||'',150);candidate.grade=text(candidateInput.grade||'',40);
+   candidate.phone=phone(candidate.phone,'Aday telefonu');candidate.school=candidate.school.toLocaleUpperCase('tr-TR');candidate.grade=candidate.grade.toLocaleUpperCase('tr-TR');candidate.email=email(candidateInput.email||'');
+   if(!defaultSettings().cities.some(item=>item.name===candidate.province)||!districtsByProvince[candidate.province]?.includes(candidate.district))fail('İkamet ili ve ilçesini kontrol edin.');
+   candidate.dob=required(candidateInput.dob,'Doğum tarihi',10);const dob=new Date(candidate.dob+'T00:00:00Z');if(!/^\d{4}-\d{2}-\d{2}$/.test(candidate.dob)||!Number.isFinite(dob.getTime())||dob.toISOString().slice(0,10)!==candidate.dob||dob>new Date())fail('Doğum tarihi geçerli olmalı.');candidate.gender=text(candidateInput.gender||'',30);
+   if(!Array.isArray(submitted.contacts)||submitted.contacts.length!==original.contacts.length)fail('Veli bilgilerini kontrol edin.');
+   const contacts=original.contacts.map((previous,index)=>{const value=submitted.contacts[index]||{};return{...previous,fullName:titleCaseTr(required(value.fullName,'Veli Adı Soyadı',160)),occupation:required(value.occupation,'Meslek',100).toLocaleUpperCase('tr-TR'),phone:phone(value.phone,'Veli telefonu'),email:email(value.email||'')}});
+   const data={...original,candidate,contacts};
+   this.ctx.storage.transactionSync(()=>{this.sql.exec('INSERT INTO definitive_registrations(application_id,updated_at,data,health_name,health_type,health_size,status) VALUES(?,?,?,?,?,?,?) ON CONFLICT(application_id) DO UPDATE SET updated_at=excluded.updated_at,data=excluded.data,health_name=excluded.health_name,health_type=excluded.health_type,health_size=excluded.health_size,status=excluded.status',row.id,new Date().toISOString(),JSON.stringify(data),String(file.name||'saglik-raporu').slice(0,160),type,bytes.length,'payment_pending');this.sql.exec('DELETE FROM registration_health WHERE application_id=?',row.id);for(let part=0,offset=0;offset<bytes.length;part++,offset+=65536)this.sql.exec('INSERT INTO registration_health(application_id,part,data) VALUES(?,?,?)',row.id,part,bytes.slice(offset,offset+65536).buffer)});
+   return reply({ok:true,status:'payment_pending',message:'Belgeleriniz kaydedildi. Ödeme adımı sonraki aşamada açılacaktır.'},201);
   }
   if(path==='/api/panel/login'&&method==='POST'){
    if(!this.env.NOVA_PANEL_PASSWORD||this.env.NOVA_PANEL_PASSWORD.length<MIN_PANEL_PASSWORD_LENGTH)fail('Panel kurulumu tamamlanmadı. Cloudflare üzerinde NOVA_PANEL_PASSWORD gizli değişkenini en az 8 karakter olarak tanımlayın.',503);
@@ -152,6 +187,24 @@ export class ApplicationStore {
     const input=await readJson(request);let settings;
     this.ctx.storage.transactionSync(()=>{settings=validateSettings(input,this.getSettings());this.sql.exec('INSERT INTO settings(id,data) VALUES(1,?) ON CONFLICT(id) DO UPDATE SET data=excluded.data',JSON.stringify(settings))});
     return reply({settings});
+   }
+   if(path==='/api/panel/results'&&method==='GET'){
+    const settings=this.getSettings(),cityId=(url.searchParams.get('city')||'').toLowerCase(),branchId=(url.searchParams.get('branch')||'').slice(0,80);
+    if(!cityId)return reply({cities:settings.cities.filter(city=>(settings.cityExams?.[city.id]||[]).length).map(city=>({id:city.id,name:city.name}))});
+    const city=settings.cities.find(item=>item.id===cityId);if(!city)fail('İl bulunamadı.',404);
+    const branches=settings.groups.flatMap(group=>group.branches.filter(branch=>(settings.cityExams?.[cityId]||[]).includes(branch.id)).map(branch=>({...branch,groupName:group.name})));
+    if(!branchId)return reply({city:{id:city.id,name:city.name},branches});
+    const branch=branches.find(item=>item.id===branchId);if(!branch)fail('Bu ilde sınav bulunamadı.',404);
+    const rows=this.sql.exec('SELECT a.id,a.reference,a.created_at,a.name,a.status,a.data,r.result FROM applications a LEFT JOIN exam_results r ON r.application_id=a.id WHERE a.city=? ORDER BY a.name COLLATE NOCASE',cityId).toArray().filter(row=>JSON.parse(row.data).branch===branchId);
+    return reply({city:{id:city.id,name:city.name},branch,applications:rows.map(row=>{const item=JSON.parse(row.data);return{id:row.id,reference:row.reference,name:row.name,phone:item.candidate?.phone||'',status:row.status,result:row.result||'',createdAt:row.created_at}})});
+   }
+   const resultMatch=path.match(/^\/api\/panel\/results\/([a-f0-9-]{36})$/);
+   if(resultMatch&&method==='PATCH'){
+    const input=await readJson(request),row=this.sql.exec('SELECT id,data FROM applications WHERE id=?',resultMatch[1]).toArray()[0];if(!row)fail('Başvuru bulunamadı.',404);
+    const result=String(input.result||'');if(!['','asil','yedek1','yedek2','yedek3'].includes(result))fail('Geçersiz sınav sonucu.');
+    const item=JSON.parse(row.data),cityExams=this.getSettings().cityExams?.[item.city]||[];if(!cityExams.includes(item.branch))fail('Bu sınav şu anda bu ilde tanımlı değil.',409);
+    if(result)this.sql.exec('INSERT INTO exam_results(application_id,result,updated_at) VALUES(?,?,?) ON CONFLICT(application_id) DO UPDATE SET result=excluded.result,updated_at=excluded.updated_at',row.id,result,new Date().toISOString());else this.sql.exec('DELETE FROM exam_results WHERE application_id=?',row.id);
+    return reply({ok:true,result});
    }
    if(path==='/api/panel/applications'&&method==='GET'){
     const page=Math.max(1,Math.min(100000,Number(url.searchParams.get('page'))||1)),query=(url.searchParams.get('q')||'').trim().slice(0,160),status=url.searchParams.get('status')||'',city=url.searchParams.get('city')||'',branch=(url.searchParams.get('branch')||'').trim().slice(0,80);
