@@ -21,6 +21,8 @@ const email=value=>{const result=text(value??'',150);if(result&&!/^[^\s@]+@[^\s@
 export function validateSettings(input,previous){
  if(!input||!Array.isArray(input.groups)||input.groups.length<1||input.groups.length>15)fail('En az bir sınav grubu gerekli.');
  if(input.revision!==previous.revision)fail('Ayarlar başka bir oturumda değişti. Sayfayı yenileyin.',409);
+ const legacyPayment=input.paymentInstructions===undefined?(previous.paymentInstructions||''):text(input.paymentInstructions,2000);
+ const legacyContract=input.applicationContract===undefined?(previous.applicationContract||defaultSettings().applicationContract):text(input.applicationContract,6000);
  const ids=new Set();
  const id=value=>{const result=required(value,'Kod',60);if(!/^[a-z0-9-]+$/.test(result)||ids.has(result))fail('Grup ve branş kodları benzersiz olmalı.');ids.add(result);return result};
  const groups=input.groups.map(group=>{
@@ -28,7 +30,7 @@ export function validateSettings(input,previous){
   return {id:id(group.id),name:required(group.name,'Grup adı',80),branches:group.branches.map(branch=>{
    if(!branch)fail('Geçersiz branş.');
    for(const fee of [branch.candidateFee,branch.registrationFee])if(fee!==null&&(!Number.isFinite(fee)||fee<0||fee>100000||Math.abs(Math.round(fee*100)-fee*100)>.00001))fail('Ücret 0–100.000 TL arasında ve en çok iki ondalıklı olmalı.');
-   return {id:id(branch.id),name:required(branch.name,'Branş adı',80),candidateFee:branch.candidateFee,registrationFee:branch.registrationFee};
+   return {id:id(branch.id),name:required(branch.name,'Branş adı',80),candidateFee:branch.candidateFee,registrationFee:branch.registrationFee,paymentInstructions:branch.paymentInstructions===undefined?legacyPayment:text(branch.paymentInstructions,2000),applicationContract:branch.applicationContract===undefined?legacyContract:text(branch.applicationContract,6000)};
   })};
  });
  if(input.accepting===true&&groups.every(group=>group.branches.every(branch=>branch.candidateFee===null&&branch.registrationFee===null)))fail('Başvuruları açmadan önce en az bir ücret girin.');
@@ -41,7 +43,7 @@ export function validateSettings(input,previous){
   if(unique.some(branchId=>typeof branchId!=='string'||!branchIds.has(branchId)))fail('Şehir için seçilen sınavlardan biri artık mevcut değil.');
   if(unique.length)cityExams[cityId]=unique;
  }
- return {...previous,groups,cityExams,accepting:input.accepting===true,paymentInstructions:text(input.paymentInstructions,2000),applicationContract:input.applicationContract===undefined?(previous.applicationContract||defaultSettings().applicationContract):text(input.applicationContract,6000),revision:previous.revision+1};
+ return {...previous,groups,cityExams,accepting:input.accepting===true,paymentInstructions:legacyPayment,applicationContract:legacyContract,revision:previous.revision+1};
 }
 function validTckn(value){if(!/^[1-9]\d{10}$/.test(value))return false;const d=[...value].map(Number);const tenth=((d[0]+d[2]+d[4]+d[6]+d[8])*7-(d[1]+d[3]+d[5]+d[7])+100)%10;return d[9]===tenth&&d[10]===d.slice(0,10).reduce((a,b)=>a+b,0)%10}
 const cityCode=id=>{
