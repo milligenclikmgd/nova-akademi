@@ -95,13 +95,13 @@ async function handleNovaAi(request, env) {
 export default {
   async fetch(request, env) {
     const pathname = new URL(request.url).pathname;
-    if (pathname === '/api/applications' || pathname.startsWith('/api/applications/') || pathname==='/api/results' || pathname==='/api/enrollment' || pathname==='/api/enrollment/lookup' || pathname==='/api/enrollment/session' || pathname==='/api/enrollment/payment' || pathname.startsWith('/api/panel/') || pathname.startsWith('/api/site-media/')) {
-      const origin=request.headers.get('Origin'),isPublic=pathname==='/api/applications'||pathname==='/api/applications/config'||pathname==='/api/applications/track'||pathname==='/api/results'||pathname==='/api/enrollment'||pathname==='/api/enrollment/lookup'||pathname==='/api/enrollment/session'||pathname==='/api/enrollment/payment'||pathname.startsWith('/api/site-media/');
+    if (pathname === '/api/applications' || pathname.startsWith('/api/applications/') || pathname==='/api/results' || pathname==='/api/enrollment' || pathname==='/api/enrollment/lookup' || pathname==='/api/enrollment/session' || pathname==='/api/enrollment/payment' || pathname==='/api/site-content' || pathname.startsWith('/api/panel/') || pathname.startsWith('/api/site-media/')) {
+      const origin=request.headers.get('Origin'),isPublic=pathname==='/api/applications'||pathname==='/api/applications/config'||pathname==='/api/applications/track'||pathname==='/api/results'||pathname==='/api/enrollment'||pathname==='/api/enrollment/lookup'||pathname==='/api/enrollment/session'||pathname==='/api/enrollment/payment'||pathname==='/api/site-content'||pathname.startsWith('/api/site-media/');
       const cors=isPublic&&origin&&publicOriginAllowed(origin,new URL(request.url).origin,env)?{'Access-Control-Allow-Origin':origin,'Access-Control-Allow-Methods':'GET, HEAD, POST, OPTIONS','Access-Control-Allow-Headers':'Content-Type, Range, If-Range','Access-Control-Expose-Headers':'Content-Range, Accept-Ranges, Content-Length, ETag','Vary':'Origin'}:{};
       if(request.method==='OPTIONS')return new Response(null,{status:cors['Access-Control-Allow-Origin']?204:403,headers:cors});
       // Buffer bounded video uploads before crossing the Durable Object bridge.
       // A rejected upload must not leave the forwarded request stream running.
-      if(pathname==='/api/panel/activity-video'&&request.method==='PUT'){
+      if((pathname==='/api/panel/activity-video'&&request.method==='PUT')||(pathname==='/api/panel/cms-media'&&request.method==='POST')){
         try{
           if(origin!==new URL(request.url).origin){if(request.body)await request.body.cancel();return reply({error:'Bu kaynaktan işlem yapılamaz.'},403)}
           const payload=await boundedBody(request,MAX_VIDEO_BYTES);

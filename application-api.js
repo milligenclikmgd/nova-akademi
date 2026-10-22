@@ -1,10 +1,11 @@
-import {MAX_VIDEO_BYTES, initializeSiteMedia, videoSettings, saveActivityVideo, removeActivityVideo, serveActivityVideo} from './site-media.js';
+import {MAX_VIDEO_BYTES, initializeSiteMedia, videoSettings, saveActivityVideo, removeActivityVideo, serveActivityVideo, saveCMSMedia, serveCMSMedia} from './site-media.js';
 import districtsByProvince from './turkiye-il-ilce.js';
 const MAX_PDF = 5 * 1024 * 1024;
 const MIN_PANEL_PASSWORD_LENGTH = 8;
 const COOKIE = '__Host-nova-panel';
 export const defaultSettings = () => ({
   revision: 1, accepting: false, paymentInstructions: '', applicationContract: 'NOVA Sanat ve Spor Kulübü Sınav Başvurusu Sözleşmesi\n\n1. Başvuru sahibi, formda verdiği bilgilerin doğru ve güncel olduğunu beyan eder.\n2. Başvuru, sınav değerlendirmesine katılım talebidir; kabul veya kesin kayıt garantisi vermez.\n3. Aday, sınav günü duyurulan saat ve yerde hazır bulunur; gerekli belgeleri yanında getirir.\n4. Sınav ücretinin yatırılması ve dekontun yüklenmesi başvurunun değerlendirmeye alınması için gereklidir.\n5. Kişisel veriler, başvurunun alınması, sınavın yürütülmesi ve adayla iletişim kurulması amacıyla işlenir.\n6. Başvuru sahibi bu koşulları okuyup kabul ettiğini onaylar.',
+  cms:{contact:{phone:'',email:'info@novaakademi.com',address:''},faq:[{question:'Nasıl başvuru yapabilirim?',answer:'Başvuru takvimimizi ve sınav adımlarını Sınav Başvurusu sayfamızdan inceleyebilirsiniz.'},{question:'Hangi yaş gruplarına eğitim veriliyor?',answer:'Programlarımızın yaş grupları ve koşulları ilgili program sayfalarında açıklanmaktadır.'},{question:'Eğitimler ne zaman gerçekleşiyor?',answer:'Ders ve etkinlik takvimi dönem başlamadan önce duyurulur.'},{question:'Eğitimler hangi alanlarda veriliyor?',answer:'Sanat, sahne sanatları, müzik ve spor alanlarında programlarımız bulunmaktadır.'}],articles:[],slides:[{id:'default-folk',mediaType:'image',image:'/assets/nova-slider-folk.svg',alt:'NOVA sahne sanatları öğrencileri',link:'',order:0,published:true},{id:'default-orchestra',mediaType:'image',image:'/assets/nova-slider-violin.svg',alt:'NOVA müzik ve orkestra çalışmaları',link:'',order:1,published:true}]},
   groups: [
     {id:'sanat',name:'Sahne Sanatları ve Senfoni Orkestrası',branches:[{id:'dans-sahne',name:'Dans ve Sahne Sanatları Sınavı',candidateFee:null,registrationFee:null},{id:'senfoni',name:'Senfoni Orkestrası Sınavı',candidateFee:null,registrationFee:null}]},
     {id:'spor',name:'Spor Akademisi',branches:[{id:'basketbol',name:'Basketbol Sınavı',candidateFee:null,registrationFee:null},{id:'voleybol',name:'Voleybol Sınavı',candidateFee:null,registrationFee:null},{id:'futbol',name:'Futbol Sınavı',candidateFee:null,registrationFee:null},{id:'futsal',name:'Futsal Sınavı',candidateFee:null,registrationFee:null}]}
@@ -45,6 +46,20 @@ export function validateSettings(input,previous){
   if(unique.length)cityExams[cityId]=unique;
  }
  return {...previous,groups,cityExams,accepting:input.accepting===true,paymentInstructions:legacyPayment,applicationContract:legacyContract,revision:previous.revision+1};
+}
+function cmsText(value,label,max){if(typeof value!=='string'||value.length>max)fail(label+' alanını kontrol edin.');return value.trim()}
+function cmsUrl(value,label,{empty=true}={}){const result=cmsText(value,label,2000);if(!result&&empty)return '';if(!result)fail(label+' gerekli.');if(result.startsWith('/api/site-media/cms/')||result.startsWith('/assets/'))return result;if(result.startsWith('//')||result.startsWith('/'))fail(label+' geçerli bir bağlantı olmalı.');try{const url=new URL(result);if(!['http:','https:'].includes(url.protocol))fail(label+' güvenli bir bağlantı olmalı.');return url.href}catch{fail(label+' geçerli bir bağlantı olmalı.')}}
+export function validateCMS(input,previous){
+ if(!input||typeof input!=='object'||Array.isArray(input))fail('İçerik ayarlarını kontrol edin.');
+ const contact=input.contact||{},phone=cmsText(contact.phone||'','Telefon',40),email=cmsText(contact.email||'','E-posta',160),address=cmsText(contact.address||'','Adres',500),contactExtra=cmsText(contact.extra||'','Ek iletişim bilgisi',300);
+ if(email&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))fail('E-posta adresini kontrol edin.');
+ if(!Array.isArray(input.faq)||input.faq.length!==4)fail('Tam olarak dört sık sorulan soru ekleyin.');
+ const faq=input.faq.map(item=>{if(!item||typeof item!=='object')fail('Soru ve yanıtları kontrol edin.');return{question:required(cmsText(item.question,'Soru',240),'Soru',240),answer:required(cmsText(item.answer,'Yanıt',1600),'Yanıt',1600)}});
+ if(!Array.isArray(input.articles)||input.articles.length>40)fail('En fazla 40 haber veya duyuru kaydı ekleyin.');
+ const ids=new Set(),articles=input.articles.map(item=>{if(!item||typeof item!=='object')fail('İçerik kaydını kontrol edin.');const id=required(item.id,'İçerik kodu',80);if(!/^[a-zA-Z0-9_-]+$/.test(id)||ids.has(id))fail('İçerik kayıt kodları benzersiz olmalı.');ids.add(id);if(!['haber','duyuru','etkinlik','sinav-duyurusu'].includes(item.category))fail('İçerik kategorisini seçin.');return{id,category:item.category,title:required(cmsText(item.title,'Başlık',180),'Başlık',180),summary:cmsText(item.summary||'','Kısa açıklama',500),content:required(cmsText(item.content,'İçerik',12000),'İçerik',12000),cover:cmsUrl(item.cover||'','Kapak görseli'),media:cmsUrl(item.media||'','Ek medya'),mediaType:['image','video'].includes(item.mediaType)?item.mediaType:'image',link:cmsUrl(item.link||'','Bağlantı'),published:item.published===true,updatedAt:new Date().toISOString()}});
+ if(!Array.isArray(input.slides)||input.slides.length>12)fail('Slider listesi en fazla 12 kayıt içerebilir.');
+ const slideIds=new Set(),slides=input.slides.map((item,index)=>{if(!item||typeof item!=='object')fail('Slider kaydını kontrol edin.');const id=required(item.id,'Slider kodu',80);if(!/^[a-zA-Z0-9_-]+$/.test(id)||slideIds.has(id))fail('Slider kayıt kodları benzersiz olmalı.');slideIds.add(id);if(item.mediaType!=='image'&&item.mediaType!=='video')fail('Slider görsel türünü seçin.');return{id,mediaType:item.mediaType,image:item.mediaType==='image'?cmsUrl(item.image||'','Slider görseli',{empty:false}):'',video:item.mediaType==='video'?cmsUrl(item.video||'','Slider videosu',{empty:false}):'',alt:required(cmsText(item.alt||'','Görsel açıklaması',300),'Görsel açıklaması',300),link:cmsUrl(item.link||'','Slider bağlantısı'),order:index,published:item.published!==false}});
+ return {contact:{phone,email,address,extra:contactExtra},faq,articles,slides};
 }
 function validTckn(value){if(!/^[1-9]\d{10}$/.test(value))return false;const d=[...value].map(Number);const tenth=((d[0]+d[2]+d[4]+d[6]+d[8])*7-(d[1]+d[3]+d[5]+d[7])+100)%10;return d[9]===tenth&&d[10]===d.slice(0,10).reduce((a,b)=>a+b,0)%10}
 const cityCode=id=>{
@@ -91,7 +106,7 @@ export function validateApplication(input,settings){
 async function digest(value){return [...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(value)))].map(x=>x.toString(16).padStart(2,'0')).join('')}
 async function sameSecret(a,b){const aa=await digest(a),bb=await digest(b);let delta=0;for(let i=0;i<aa.length;i++)delta|=aa.charCodeAt(i)^bb.charCodeAt(i);return delta===0}
 export async function boundedBody(request,max){if(Number(request.headers.get('Content-Length'))>max)fail('İstek çok büyük.',413);const reader=request.body?.getReader(),chunks=[];let size=0;if(!reader)return new Uint8Array();while(true){const {done,value}=await reader.read();if(done)break;size+=value.byteLength;if(size>max){await reader.cancel();fail('İstek çok büyük.',413)}chunks.push(value)}const result=new Uint8Array(size);let offset=0;for(const chunk of chunks){result.set(chunk,offset);offset+=chunk.byteLength}return result}
-async function readJson(request){const raw=new TextDecoder().decode(await boundedBody(request,32768));try{return JSON.parse(raw)}catch{fail('Geçerli bir form gerekli.')}}
+async function readJson(request,max=32768){const raw=new TextDecoder().decode(await boundedBody(request,max));try{return JSON.parse(raw)}catch{fail('Geçerli bir form gerekli.')}}
 function cookieToken(request){return (request.headers.get('Cookie')||'').split(';').map(item=>item.trim()).find(item=>item.startsWith(COOKIE+'='))?.slice(COOKIE.length+1)||''}
 export class ApplicationStore {
  constructor(ctx,env){this.ctx=ctx;this.env=env;this.sql=ctx.storage.sql;
@@ -115,13 +130,13 @@ export class ApplicationStore {
   this.sql.exec('CREATE TABLE IF NOT EXISTS registration_health (application_id TEXT NOT NULL, part INTEGER NOT NULL, data BLOB NOT NULL, PRIMARY KEY(application_id,part))');
   this.sql.exec('CREATE INDEX IF NOT EXISTS applications_created ON applications(created_at)');
  }
- getSettings(){const settings=JSON.parse(this.sql.exec('SELECT data FROM settings WHERE id=1').toArray()[0]?.data||JSON.stringify(defaultSettings()));settings.cities=defaultSettings().cities;if(!settings.applicationContract)settings.applicationContract=defaultSettings().applicationContract;if(!settings.cityExams||typeof settings.cityExams!=='object'||Array.isArray(settings.cityExams))settings.cityExams={};settings.groups=(settings.groups||defaultSettings().groups).map(group=>({...group,branches:group.branches.map(branch=>({...branch,paymentInstructions:branch.paymentInstructions??settings.paymentInstructions??'',applicationContract:branch.applicationContract??settings.applicationContract}))}));return settings}
+ getSettings(){const settings=JSON.parse(this.sql.exec('SELECT data FROM settings WHERE id=1').toArray()[0]?.data||JSON.stringify(defaultSettings()));settings.cities=defaultSettings().cities;if(!settings.applicationContract)settings.applicationContract=defaultSettings().applicationContract;if(!settings.cms)settings.cms=defaultSettings().cms;if(!settings.cityExams||typeof settings.cityExams!=='object'||Array.isArray(settings.cityExams))settings.cityExams={};settings.groups=(settings.groups||defaultSettings().groups).map(group=>({...group,branches:group.branches.map(branch=>({...branch,paymentInstructions:branch.paymentInstructions??settings.paymentInstructions??'',applicationContract:branch.applicationContract??settings.applicationContract}))}));return settings}
  rate(key,maximum){const now=Date.now();this.sql.exec('DELETE FROM limits WHERE expires < ?',now);this.sql.exec('INSERT INTO limits(key,count,expires) VALUES(?,1,?) ON CONFLICT(key) DO UPDATE SET count=count+1',key,now+15*60*1000);if(this.sql.exec('SELECT count FROM limits WHERE key=?',key).one().count>maximum)fail('Çok fazla deneme. 15 dakika sonra tekrar deneyin.',429)}
  sessionKey(token){return digest(token+'|'+(this.env.NOVA_PANEL_PASSWORD||''))}
  async authorized(request){const token=cookieToken(request);if(!token)return false;const hash=await this.sessionKey(token);const now=Date.now();this.sql.exec('DELETE FROM sessions WHERE expires < ?',now);return this.sql.exec('SELECT token FROM sessions WHERE token=? AND expires>?',hash,now).toArray().length>0}
  async fetch(request){try{
   /* DO aktarımındaki gövdeyi yanıt vermeden önce sınırlandırarak tüket. */
-  if(request.body){const path=new URL(request.url).pathname;const max=['/api/applications','/api/enrollment','/api/enrollment/payment'].includes(path)?MAX_PDF+65536:path==='/api/panel/activity-video'?MAX_VIDEO_BYTES:32768;const payload=await boundedBody(request,max);request=new Request(request,{body:payload})}
+  if(request.body){const path=new URL(request.url).pathname;const max=['/api/applications','/api/enrollment','/api/enrollment/payment'].includes(path)?MAX_PDF+65536:['/api/panel/activity-video','/api/panel/cms-media'].includes(path)?MAX_VIDEO_BYTES:path==='/api/panel/cms'?524288:32768;const payload=await boundedBody(request,max);request=new Request(request,{body:payload})}
   return await this.handle(request);
  }catch(error){try{if(request.body&&!request.body.locked)await request.body.cancel()}catch{}return reply({error:error.status?error.message:'İşlem tamamlanamadı. Lütfen tekrar deneyin.'},error.status||500)}}
  async handle(request){
@@ -130,7 +145,9 @@ export class ApplicationStore {
   if(!['GET','HEAD'].includes(method)&&origin!==url.origin&&!( ['/api/applications','/api/enrollment','/api/enrollment/lookup','/api/enrollment/session','/api/enrollment/payment'].includes(path)&&publicOriginAllowed(origin,url.origin,this.env)))fail('Bu kaynaktan işlem yapılamaz.',403);
   if(path==='/api/site-media/activity-video'&&method==='GET')return reply(videoSettings(this.sql));
   if(path==='/api/site-media/activity-video/file'&&['GET','HEAD'].includes(method))return serveActivityVideo(request,this.sql);
-  if(path==='/api/applications/config'&&method==='GET')return reply({settings:this.getSettings(),ready:(this.env.NOVA_PANEL_PASSWORD||'').length>=MIN_PANEL_PASSWORD_LENGTH});
+  const cmsMediaMatch=path.match(/^\/api\/site-media\/cms\/([a-f0-9-]{36})$/);if(cmsMediaMatch&&['GET','HEAD'].includes(method))return serveCMSMedia(request,this.sql,cmsMediaMatch[1]);
+  if(path==='/api/site-content'&&method==='GET'){const cms=this.getSettings().cms,articles=cms.articles.filter(item=>item.published).sort((a,b)=>b.updatedAt.localeCompare(a.updatedAt));return reply({contact:cms.contact,faq:cms.faq,articles,slides:cms.slides.filter(item=>item.published).sort((a,b)=>a.order-b.order)});}
+  if(path==='/api/applications/config'&&method==='GET'){const settings=this.getSettings();delete settings.cms;delete settings.cmsRevision;return reply({settings,ready:(this.env.NOVA_PANEL_PASSWORD||'').length>=MIN_PANEL_PASSWORD_LENGTH});}
   if(path==='/api/applications/track'&&method==='GET'){
    this.rate('track:'+(request.headers.get('CF-Connecting-IP')||'local'),60);
    const reference=(url.searchParams.get('reference')||'').trim().toUpperCase();if(!/^\d{2}-[A-ZÇĞİÖŞÜ]{3}-\d{3,}$/.test(reference))return reply({found:false});
@@ -215,6 +232,11 @@ export class ApplicationStore {
   }
   if(path.startsWith('/api/panel/')){
    if(!await this.authorized(request))fail('Panel oturumunuz sona erdi. Lütfen giriş yapın.',401);
+   if(path==='/api/panel/cms'){
+    if(method==='GET'){const settings=this.getSettings();return reply({cms:settings.cms,revision:settings.cmsRevision||1});}
+    if(method==='PUT'){const input=await readJson(request,524288),previous=this.getSettings(),cmsRevision=previous.cmsRevision||1;if(input.revision!==cmsRevision)fail('Site içerikleri başka bir oturumda değişti. Sayfayı yenileyin.',409);const cms=validateCMS(input.cms,previous.cms);const settings={...previous,cms,cmsRevision:cmsRevision+1};this.sql.exec('INSERT INTO settings(id,data) VALUES(1,?) ON CONFLICT(id) DO UPDATE SET data=excluded.data',JSON.stringify(settings));return reply({cms,revision:settings.cmsRevision});}
+   }
+   if(path==='/api/panel/cms-media'&&method==='POST')return saveCMSMedia(request,this);
    if(path==='/api/panel/activity-video'){
     if(method==='GET')return reply(videoSettings(this.sql));
     if(method==='PUT')return saveActivityVideo(request,this);
