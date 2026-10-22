@@ -16,12 +16,12 @@
   const isExam=selected==='exam-management';document.querySelectorAll('[data-view]').forEach(item=>item.classList.toggle('is-active',item.dataset.view===selected));
   $('#exam-management-nav').hidden=!isExam;
   const active=isExam?examSub:selected;
-  ['applications','settings','media','results','news','faq','contact','messages','slides','partners','board'].forEach(view=>$('#'+view+'-view').hidden=view!==active);
+  ['applications','settings','media','results','news','faq','contact','messages','partners','board'].forEach(view=>$('#'+view+'-view').hidden=view!==active);
   document.querySelectorAll('[data-exam-view]').forEach(item=>item.classList.toggle('is-active',isExam&&item.dataset.examView===active));
-  const labels={settings:'Sınav Oluştur',applications:'Tüm Başvurular',results:'Sonuç Açıklama',media:'Site Videosu',news:'Haberler ve Duyurular',faq:'Sık Sorulan Sorular',contact:'İletişim',messages:'Mesajlar',slides:'Ana Sayfa Sliderları',partners:'İş Ortakları',board:'Yönetim Kurulu'};
+  const labels={settings:'Sınav Oluştur',applications:'Tüm Başvurular',results:'Sonuç Açıklama',media:'Site Videosu',news:'Haberler ve Duyurular',faq:'Sık Sorulan Sorular',contact:'İletişim',messages:'Mesajlar',partners:'İş Ortakları',board:'Yönetim Kurulu'};
   $('#page-breadcrumb').textContent=isExam?'Sınav Yönetimi · '+labels[active]:labels[active];
   if(active==='media')loadActivityVideo();if(active==='results')loadResultCities();if(active==='applications')loadApplications();
-  if(['news','faq','contact','messages','slides','partners','board'].includes(active))window.loadPanelCMS?.(active);notice('#panel-message')
+  if(['news','faq','contact','messages','partners','board'].includes(active))window.loadPanelCMS?.(active);notice('#panel-message')
  }
  document.querySelectorAll('[data-view]').forEach(button=>button.addEventListener('click',()=>activateView(button.dataset.view,button.dataset.view==='exam-management'?'settings':undefined)));
  document.querySelectorAll('[data-exam-view]').forEach(button=>button.addEventListener('click',()=>activateView('exam-management',button.dataset.examView)));
