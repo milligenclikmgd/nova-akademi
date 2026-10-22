@@ -1,1 +1,44 @@
-<!doctype html><html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="NOVA sınav sonuç listesi"><title>NOVA | Sınav Sonuç Listesi</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="sonuclar.css?v=20261022-3"><link rel="stylesheet" href="nova-header-v2.css?v=20261022-1"></head><body><div data-nova-header></div><script src="nova-header.js?v=20261022-1"></script><main class="results-main"><a class="results-back" href="sinavlar.html">← Sınav merkezlerine dön</a><p class="results-kicker">NOVA · RESMÎ SONUÇ LİSTESİ</p><h1 id="exam-title">Sınav Sonuçları</h1><p id="exam-subtitle" class="results-subtitle"></p><div id="result-message" class="result-message" role="status">Sonuç listesi yükleniyor…</div><div id="candidate-list" class="candidate-list"></div></main><dialog class="enroll-dialog" id="enroll-dialog"><div class="enroll-card"><button class="enroll-close" id="enroll-close" aria-label="Kapat">×</button><p class="results-kicker">NOVA · KESİN KAYIT</p><h2>Başvuru bilgilerinizi doğrulayın</h2><form id="lookup-form"><label>Başvuru numarası<input name="reference" placeholder="01-ANK-001" required></label><label>T.C. kimlik numarası<input name="tc" inputmode="numeric" maxlength="11" required></label><p class="form-error" id="lookup-error" hidden></p><button class="primary" type="submit">Başvuruyu getir</button></form><form id="enroll-form" hidden><div id="editable-fields"></div><button id="continue-enroll" class="primary" type="button">Başvuruya devam et</button><div id="health-step" hidden><label>Sağlık raporu yükleyin (PDF, JPG veya PNG)<input name="healthReport" type="file" accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png" required disabled></label><label class="confirm-check"><input name="confirmation" type="checkbox" required disabled> Bilgilerimin doğruluğunu onaylıyorum.</label><button class="primary" type="submit">Ödeme adımına geç</button></div><p class="form-error" id="enroll-error" hidden></p><p class="payment-note" id="payment-note" hidden>Belgeleriniz kaydedildi. Ödeme adımı bir sonraki güncellemede açılacaktır.</p></form></div></dialog><footer class="results-footer">© 2026 NOVA Sanat ve Spor Kulübü</footer><script src="sonuclar.js?v=20261022-3"></script></body></html>
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="NOVA sınav sonuç listesi">
+<title>NOVA | Sınav Sonuç Listesi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="sonuclar.css?v=20261022-4"><link rel="stylesheet" href="nova-header-v2.css?v=20261022-1">
+</head>
+<body><div data-nova-header></div><script src="nova-header.js?v=20261022-1"></script>
+<main class="results-main">
+ <nav class="results-breadcrumb" aria-label="Sayfa yolu"><a href="index.html">Ana Sayfa</a><span>›</span><a href="sinavlar.html">Sınav Sonuçları</a><span>›</span><span id="breadcrumb-exam">Sonuç Listesi</span></nav>
+ <p class="results-kicker">NOVA · RESMÎ SONUÇ LİSTESİ</p><h1 id="exam-title">Sınav Sonuçları</h1>
+ <p id="exam-subtitle" class="results-subtitle">Aday sonuçlarını kategori seçerek görüntüleyebilirsiniz.</p>
+ <div id="result-message" class="result-message" role="status">Sonuç listesi yükleniyor…</div>
+ <section id="candidate-list" class="candidate-list" aria-live="polite"></section>
+</main>
+<dialog class="enroll-dialog" id="enroll-dialog" aria-labelledby="enroll-title">
+ <div class="enroll-card">
+  <button class="enroll-close" id="enroll-close" type="button" aria-label="Pencereyi kapat">×</button>
+  <p class="results-kicker">NOVA · KESİN KAYIT</p><h2 id="enroll-title">Başvuru bilgilerinizi doğrulayın</h2>
+  <form id="lookup-form" class="lookup-form">
+   <p class="step-intro">Başvuru kaydınızı açmak için başvuru numaranızı ve T.C. kimlik numaranızı girin.</p>
+   <label>Başvuru numarası<input name="reference" placeholder="01-ANK-001" autocomplete="off" required></label>
+   <label>T.C. kimlik numarası<input name="tc" inputmode="numeric" pattern="[1-9][0-9]{10}" minlength="11" maxlength="11" autocomplete="off" required></label>
+   <p class="form-error" id="lookup-error" role="alert" hidden></p><button class="primary" type="submit">Başvuruyu getir</button>
+  </form>
+  <form id="enroll-form" hidden>
+   <section class="enroll-step-card"><div class="enroll-step-heading"><span>1</span><div><strong>Başvuru bilgileri</strong><small>Bilgilerinizi kontrol edip gerekiyorsa güncelleyin.</small></div></div><div id="editable-fields" class="editable-fields"></div></section>
+   <button id="continue-enroll" class="primary continue-button" type="button">Bilgilerim doğru, devam et <span aria-hidden="true">↓</span></button>
+   <section id="health-step" class="enroll-step-card health-step is-locked" aria-labelledby="health-step-title">
+    <div class="enroll-step-heading"><span>2</span><div><strong id="health-step-title">Sağlık raporu ve onay</strong><small>Bu adım kesin kayıt başvurusunun tamamlanması için gereklidir.</small></div></div>
+    <p class="health-step-status" id="health-step-status">Önce başvuru bilgilerinizi kontrol edip “Bilgilerim doğru, devam et” düğmesine basın.</p>
+    <label class="upload-field">Sağlık raporu yükleyin <small>PDF, JPG veya PNG · En fazla 5 MB</small><input name="healthReport" type="file" accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png" required disabled></label>
+    <label class="confirm-check"><input name="confirmation" type="checkbox" required disabled><span>Başvuru bilgilerimin doğru ve güncel olduğunu onaylıyorum.</span></label>
+    <button class="primary payment-button" type="submit" disabled>Belgeleri kaydet ve ödeme adımına geç <span aria-hidden="true">→</span></button>
+   </section>
+   <p class="form-error" id="enroll-error" role="alert" hidden></p><p class="payment-note" id="payment-note" role="status" hidden></p>
+  </form>
+ </div>
+</dialog>
+<footer class="results-footer">© 2026 NOVA Sanat ve Spor Kulübü</footer>
+<script src="sonuclar.js?v=20261022-4"></script></body></html>
