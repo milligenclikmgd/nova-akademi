@@ -18,7 +18,7 @@ Panel parolası ve kalıcı bağlama hazır olmadan sistem başvuru kabul etmez.
 
 - Başvurular ve en fazla 5 MB PDF dekontlar SQLite destekli Durable Object içinde tutulur. PDF'ler atomik işlemle 64 KB parçalar halinde kaydedilir; herkese açık asset klasöründe tutulmaz.
 - Ücret tarayıcıdan alınmaz; sunucu güncel branş üzerinden hesaplar. Ücret sürümü değişirse adayın yeni bilgiyi incelemesi gerekir. Eski başvurunun ücret ve başlık kopyası korunur.
-- Başvuru numaraları `01-ANK-001` biçimindedir. Aday, başvuru numarasıyla genel durumunu sorgulayabilir; panelden “Kontrol ediliyor”, “Onaylandı” veya “Reddedildi” olarak güncellenir.
+- Başvuru numaraları `01-ANK-001` biçimindedir; il kodu başvuru şehrine göre belirlenir (ör. İstanbul `IST`, Manisa `MAN`). Aday, numarasıyla başvuru durumunu sorgulayabilir. Reddedilen başvurularda paneldeki **Ret açıklaması** alana yazılan metin, adaya “Açıklamayı oku” düğmesiyle gösterilir.
 - Panelde il, sınav/branş, durum ve aday adı filtreleri kullanılabilir. Excel çalışma kitabı dışa aktarımı geçerli filtreleri uygular.
 - Aynı gönderimin yeniden denenmesi aynı başvuru numarasını döndürür.
 - `Ödendi` aday beyanıdır. Panelde `Kontrol bekliyor` görünür; yönetici `Ödeme doğrulandı` yapabilir. Gerçek ödeme veya banka işlemi gerçekleştirilmez.

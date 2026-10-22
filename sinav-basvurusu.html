@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="nova-header-v2.css?v=20261017-1">
-<link rel="stylesheet" href="sinav-basvurusu.css?v=20261022-1">
+<link rel="stylesheet" href="sinav-basvurusu.css?v=20261022-2">
 <link rel="stylesheet" href="nova-footer.css?v=20261017-1">
 </head>
 <body class="application-page">
@@ -23,7 +23,6 @@
         <p class="application-kicker"><span></span>NOVA · SINAV MERKEZİ</p>
         <h1>Sınav Başvurusu</h1>
         <p>Başvuru sürecini başlatmak için sınava katılacağınız şehri seçin.</p>
-        <button type="button" class="application-track-trigger" id="open-application-track">Başvuru takip <span aria-hidden="true">↗</span></button>
       </div>
       
     </div>
@@ -31,7 +30,7 @@
   <section class="city-section application-shell" aria-labelledby="city-heading">
     <div class="city-section__heading">
       <div><p class="application-kicker"><span></span>BAŞVURU MERKEZLERİ</p><h2 id="city-heading">Sınav Merkezini Seçin</h2><p>Sınav ataması yapılmış mavi illerden birini seçerek seçenekleri görüntüleyin.</p></div>
-      <div class="city-legend" aria-label="Harita açıklaması"><span><i></i>Şehirde sınav var</span><span><i class="city-legend__inactive"></i>Şehirde sınav yok</span></div>
+      <div class="city-section__actions"><button type="button" class="application-track-trigger" id="open-application-track">Başvuru Takip <span aria-hidden="true">↗</span></button><div class="city-legend" aria-label="Harita açıklaması"><span><i></i>Şehirde sınav var</span><span><i class="city-legend__inactive"></i>Şehirde sınav yok</span></div></div>
     </div>
     <div class="turkey-map" id="turkey-map" data-map-state="loading">
       <div class="turkey-map__canvas">
@@ -134,13 +133,13 @@
       </fieldset>
       <div class="form-actions"><button type="button" id="form-back" class="form-secondary">Geri</button><button type="button" id="form-next" class="form-primary">Devam et →</button><button type="submit" id="form-submit" class="form-primary" hidden>Başvuruyu gönder</button></div>
     </div>
-    <div id="form-success" class="form-success" role="status" hidden><canvas id="confetti-canvas" aria-hidden="true"></canvas><span aria-hidden="true">✓</span><h3>Başvurunuz alınmıştır</h3><p>Başvuru numaranız</p><strong id="application-reference"></strong><p>Başvurunuz alınmıştır. Ekiplerimiz sizinle iletişime geçecektir.</p></div>
+    <div id="form-success" class="form-success" role="status" hidden><canvas id="confetti-canvas" aria-hidden="true"></canvas><span aria-hidden="true">✓</span><h3>Başvurunuz alınmıştır</h3><p>Başvuru numaranız</p><strong id="application-reference"></strong><p class="reference-save-note">Başvuru numaranızı kesinlikle kaybetmeyiniz.</p><p>Başvurunuz alınmıştır. Ekiplerimiz sizinle iletişime geçecektir.</p></div>
   </form>
 </dialog>
 <dialog class="contract-dialog" id="contract-dialog" aria-labelledby="contract-title"><div class="contract-dialog__card"><button type="button" class="dialog-close contract-close" aria-label="Sözleşmeyi kapat">×</button><p class="application-kicker">NOVA · SINAV MERKEZİ</p><h2 id="contract-title">Sınav Başvurusu Sözleşmesi</h2><div id="contract-text" class="contract-text"></div><button type="button" class="form-primary" id="close-contract">Kapat</button></div></dialog>
-<dialog class="track-dialog" id="track-dialog" aria-labelledby="track-title"><div class="track-dialog__card"><button type="button" class="dialog-close track-close" id="close-track" aria-label="Takip penceresini kapat">×</button><p class="application-kicker">NOVA · SINAV MERKEZİ</p><h2 id="track-title">Başvuru Takip</h2><form id="track-form"><label>Başvuru numarası<input name="reference" autocomplete="off" placeholder="01-ANK-001" required></label><button type="submit" class="form-primary">Durumu sorgula</button></form><div id="track-result" class="track-result" role="status" hidden></div></div></dialog>
+<dialog class="track-dialog" id="track-dialog" aria-labelledby="track-title"><div class="track-dialog__card"><button type="button" class="dialog-close track-close" id="close-track" aria-label="Takip penceresini kapat">×</button><p class="application-kicker">NOVA · SINAV MERKEZİ</p><h2 id="track-title">Başvuru Takip</h2><form id="track-form"><label>Başvuru numarası<input name="reference" autocomplete="off" placeholder="01-IST-001" required></label><button type="submit" class="form-primary">Durumu sorgula</button></form><div id="track-result" class="track-result" role="status" hidden></div></div></dialog>
 <script src="nova-header.js?v=20261017-1"></script>
 <script src="sinav-basvurusu.js?v=20261022-1"></script>
-<script src="nova-application-form.js?v=20261022-2"></script>
+<script src="nova-application-form.js?v=20261022-3"></script>
 </body>
 </html>

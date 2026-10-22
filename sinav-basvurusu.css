@@ -261,3 +261,23 @@ body.application-page{margin:0;background:#fff;color:var(--app-navy);font-family
 .turkey-map{min-height:0;padding:24px 34px}.turkey-map__canvas{width:min(100%,1100px);aspect-ratio:1005/490;display:grid;place-items:center}.turkey-map__svg{width:100%;height:100%;display:grid;place-items:center}.turkey-province-svg{display:block;width:100%;height:100%;overflow:visible}.turkey-province-svg .turkey>g{outline:none}.turkey-province-svg .turkey>g.is-exam-city{cursor:pointer}.turkey-province-svg .turkey>g.is-exam-city:hover path,.turkey-province-svg .turkey>g.is-exam-city:focus path{fill:#125f9f!important;opacity:.94!important}.turkey-province-svg .turkey>g.is-exam-city:focus{outline:none}.turkey-province-svg .turkey>g.is-exam-city:focus path{stroke:#073f72!important;stroke-width:2.5!important}.turkey-map__loading{grid-area:1/1;padding:22px;color:#657895;font-size:14px}.turkey-map[data-map-state=ready] .turkey-map__loading{display:none}.city-index__item{color:#60758c;background:#f7f9fb}.city-index__item:not(:disabled).has-exams{color:#164c79;background:#fff;border-color:#d8e6f2}.city-index__item:disabled{cursor:default;opacity:.52}.city-index__item.has-exams .city-index__pin{background:#2c78b7;box-shadow:0 0 0 3px rgba(44,120,183,.13)}@media(max-width:900px){.turkey-map{padding:20px}.turkey-map__canvas{width:100%}}@media(max-width:620px){.turkey-map{padding:10px}.turkey-map__canvas{aspect-ratio:1005/520}.turkey-province-svg{height:auto;max-height:100%}}
 
 .map-province-tooltip{position:fixed;z-index:1000;max-width:min(220px,calc(100vw - 24px));padding:7px 11px;border:1px solid #d6e4ef;border-radius:7px;background:#092c4b;color:#fff;font:800 12px Manrope,Arial,sans-serif;line-height:1.2;letter-spacing:.01em;box-shadow:0 7px 20px rgba(6,35,63,.24);pointer-events:none;white-space:nowrap}
+
+/* Başvuru takibini harita bölümünün başına al ve durumları belirginleştir. */
+.application-hero .application-track-trigger{display:none}
+.city-section__actions{display:flex;flex-direction:column;align-items:flex-end;gap:10px;flex:none}
+.city-section__actions .application-track-trigger{position:static;right:auto;top:auto;white-space:nowrap;border:1px solid #d4e4f2;background:#fff;color:#115b98;box-shadow:0 5px 16px rgba(8,38,64,.08)}
+.city-section__actions .application-track-trigger:hover{border-color:#91c4ed;background:#f8fcff}
+.track-result{transition:background .2s ease,border-color .2s ease,color .2s ease}
+.track-result--pending{background:#fff8e4;border-color:#f1d88d;color:#765d18}
+.track-result--pending strong{color:#9a7413}
+.track-result--approved{background:#edf9f1;border-color:#bce5c9;color:#216a3c}
+.track-result--approved strong{color:#21834a}
+.track-result--rejected{background:#fff1f1;border-color:#efc1c1;color:#8f3030}
+.track-result--rejected strong{color:#bc3535}
+.track-result__message{font-size:12px;line-height:1.65;color:inherit}
+.track-explanation-toggle{justify-self:start;margin-top:4px;padding:8px 11px;border:1px solid #e9b6b6;border-radius:7px;background:#fff;color:#af3030;font:800 11px Manrope,Arial,sans-serif;cursor:pointer;transition:background .18s ease,transform .18s ease}
+.track-explanation-toggle:hover{background:#fff8f8;transform:translateY(-1px)}
+.track-explanation{padding:11px 12px;border:1px solid #f0d0d0;border-radius:8px;background:#fff;color:#693b3b;font-size:12px;line-height:1.7;white-space:pre-wrap;overflow-wrap:anywhere}
+.reference-save-note{display:block;margin:-15px auto 18px;padding:9px 12px;border:1px solid #f0d68e;border-radius:8px;background:#fff8df;color:#86630a!important;font-size:11px!important;font-weight:800}
+@media(max-width:620px){.application-hero .application-track-trigger{display:none}.application-breadcrumb{max-width:none}.city-section__actions{flex-direction:row;align-items:center;justify-content:space-between;gap:8px;margin-top:12px}.city-section__actions .application-track-trigger{position:static;padding:9px 10px;font-size:10px}.city-section__actions .application-track-trigger span{font-size:14px}.city-legend{gap:9px;margin:0}.city-legend>span{font-size:8px}}
+@media(max-width:390px){.city-section__actions{align-items:flex-start;flex-direction:column}.city-legend{margin-top:2px}}

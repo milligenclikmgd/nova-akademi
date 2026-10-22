@@ -96,8 +96,9 @@ export class ApplicationStore {
   this.sql.exec('CREATE TABLE IF NOT EXISTS settings (id INTEGER PRIMARY KEY, data TEXT NOT NULL)');
   this.sql.exec('CREATE TABLE IF NOT EXISTS sessions (token TEXT PRIMARY KEY, expires INTEGER NOT NULL)');
   this.sql.exec('CREATE TABLE IF NOT EXISTS limits (key TEXT PRIMARY KEY, count INTEGER NOT NULL, expires INTEGER NOT NULL)');
-  this.sql.exec('CREATE TABLE IF NOT EXISTS applications (id TEXT PRIMARY KEY, request_id TEXT UNIQUE NOT NULL, reference TEXT, created_at TEXT NOT NULL, name TEXT NOT NULL, city TEXT NOT NULL, status TEXT NOT NULL, payment TEXT NOT NULL, data TEXT NOT NULL, receipt INTEGER NOT NULL DEFAULT 0, note TEXT NOT NULL DEFAULT \'\')');
+  this.sql.exec('CREATE TABLE IF NOT EXISTS applications (id TEXT PRIMARY KEY, request_id TEXT UNIQUE NOT NULL, reference TEXT, created_at TEXT NOT NULL, name TEXT NOT NULL, city TEXT NOT NULL, status TEXT NOT NULL, payment TEXT NOT NULL, data TEXT NOT NULL, receipt INTEGER NOT NULL DEFAULT 0, note TEXT NOT NULL DEFAULT \'\', rejection_explanation TEXT NOT NULL DEFAULT \'\')');
   if(!this.sql.exec('PRAGMA table_info(applications)').toArray().some(column=>column.name==='reference'))this.sql.exec('ALTER TABLE applications ADD COLUMN reference TEXT');
+  if(!this.sql.exec('PRAGMA table_info(applications)').toArray().some(column=>column.name==='rejection_explanation'))this.sql.exec('ALTER TABLE applications ADD COLUMN rejection_explanation TEXT NOT NULL DEFAULT \'\'');
   this.sql.exec('CREATE UNIQUE INDEX IF NOT EXISTS applications_reference ON applications(reference)');
   const legacy=this.sql.exec('SELECT id,city FROM applications WHERE reference IS NULL ORDER BY created_at,id').toArray(),sequences={};
   for(const row of legacy){sequences[row.city]=(sequences[row.city]||0)+1;this.sql.exec('UPDATE applications SET reference=? WHERE id=?','01-'+cityCode(row.city)+'-'+String(sequences[row.city]).padStart(3,'0'),row.id)}
@@ -123,9 +124,9 @@ export class ApplicationStore {
   if(path==='/api/applications/track'&&method==='GET'){
    this.rate('track:'+(request.headers.get('CF-Connecting-IP')||'local'),60);
    const reference=(url.searchParams.get('reference')||'').trim().toUpperCase();if(!/^\d{2}-[A-ZÇĞİÖŞÜ]{3}-\d{3,}$/.test(reference))return reply({found:false});
-   const row=this.sql.exec('SELECT reference,created_at,city,status,data FROM applications WHERE reference=?',reference).toArray()[0];if(!row)return reply({found:false});
+   const row=this.sql.exec('SELECT reference,created_at,city,status,data,rejection_explanation FROM applications WHERE reference=?',reference).toArray()[0];if(!row)return reply({found:false});
    const item=JSON.parse(row.data),status=['onaylandi','reddedildi'].includes(row.status)?row.status:'kontrol-ediliyor';
-   return reply({found:true,reference:row.reference,city:item.cityName,branch:item.branchName,status,createdAt:row.created_at});
+   return reply({found:true,reference:row.reference,city:item.cityName,branch:item.branchName,status,createdAt:row.created_at,rejectionExplanation:status==='reddedildi'?row.rejection_explanation:''});
   }
   if(path==='/api/panel/login'&&method==='POST'){
    if(!this.env.NOVA_PANEL_PASSWORD||this.env.NOVA_PANEL_PASSWORD.length<MIN_PANEL_PASSWORD_LENGTH)fail('Panel kurulumu tamamlanmadı. Cloudflare üzerinde NOVA_PANEL_PASSWORD gizli değişkenini en az 8 karakter olarak tanımlayın.',503);
@@ -185,12 +186,13 @@ export class ApplicationStore {
      const chunks=this.sql.exec('SELECT data FROM receipts WHERE application_id=? ORDER BY part',row.id).toArray().map(item=>item.data);
      return new Response(new Blob(chunks,{type:'application/pdf'}),{headers:{'Content-Type':'application/pdf','Content-Disposition':'attachment; filename="dekont-'+row.id+'.pdf"','Cache-Control':'no-store','X-Content-Type-Options':'nosniff','Content-Security-Policy':"sandbox"}});
     }
-    if(!match[2]&&method==='GET')return reply({application:{id:row.id,reference:row.reference,createdAt:row.created_at,status:row.status,payment:row.payment,receipt:!!row.receipt,note:row.note,...JSON.parse(row.data)}});
+    if(!match[2]&&method==='GET')return reply({application:{id:row.id,reference:row.reference,createdAt:row.created_at,status:row.status,payment:row.payment,receipt:!!row.receipt,note:row.note,rejectionExplanation:row.rejection_explanation,...JSON.parse(row.data)}});
     if(!match[2]&&method==='PATCH'){
      const input=await readJson(request);
      if(!['yeni','inceleniyor','onaylandi','reddedildi'].includes(input.status)||!['odenmedi','beyan-edildi','dogrulandi'].includes(input.payment))fail('Geçersiz durum.');
      if(input.payment==='beyan-edildi'&&!row.receipt)fail('Ödeme beyanı için dekont bulunmalı.');
-     this.sql.exec('UPDATE applications SET status=?,payment=?,note=? WHERE id=?',input.status,input.payment,text(input.note,2000),row.id);return reply({ok:true});
+     const rejectionExplanation=text(input.rejectionExplanation??'',2000);if(input.status==='reddedildi'&&!rejectionExplanation)fail('Başvuruyu reddetmek için adaya gösterilecek açıklamayı yazın.');
+     this.sql.exec('UPDATE applications SET status=?,payment=?,note=?,rejection_explanation=? WHERE id=?',input.status,input.payment,text(input.note,2000),rejectionExplanation,row.id);return reply({ok:true});
     }
    }
    fail('İşlem bulunamadı.',404);

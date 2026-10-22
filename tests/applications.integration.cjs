@@ -13,7 +13,7 @@ function body(data,file){const result=new FormData();result.set('data',JSON.stri
  let response=await request('/api/panel/login','POST',{password:'nova-local-integration-only-2026'});assert.equal(response.status,200);const setCookie=response.headers.get('set-cookie');assert.match(setCookie,/HttpOnly; Secure; SameSite=Strict/);cookie=setCookie.split(';')[0];
  const initialCount=(await json('/api/panel/applications','GET',undefined,true)).total; console.log('Existing persisted applications: '+initialCount);
  let settings=(await json('/api/panel/settings','GET',undefined,true)).settings;
- settings.accepting=true;settings.paymentInstructions='Yerel test ödeme açıklaması';settings.applicationContract='Yerel test sözleşmesi';settings.cityExams={ankara:['dans-sahne','futsal']};for(const group of settings.groups)for(const branch of group.branches){branch.candidateFee=150.5;branch.registrationFee=null}
+ settings.accepting=true;settings.paymentInstructions='Yerel test ödeme açıklaması';settings.applicationContract='Yerel test sözleşmesi';settings.cityExams={ankara:['dans-sahne','futsal'],istanbul:['dans-sahne'],manisa:['dans-sahne']};for(const group of settings.groups)for(const branch of group.branches){branch.candidateFee=150.5;branch.registrationFee=null}
  let saved=(await json('/api/panel/settings','PUT',settings,true)).settings;
  await json('/api/panel/settings','PUT',settings,true,409);settings=saved;
  const invalid=form(settings);invalid.candidate.firstName='';await json('/api/applications','POST',body(invalid),false,400);
@@ -26,6 +26,8 @@ function body(data,file){const result=new FormData();result.set('data',JSON.stri
  const badDate=form(settings);badDate.candidate.dob='2012-02-31';await json('/api/applications','POST',body(badDate),false,400);
  const unpaid=form(settings,{fee:1}),one=await json('/api/applications','POST',body(unpaid),false,201);assert.match(one.reference,/^01-ANK-\d{3,}$/);assert.equal((await json('/api/applications','POST',body(unpaid),false)).reference,one.reference);
  const tracked=await json('/api/applications/track?reference='+one.reference);assert.equal(tracked.status,'kontrol-ediliyor');assert.equal(tracked.branch,'Dans ve Sahne Sanatları Sınavı');assert.ok(!('candidate' in tracked));assert.equal((await json('/api/applications/track?reference=01-ANK-999')).found,false);
+ const istanbul=await json('/api/applications','POST',body(form(settings,{city:'istanbul',candidate:{...candidate(),province:'İstanbul',district:'Kadıköy'}})),false,201);assert.match(istanbul.reference,/^01-IST-\d{3,}$/);
+ const manisa=await json('/api/applications','POST',body(form(settings,{city:'manisa',candidate:{...candidate(),province:'Manisa',district:'Şehzadeler'}})),false,201);assert.match(manisa.reference,/^01-MAN-\d{3,}$/);
  await json('/api/applications','POST',body(form(settings,{paid:true})),false,400);
  await json('/api/applications','POST',body(form(settings,{paid:true}),new Blob(['not a pdf'],{type:'application/pdf'})),false,400);
  await json('/api/applications','POST',body(form(settings,{paid:true}),new Blob([new Uint8Array(5*1024*1024+1)])),false,400);
@@ -40,8 +42,9 @@ function body(data,file){const result=new FormData();result.set('data',JSON.stri
  await json('/api/panel/applications/'+two.id,'PATCH',{status:'onaylandi',payment:'dogrulandi',note:'Yerel kontrolde doğrulandı.'},true);
  assert.equal((await json('/api/panel/applications/'+two.id,'GET',undefined,true)).application.payment,'dogrulandi');
  assert.equal((await json('/api/applications/track?reference='+two.reference)).status,'onaylandi');
- await json('/api/panel/applications/'+one.id,'PATCH',{status:'reddedildi',payment:'odenmedi',note:'Yerel test reddi.'},true);
- assert.equal((await json('/api/applications/track?reference='+one.reference)).status,'reddedildi');
+ await json('/api/panel/applications/'+one.id,'PATCH',{status:'reddedildi',payment:'odenmedi',note:'Yerel test reddi.',rejectionExplanation:'Yerel test açıklaması.'},true);
+ const rejectedTrack=await json('/api/applications/track?reference='+one.reference);assert.equal(rejectedTrack.status,'reddedildi');assert.equal(rejectedTrack.rejectionExplanation,'Yerel test açıklaması.');
+ await json('/api/panel/applications/'+two.id,'PATCH',{status:'reddedildi',payment:'dogrulandi',note:'',rejectionExplanation:''},true,400);
  settings.groups[0].branches[0].candidateFee=175;settings=(await json('/api/panel/settings','PUT',settings,true)).settings;
  assert.equal((await json('/api/panel/applications/'+one.id,'GET',undefined,true)).application.fee,150.5);
  const list=await json('/api/panel/applications','GET',undefined,true);assert.ok(list.total>=2);assert.ok(!('candidate' in list.applications[0]));
