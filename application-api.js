@@ -17,6 +17,7 @@ const text=(value,max=200)=>{if(typeof value!=='string'||value.length>max)fail('
 const required=(value,label,max=200)=>{const result=text(value,max);if(!result)fail(label+' gerekli.');return result};
 const titleCaseTr=value=>value.toLocaleLowerCase('tr-TR').replace(/(^|[\s'-])(\p{L})/gu,(_,space,char)=>space+char.toLocaleUpperCase('tr-TR'));
 const phone=(value,label,optional=false)=>{const result=text(value,30);if(optional&&!result)return '';if(!/^\+?[\d\s()\-]{10,25}$/.test(result))fail(label+' geçerli olmalı.');return result};
+const candidatePhone=value=>{const result=phone(value,'Telefon');if(!/^0\d{10}$/.test(result))fail('Telefon başında 0 olacak şekilde 11 haneli olmalı.');return result};
 const email=value=>{const result=text(value??'',150);if(result&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(result))fail('E-posta adresini kontrol edin.');return result};
 export function validateSettings(input,previous){
  if(!input||!Array.isArray(input.groups)||input.groups.length<1||input.groups.length>15)fail('En az bir sınav grubu gerekli.');
@@ -156,11 +157,11 @@ export class ApplicationStore {
    if(candidateInput.tc!==tc)fail('T.C. kimlik numarası değiştirilemez.');
    for(const [key,label,max] of [['firstName','Ad',80],['lastName','Soyad',80],['phone','Telefon',30],['province','İkamet ili',80],['district','İlçe',80],['address','Açık adres',500]])candidate[key]=required(candidateInput[key],label,max);
    candidate.school=text(candidateInput.school||'',150);candidate.grade=text(candidateInput.grade||'',40);
-   candidate.phone=phone(candidate.phone,'Aday telefonu');candidate.school=candidate.school.toLocaleUpperCase('tr-TR');candidate.grade=candidate.grade.toLocaleUpperCase('tr-TR');candidate.email=email(candidateInput.email||'');
+   candidate.phone=candidatePhone(candidate.phone);candidate.school=candidate.school.toLocaleUpperCase('tr-TR');candidate.grade=candidate.grade.toLocaleUpperCase('tr-TR');candidate.email=email(candidateInput.email||'');
    if(!defaultSettings().cities.some(item=>item.name===candidate.province)||!districtsByProvince[candidate.province]?.includes(candidate.district))fail('İkamet ili ve ilçesini kontrol edin.');
    candidate.dob=required(candidateInput.dob,'Doğum tarihi',10);const dob=new Date(candidate.dob+'T00:00:00Z');if(!/^\d{4}-\d{2}-\d{2}$/.test(candidate.dob)||!Number.isFinite(dob.getTime())||dob.toISOString().slice(0,10)!==candidate.dob||dob>new Date())fail('Doğum tarihi geçerli olmalı.');candidate.gender=text(candidateInput.gender||'',30);
    if(!Array.isArray(submitted.contacts)||submitted.contacts.length!==original.contacts.length)fail('Veli bilgilerini kontrol edin.');
-   const contacts=original.contacts.map((previous,index)=>{const value=submitted.contacts[index]||{};return{...previous,fullName:titleCaseTr(required(value.fullName,'Veli Adı Soyadı',160)),occupation:required(value.occupation,'Meslek',100).toLocaleUpperCase('tr-TR'),phone:phone(value.phone,'Veli telefonu'),email:email(value.email||'')}});
+   const contacts=original.contacts.map((previous,index)=>{const value=submitted.contacts[index]||{};return{...previous,fullName:titleCaseTr(required(value.fullName,'Veli Adı Soyadı',160)),occupation:required(value.occupation,'Meslek',100).toLocaleUpperCase('tr-TR'),phone:candidatePhone(value.phone),email:email(value.email||'')}});
    const data={...original,candidate,contacts};
    this.ctx.storage.transactionSync(()=>{this.sql.exec('INSERT INTO definitive_registrations(application_id,updated_at,data,health_name,health_type,health_size,status) VALUES(?,?,?,?,?,?,?) ON CONFLICT(application_id) DO UPDATE SET updated_at=excluded.updated_at,data=excluded.data,health_name=excluded.health_name,health_type=excluded.health_type,health_size=excluded.health_size,status=excluded.status',row.id,new Date().toISOString(),JSON.stringify(data),String(file.name||'saglik-raporu').slice(0,160),type,bytes.length,'payment_pending');this.sql.exec('DELETE FROM registration_health WHERE application_id=?',row.id);for(let part=0,offset=0;offset<bytes.length;part++,offset+=65536)this.sql.exec('INSERT INTO registration_health(application_id,part,data) VALUES(?,?,?)',row.id,part,bytes.slice(offset,offset+65536).buffer)});
    return reply({ok:true,status:'payment_pending',message:'Belgeleriniz kaydedildi. Ödeme adımı sonraki aşamada açılacaktır.'},201);
