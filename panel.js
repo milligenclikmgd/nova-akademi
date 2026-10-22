@@ -16,7 +16,7 @@
   const isExam=selected==='exam-management';document.querySelectorAll('[data-view]').forEach(item=>item.classList.toggle('is-active',item.dataset.view===selected));
   $('#exam-management-nav').hidden=!isExam;
   const active=isExam?examSub:selected;
-  ['applications','settings','media','results','news','faq','contact','messages','partners','board'].forEach(view=>$('#'+view+'-view').hidden=view!==active);
+  ['applications','settings','media','results','news','faq','contact','messages','partners','board'].forEach(view=>{const section=$('#'+view+'-view');if(section)section.hidden=view!==active});
   document.querySelectorAll('[data-exam-view]').forEach(item=>item.classList.toggle('is-active',isExam&&item.dataset.examView===active));
   const labels={settings:'Sınav Oluştur',applications:'Tüm Başvurular',results:'Sonuç Açıklama',media:'Site Videosu',news:'Haberler ve Duyurular',faq:'Sık Sorulan Sorular',contact:'İletişim',messages:'Mesajlar',partners:'İş Ortakları',board:'Yönetim Kurulu'};
   $('#page-breadcrumb').textContent=isExam?'Sınav Yönetimi · '+labels[active]:labels[active];
