@@ -6,7 +6,7 @@
 <title>NOVA | Sınav Sonuç Listesi</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="sonuclar.css?v=20261022-4"><link rel="stylesheet" href="nova-header-v2.css?v=20261022-1">
+<link rel="stylesheet" href="sonuclar.css?v=20261022-5"><link rel="stylesheet" href="nova-header-v2.css?v=20261022-1">
 </head>
 <body><div data-nova-header></div><script src="nova-header.js?v=20261022-1"></script>
 <main class="results-main">
@@ -36,9 +36,19 @@
     <label class="confirm-check"><input name="confirmation" type="checkbox" required disabled><span>Başvuru bilgilerimin doğru ve güncel olduğunu onaylıyorum.</span></label>
     <button class="primary payment-button" type="submit" disabled>Belgeleri kaydet ve ödeme adımına geç <span aria-hidden="true">→</span></button>
    </section>
-   <p class="form-error" id="enroll-error" role="alert" hidden></p><p class="payment-note" id="payment-note" role="status" hidden></p>
+   <p class="form-error" id="enroll-error" role="alert" hidden></p>
+   <section id="payment-step" class="payment-step" hidden aria-labelledby="payment-title">
+    <div class="payment-step-head"><span>3</span><div><p class="results-kicker">KESİN KAYIT</p><h3 id="payment-title">Ödeme ve dekont bildirimi</h3><p>Ücreti banka hesabına yatırdıktan sonra dekontu yükleyerek bildiriminizi tamamlayın.</p></div></div>
+    <div class="payment-summary"><div><small>Şehir</small><strong id="payment-city">—</strong></div><div><small>Sınav</small><strong id="payment-branch">—</strong></div><div class="payment-total"><small>Kesin kayıt ücreti</small><strong id="payment-fee">—</strong></div></div>
+    <section class="bank-instructions"><div><span class="bank-icon" aria-hidden="true">₺</span><div><strong>Banka / havale bilgileri</strong><small>Yalnızca bu sınav için tanımlanan hesaba ödeme yapın.</small></div></div><pre id="payment-instructions">Ödeme bilgileri yükleniyor…</pre><p id="payment-missing" class="payment-missing" hidden>Bu sınav için banka bilgileri henüz tanımlanmadı. Lütfen NOVA ekibiyle iletişime geçin.</p></section>
+    <p id="payment-free" class="payment-free" hidden>Bu sınav için kesin kayıt ücreti alınmıyor. Bilgilerinizi onaylayarak kesin kaydı tamamlayabilirsiniz.</p>
+    <div id="payment-upload-area" class="payment-upload-area"><label class="upload-field">Dekont yükleyin <small>PDF, JPG veya PNG · En fazla 5 MB</small><input id="payment-receipt" type="file" accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png"></label><button id="submit-payment" class="primary" type="button">Dekontu yükle ve ödeme bildirimi oluştur <span aria-hidden="true">→</span></button></div>
+    <button id="complete-free-registration" class="primary" type="button" hidden>Kesin kaydı tamamla <span aria-hidden="true">→</span></button>
+    <p id="payment-confirmation" class="payment-confirmation" role="status" hidden></p>
+    <p class="payment-security-note">Dekontunuz ve sağlık raporunuz yalnızca kesin kayıt işleminin yürütülmesi için saklanır. Ödeme, NOVA ekibinin kontrolünden sonra doğrulanır.</p>
+   </section>
   </form>
  </div>
 </dialog>
 <footer class="results-footer">© 2026 NOVA Sanat ve Spor Kulübü</footer>
-<script src="sonuclar.js?v=20261022-4"></script></body></html>
+<script src="sonuclar.js?v=20261022-5"></script></body></html>

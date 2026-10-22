@@ -108,6 +108,8 @@ export class ApplicationStore {
   this.sql.exec('CREATE TABLE IF NOT EXISTS receipts (application_id TEXT NOT NULL, part INTEGER NOT NULL, data BLOB NOT NULL, PRIMARY KEY(application_id,part))');
   this.sql.exec('CREATE TABLE IF NOT EXISTS exam_results (application_id TEXT PRIMARY KEY, result TEXT NOT NULL, updated_at TEXT NOT NULL)');
   this.sql.exec('CREATE TABLE IF NOT EXISTS definitive_registrations (application_id TEXT PRIMARY KEY, updated_at TEXT NOT NULL, data TEXT NOT NULL, health_name TEXT NOT NULL, health_type TEXT NOT NULL, health_size INTEGER NOT NULL, status TEXT NOT NULL)');
+  this.sql.exec('CREATE TABLE IF NOT EXISTS registration_payment_receipts (application_id TEXT PRIMARY KEY, updated_at TEXT NOT NULL, name TEXT NOT NULL, type TEXT NOT NULL, size INTEGER NOT NULL)');
+  this.sql.exec('CREATE TABLE IF NOT EXISTS registration_payment_chunks (application_id TEXT NOT NULL, part INTEGER NOT NULL, data BLOB NOT NULL, PRIMARY KEY(application_id,part))');
   this.sql.exec('CREATE TABLE IF NOT EXISTS registration_health (application_id TEXT NOT NULL, part INTEGER NOT NULL, data BLOB NOT NULL, PRIMARY KEY(application_id,part))');
   this.sql.exec('CREATE INDEX IF NOT EXISTS applications_created ON applications(created_at)');
  }
@@ -117,13 +119,13 @@ export class ApplicationStore {
  async authorized(request){const token=cookieToken(request);if(!token)return false;const hash=await this.sessionKey(token);const now=Date.now();this.sql.exec('DELETE FROM sessions WHERE expires < ?',now);return this.sql.exec('SELECT token FROM sessions WHERE token=? AND expires>?',hash,now).toArray().length>0}
  async fetch(request){try{
   /* DO aktarımındaki gövdeyi yanıt vermeden önce sınırlandırarak tüket. */
-  if(request.body){const path=new URL(request.url).pathname;const max=['/api/applications','/api/enrollment'].includes(path)?MAX_PDF+65536:path==='/api/panel/activity-video'?MAX_VIDEO_BYTES:32768;const payload=await boundedBody(request,max);request=new Request(request,{body:payload})}
+  if(request.body){const path=new URL(request.url).pathname;const max=['/api/applications','/api/enrollment','/api/enrollment/payment'].includes(path)?MAX_PDF+65536:path==='/api/panel/activity-video'?MAX_VIDEO_BYTES:32768;const payload=await boundedBody(request,max);request=new Request(request,{body:payload})}
   return await this.handle(request);
  }catch(error){try{if(request.body&&!request.body.locked)await request.body.cancel()}catch{}return reply({error:error.status?error.message:'İşlem tamamlanamadı. Lütfen tekrar deneyin.'},error.status||500)}}
  async handle(request){
   const url=new URL(request.url),path=url.pathname,method=request.method,now=Date.now();
   const origin=request.headers.get('Origin');
-  if(!['GET','HEAD'].includes(method)&&origin!==url.origin&&!( ['/api/applications','/api/enrollment','/api/enrollment/lookup'].includes(path)&&publicOriginAllowed(origin,url.origin,this.env)))fail('Bu kaynaktan işlem yapılamaz.',403);
+  if(!['GET','HEAD'].includes(method)&&origin!==url.origin&&!( ['/api/applications','/api/enrollment','/api/enrollment/lookup','/api/enrollment/payment'].includes(path)&&publicOriginAllowed(origin,url.origin,this.env)))fail('Bu kaynaktan işlem yapılamaz.',403);
   if(path==='/api/site-media/activity-video'&&method==='GET')return reply(videoSettings(this.sql));
   if(path==='/api/site-media/activity-video/file'&&['GET','HEAD'].includes(method))return serveActivityVideo(request,this.sql);
   if(path==='/api/applications/config'&&method==='GET')return reply({settings:this.getSettings(),ready:(this.env.NOVA_PANEL_PASSWORD||'').length>=MIN_PANEL_PASSWORD_LENGTH});
@@ -146,7 +148,12 @@ export class ApplicationStore {
    const row=this.sql.exec('SELECT a.id,a.reference,a.data,r.result FROM applications a JOIN exam_results r ON r.application_id=a.id WHERE a.reference=? AND r.result=\'asil\'',reference).toArray()[0];
    if(!row||JSON.parse(row.data).candidate?.tc!==tc)return reply({error:'Başvuru numarası veya T.C. kimlik numarası eşleşmedi.'},404);
    const registration=this.sql.exec('SELECT data,status FROM definitive_registrations WHERE application_id=?',row.id).toArray()[0];
-   return reply({reference:row.reference,application:registration?JSON.parse(registration.data):JSON.parse(row.data),registrationStatus:registration?.status||''});
+   let application=registration?JSON.parse(registration.data):JSON.parse(row.data);
+   if(registration?.status==='payment_required'&&application.payment){
+    const branch=this.getSettings().groups.flatMap(group=>group.branches).find(item=>item.id===application.branch);
+    if(branch){application.payment={...application.payment,fee:branch.registrationFee??branch.candidateFee,instructions:branch.paymentInstructions||''};this.sql.exec('UPDATE definitive_registrations SET data=? WHERE application_id=?',JSON.stringify(application),row.id)}
+   }
+   return reply({reference:row.reference,application,registrationStatus:registration?.status||''});
   }
   if(path==='/api/enrollment'&&method==='POST'){
    this.rate('enroll-submit:'+(request.headers.get('CF-Connecting-IP')||'local'),5);let form;try{form=await new Response(await boundedBody(request,MAX_PDF+65536),{headers:{'Content-Type':request.headers.get('Content-Type')||''}}).formData()}catch{fail('Geçerli kayıt formu gönderin.')}
@@ -162,9 +169,26 @@ export class ApplicationStore {
    candidate.dob=required(candidateInput.dob,'Doğum tarihi',10);const dob=new Date(candidate.dob+'T00:00:00Z');if(!/^\d{4}-\d{2}-\d{2}$/.test(candidate.dob)||!Number.isFinite(dob.getTime())||dob.toISOString().slice(0,10)!==candidate.dob||dob>new Date())fail('Doğum tarihi geçerli olmalı.');candidate.gender=text(candidateInput.gender||'',30);
    if(!Array.isArray(submitted.contacts)||submitted.contacts.length!==original.contacts.length)fail('Veli bilgilerini kontrol edin.');
    const contacts=original.contacts.map((previous,index)=>{const value=submitted.contacts[index]||{};return{...previous,fullName:titleCaseTr(required(value.fullName,'Veli Adı Soyadı',160)),occupation:required(value.occupation,'Meslek',100).toLocaleUpperCase('tr-TR'),phone:candidatePhone(value.phone),email:email(value.email||'')}});
-   const data={...original,candidate,contacts};
-   this.ctx.storage.transactionSync(()=>{this.sql.exec('INSERT INTO definitive_registrations(application_id,updated_at,data,health_name,health_type,health_size,status) VALUES(?,?,?,?,?,?,?) ON CONFLICT(application_id) DO UPDATE SET updated_at=excluded.updated_at,data=excluded.data,health_name=excluded.health_name,health_type=excluded.health_type,health_size=excluded.health_size,status=excluded.status',row.id,new Date().toISOString(),JSON.stringify(data),String(file.name||'saglik-raporu').slice(0,160),type,bytes.length,'payment_pending');this.sql.exec('DELETE FROM registration_health WHERE application_id=?',row.id);for(let part=0,offset=0;offset<bytes.length;part++,offset+=65536)this.sql.exec('INSERT INTO registration_health(application_id,part,data) VALUES(?,?,?)',row.id,part,bytes.slice(offset,offset+65536).buffer)});
-   return reply({ok:true,status:'payment_pending',message:'Belgeleriniz kaydedildi. Ödeme adımı sonraki aşamada açılacaktır.'},201);
+   const settings=this.getSettings(),branch=settings.groups.flatMap(group=>group.branches).find(item=>item.id===original.branch),fee=branch?.registrationFee??branch?.candidateFee;
+   if(!branch)fail('Bu sınav için kesin kayıt ayarı bulunamadı.',409);if(fee===null||fee===undefined)fail('Kesin kayıt ücreti henüz tanımlanmamış. Lütfen NOVA ile iletişime geçin.',409);
+   const data={...original,candidate,contacts,payment:{fee,currency:'TRY',instructions:branch.paymentInstructions||'',reference,branchName:original.branchName,cityName:original.cityName}};
+   this.ctx.storage.transactionSync(()=>{this.sql.exec('INSERT INTO definitive_registrations(application_id,updated_at,data,health_name,health_type,health_size,status) VALUES(?,?,?,?,?,?,?) ON CONFLICT(application_id) DO UPDATE SET updated_at=excluded.updated_at,data=excluded.data,health_name=excluded.health_name,health_type=excluded.health_type,health_size=excluded.health_size,status=CASE WHEN definitive_registrations.status IN (\'payment_submitted\',\'payment_verified\') THEN definitive_registrations.status ELSE excluded.status END',row.id,new Date().toISOString(),JSON.stringify(data),String(file.name||'saglik-raporu').slice(0,160),type,bytes.length,'payment_required');this.sql.exec('DELETE FROM registration_health WHERE application_id=?',row.id);for(let part=0,offset=0;offset<bytes.length;part++,offset+=65536)this.sql.exec('INSERT INTO registration_health(application_id,part,data) VALUES(?,?,?)',row.id,part,bytes.slice(offset,offset+65536).buffer)});
+   const saved=this.sql.exec('SELECT status FROM definitive_registrations WHERE application_id=?',row.id).one();
+   return reply({ok:true,status:saved.status,payment:data.payment,message:'Sağlık raporunuz kaydedildi. Kesin kayıt ücretini yatırıp dekontunuzu yükleyin.'},201);
+  }
+  if(path==='/api/enrollment/payment'&&method==='POST'){
+   this.rate('enroll-payment:'+(request.headers.get('CF-Connecting-IP')||'local'),5);let form;try{form=await new Response(await boundedBody(request,MAX_PDF+65536),{headers:{'Content-Type':request.headers.get('Content-Type')||''}}).formData()}catch{fail('Geçerli ödeme bildirimi gönderin.')}
+   const reference=required(String(form.get('reference')||'').toUpperCase(),'Başvuru numarası',32),tc=required(String(form.get('tc')||''),'T.C. kimlik numarası',11),row=this.sql.exec('SELECT a.id,a.data FROM applications a JOIN exam_results r ON r.application_id=a.id WHERE a.reference=? AND r.result=\'asil\'',reference).toArray()[0];
+   if(!row||JSON.parse(row.data).candidate?.tc!==tc)fail('Başvuru doğrulanamadı.',404);
+   const registration=this.sql.exec('SELECT data,status FROM definitive_registrations WHERE application_id=?',row.id).toArray()[0];if(!registration)fail('Önce sağlık raporu ve kesin kayıt bilgilerinizi kaydedin.',409);
+   if(registration.status==='payment_verified')fail('Bu kesin kayıt ödemesi daha önce doğrulandı.',409);
+   const snapshot=JSON.parse(registration.data).payment;if(!snapshot||snapshot.fee===null||snapshot.fee===undefined)fail('Kesin kayıt ücreti henüz tanımlanmadı.',409);
+   if(snapshot.fee===0){const now=new Date().toISOString();this.ctx.storage.transactionSync(()=>{this.sql.exec('UPDATE definitive_registrations SET updated_at=?,status=\'payment_verified\' WHERE application_id=?',now,row.id);this.sql.exec('UPDATE applications SET payment=\'dogrulandi\' WHERE id=?',row.id)});return reply({ok:true,status:'payment_verified',message:'Ücret gerekmeyen kesin kayıt adımınız tamamlandı.'},200)}
+   if(!snapshot.instructions)fail('Bu sınavın banka bilgileri henüz tanımlanmadı.',409);
+   const file=form.get('paymentReceipt');if(!file||typeof file==='string'||!file.size||file.size>MAX_PDF)fail('En fazla 5 MB ödeme dekontu yükleyin.');
+   const type=file.type,bytes=new Uint8Array(await file.arrayBuffer()),signature=new TextDecoder().decode(bytes.slice(0,5)),valid=(type==='application/pdf'&&signature==='%PDF-')||(type==='image/png'&&bytes[0]===137&&bytes[1]===80)||(type==='image/jpeg'&&bytes[0]===255&&bytes[1]===216);if(!valid)fail('Ödeme dekontu PDF, JPG veya PNG olmalı.');
+   const now=new Date().toISOString();this.ctx.storage.transactionSync(()=>{this.sql.exec('INSERT INTO registration_payment_receipts(application_id,updated_at,name,type,size) VALUES(?,?,?,?,?) ON CONFLICT(application_id) DO UPDATE SET updated_at=excluded.updated_at,name=excluded.name,type=excluded.type,size=excluded.size',row.id,now,String(file.name||'odeme-dekontu').slice(0,160),type,bytes.length);this.sql.exec('DELETE FROM registration_payment_chunks WHERE application_id=?',row.id);for(let part=0,offset=0;offset<bytes.length;part++,offset+=65536)this.sql.exec('INSERT INTO registration_payment_chunks(application_id,part,data) VALUES(?,?,?)',row.id,part,bytes.slice(offset,offset+65536).buffer);this.sql.exec('UPDATE definitive_registrations SET updated_at=?,status=\'payment_submitted\' WHERE application_id=?',now,row.id);this.sql.exec('UPDATE applications SET payment=\'beyan-edildi\' WHERE id=?',row.id)});
+   return reply({ok:true,status:'payment_submitted',message:'Ödeme dekontunuz alındı. NOVA ekibi incelemesini tamamladığında kesin kayıt durumunuz güncellenecektir.'},201);
   }
   if(path==='/api/panel/login'&&method==='POST'){
    if(!this.env.NOVA_PANEL_PASSWORD||this.env.NOVA_PANEL_PASSWORD.length<MIN_PANEL_PASSWORD_LENGTH)fail('Panel kurulumu tamamlanmadı. Cloudflare üzerinde NOVA_PANEL_PASSWORD gizli değişkenini en az 8 karakter olarak tanımlayın.',503);
@@ -234,21 +258,33 @@ export class ApplicationStore {
     const rows=this.sql.exec('SELECT id,reference,created_at,name,city,status,payment,receipt,data FROM applications '+where+' ORDER BY created_at DESC,id DESC LIMIT 30 OFFSET ?',...args,(page-1)*30).toArray();
     return reply({total,page,applications:rows.map(({data,...row})=>{const item=JSON.parse(data);return {...row,cityName:item.cityName,groupName:item.groupName,branchName:item.branchName,fee:item.fee}})});
    }
-   const match=path.match(/^\/api\/panel\/applications\/([a-f0-9-]{36})(\/receipt)?$/);
+   const match=path.match(/^\/api\/panel\/applications\/([a-f0-9-]{36})(\/receipt|\/registration-payment-receipt)?$/);
    if(match){
     const row=this.sql.exec('SELECT * FROM applications WHERE id=?',match[1]).toArray()[0];if(!row)fail('Başvuru bulunamadı.',404);
     if(match[2]&&method==='GET'){
+     const registrationReceipt=match[2]==='/registration-payment-receipt';
+     if(registrationReceipt){
+      const receipt=this.sql.exec('SELECT name,type FROM registration_payment_receipts WHERE application_id=?',row.id).toArray()[0];if(!receipt)fail('Kesin kayıt dekontu bulunamadı.',404);
+      const chunks=this.sql.exec('SELECT data FROM registration_payment_chunks WHERE application_id=? ORDER BY part',row.id).toArray().map(item=>item.data);
+      return new Response(new Blob(chunks,{type:receipt.type}),{headers:{'Content-Type':receipt.type,'Content-Disposition':'attachment; filename="kesin-kayit-dekontu-'+row.id+'"','Cache-Control':'no-store','X-Content-Type-Options':'nosniff','Content-Security-Policy':"sandbox"}});
+     }
      if(!row.receipt)fail('Dekont bulunamadı.',404);
      const chunks=this.sql.exec('SELECT data FROM receipts WHERE application_id=? ORDER BY part',row.id).toArray().map(item=>item.data);
      return new Response(new Blob(chunks,{type:'application/pdf'}),{headers:{'Content-Type':'application/pdf','Content-Disposition':'attachment; filename="dekont-'+row.id+'.pdf"','Cache-Control':'no-store','X-Content-Type-Options':'nosniff','Content-Security-Policy':"sandbox"}});
     }
-    if(!match[2]&&method==='GET')return reply({application:{id:row.id,reference:row.reference,createdAt:row.created_at,status:row.status,payment:row.payment,receipt:!!row.receipt,note:row.note,rejectionExplanation:row.rejection_explanation,...JSON.parse(row.data)}});
+    if(!match[2]&&method==='GET'){
+     const registration=this.sql.exec('SELECT data,status FROM definitive_registrations WHERE application_id=?',row.id).toArray()[0],paymentReceipt=this.sql.exec('SELECT name,type,size,updated_at FROM registration_payment_receipts WHERE application_id=?',row.id).toArray()[0];
+     return reply({application:{id:row.id,reference:row.reference,createdAt:row.created_at,status:row.status,payment:row.payment,receipt:!!row.receipt,paymentReceipt:!!paymentReceipt,note:row.note,rejectionExplanation:row.rejection_explanation,registration:registration?{status:registration.status,payment:JSON.parse(registration.data).payment,paymentReceipt}:null,...JSON.parse(row.data)}});
+    }
     if(!match[2]&&method==='PATCH'){
      const input=await readJson(request);
      if(!['yeni','inceleniyor','onaylandi','reddedildi'].includes(input.status)||!['odenmedi','beyan-edildi','dogrulandi'].includes(input.payment))fail('Geçersiz durum.');
-     if(input.payment==='beyan-edildi'&&!row.receipt)fail('Ödeme beyanı için dekont bulunmalı.');
+     const registrationReceipt=this.sql.exec('SELECT application_id FROM registration_payment_receipts WHERE application_id=?',row.id).toArray().length>0;
+     if(input.payment==='beyan-edildi'&&!row.receipt&&!registrationReceipt)fail('Ödeme beyanı için dekont bulunmalı.');
      const rejectionExplanation=text(input.rejectionExplanation??'',2000);if(input.status==='reddedildi'&&!rejectionExplanation)fail('Başvuruyu reddetmek için adaya gösterilecek açıklamayı yazın.');
-     this.sql.exec('UPDATE applications SET status=?,payment=?,note=?,rejection_explanation=? WHERE id=?',input.status,input.payment,text(input.note,2000),rejectionExplanation,row.id);return reply({ok:true});
+     this.sql.exec('UPDATE applications SET status=?,payment=?,note=?,rejection_explanation=? WHERE id=?',input.status,input.payment,text(input.note,2000),rejectionExplanation,row.id);
+     if(registrationReceipt&&input.payment==='dogrulandi')this.sql.exec('UPDATE definitive_registrations SET status=\'payment_verified\',updated_at=? WHERE application_id=?',new Date().toISOString(),row.id);
+     return reply({ok:true});
     }
    }
    fail('İşlem bulunamadı.',404);
