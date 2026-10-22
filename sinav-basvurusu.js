@@ -8,9 +8,9 @@ window.novaApplicationEndpoint=path=>(location.hostname==="nova-akademi.vercel.a
  const tooltip=document.createElement("div");tooltip.className="map-province-tooltip";tooltip.hidden=true;tooltip.setAttribute("role","status");document.body.append(tooltip);
  const cityForProvince=id=>cities.find(item=>item.provinceIds?.includes(id));
  function showProvinceTooltip(event,city){if(!city||event.pointerType==="touch")return;tooltip.textContent=city.name;tooltip.hidden=false;const gap=14,rect=tooltip.getBoundingClientRect();tooltip.style.left=Math.min(event.clientX+gap,window.innerWidth-rect.width-8)+"px";tooltip.style.top=Math.min(event.clientY+gap,window.innerHeight-rect.height-8)+"px"}
- const assignmentFor=id=>Array.isArray(settings?.cityExams?.[id])?settings.cityExams[id]:[];
+ const assignmentFor=id=>settings?.accepting&&Array.isArray(settings?.cityExams?.[id])?settings.cityExams[id]:[];
  const setView=name=>{views.forEach(view=>view.hidden=view.dataset.pickerView!==name);back.hidden=name==="groups";picker.dataset.view=name};
- const openPicker=city=>{if(!assignmentFor(city.id).length)return;selectedCity=city;title.textContent=city.name;updateChoices(city);setView("groups");picker.showModal()};
+ const openPicker=city=>{if(!settings?.accepting||!assignmentFor(city.id).length)return;selectedCity=city;title.textContent=city.name;updateChoices(city);setView("groups");picker.showModal()};
  const availableBranches=(group,city=selectedCity)=>group?.branches.filter(branch=>assignmentFor(city?.id).includes(branch.id))||[];
  const branchForAlias=(group,alias,city=selectedCity)=>{const patterns={dance:/dans|halk oyun|bale/i,symphony:/senfoni|orkestra/i,stage:/sahne|tiyatro/i};return availableBranches(group,city).find(branch=>patterns[alias]?.test(branch.name))};
  function updateChoices(city){
@@ -36,8 +36,9 @@ window.novaApplicationEndpoint=path=>(location.hostname==="nova-akademi.vercel.a
   }
  }
  function styleMap(){
+  const closed=!settings?.accepting;map.classList.toggle("is-applications-closed",closed);map.setAttribute("aria-disabled",String(closed));document.querySelector("#applications-closed").hidden=!closed;
   for(const [provinceId,group] of provinceNodes){
-   const city=cityForProvince(provinceId),active=!!city&&assignmentFor(city.id).length>0;
+   const city=cityForProvince(provinceId),active=!!settings?.accepting&&!!city&&assignmentFor(city.id).length>0;
    group.classList.toggle("is-exam-city",active);
    group.setAttribute("aria-label",(city?.name||group.dataset.cityName||provinceId)+(active?" · Sınav merkezi":""));
    group.removeAttribute("title");group.querySelector(":scope > title")?.remove();
