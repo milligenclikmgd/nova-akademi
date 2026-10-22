@@ -8,7 +8,7 @@ Ana site `https://nova-akademi.vercel.app` üzerinde de yayınlandığından bu 
 
 1. Mevcut Cloudflare Worker projesini bu deponun `wrangler.jsonc` dosyasıyla deploy edin. SQLite destekli `NOVA_APPLICATIONS` Durable Object bağlaması ve `nova-applications-v1` migration'ı deploy sırasında oluşturulur. Var olan Gemini değişkeni korunur.
 2. Cloudflare → Workers & Pages → `nova-akademi` → Settings → Variables and Secrets bölümünde `NOVA_PANEL_PASSWORD` adında **Secret** ekleyin. En az 8 karakterlik, benzersiz bir parola seçin. Parolayı GitHub'a, HTML'e veya normal bir ortam değişkenine yazmayın. CLI alternatifi: `npx wrangler secret put NOVA_PANEL_PASSWORD` (parola gizli istemde girilir).
-3. `/panel` adresinde bu parolayla giriş yapın. Sınavlar ve Ücretler bölümünden ana/alt başlıkları düzenleyin. Adaylık ve kesin kayıt ücretlerini ayrı ayrı tanımlayın; boş ücret o başvuru türünü kapatır, 0 ücretsizdir.
+3. `/panel` adresinde bu parolayla giriş yapın. Sınavlar ve Ücretler bölümünden ana/alt başlıkları ve sınav ücretlerini düzenleyin; boş ücret o sınavı kapatır, 0 ücretsizdir. Aynı bölümde aday formunda gösterilecek sözleşme metnini de güncelleyebilirsiniz.
 4. Ödeme açıklaması ve banka bilgilerini girin. Başvuru alımını açıp ayarları kaydedin.
 5. Kendi deneme adayınızla bir başvuru yapıp panelde formu ve dekontu kontrol edin. Gerçek kişilerle ilgili verilerle test yapmayın.
 
@@ -17,7 +17,9 @@ Panel parolası ve kalıcı bağlama hazır olmadan sistem başvuru kabul etmez.
 ## Veri ve davranış
 
 - Başvurular ve en fazla 5 MB PDF dekontlar SQLite destekli Durable Object içinde tutulur. PDF'ler atomik işlemle 64 KB parçalar halinde kaydedilir; herkese açık asset klasöründe tutulmaz.
-- Ücret tarayıcıdan alınmaz; sunucu güncel branş ve başvuru türü üzerinden hesaplar. Ücret sürümü değişirse adayın yeni bilgiyi incelemesi gerekir. Eski başvurunun ücret ve başlık kopyası korunur.
+- Ücret tarayıcıdan alınmaz; sunucu güncel branş üzerinden hesaplar. Ücret sürümü değişirse adayın yeni bilgiyi incelemesi gerekir. Eski başvurunun ücret ve başlık kopyası korunur.
+- Başvuru numaraları `01-ANK-001` biçimindedir. Aday, başvuru numarasıyla genel durumunu sorgulayabilir; panelden “Kontrol ediliyor”, “Onaylandı” veya “Reddedildi” olarak güncellenir.
+- Panelde il, sınav/branş, durum ve aday adı filtreleri kullanılabilir. Excel çalışma kitabı dışa aktarımı geçerli filtreleri uygular.
 - Aynı gönderimin yeniden denenmesi aynı başvuru numarasını döndürür.
 - `Ödendi` aday beyanıdır. Panelde `Kontrol bekliyor` görünür; yönetici `Ödeme doğrulandı` yapabilir. Gerçek ödeme veya banka işlemi gerçekleştirilmez.
 - HttpOnly, Secure, SameSite=Strict oturum çerezi 8 saat geçerlidir. Giriş ve başvuru uçları hız sınırlıdır. Yazma istekleri aynı kaynakla sınırlandırılır.

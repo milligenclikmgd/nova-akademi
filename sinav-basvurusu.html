@@ -23,6 +23,7 @@
         <p class="application-kicker"><span></span>NOVA · SINAV MERKEZİ</p>
         <h1>Sınav Başvurusu</h1>
         <p>Başvuru sürecini başlatmak için sınava katılacağınız şehri seçin.</p>
+        <button type="button" class="application-track-trigger" id="open-application-track">Başvuru takip <span aria-hidden="true">↗</span></button>
       </div>
       
     </div>
@@ -91,7 +92,7 @@
         <div class="form-grid">
           <label class="form-wide">Ana başlık<select name="group" required></select></label>
           <label class="form-wide">Sınav / Alt branş<select name="branch" required></select></label>
-          <label class="form-wide">Başvuru türü<select name="feeType" required><option value="candidate">Adaylık başvurusu</option><option value="registration">Kesin kayıt</option></select></label>
+          <label class="form-wide">Başvuru türü<select name="feeType" required><option value="candidate" selected>Sınav başvurusu</option></select></label>
         </div>
         <p class="field-help">Ücret bilgisi son adımda gösterilir. Ücreti tanımlanmayan başvurular henüz açık değildir.</p>
       </fieldset>
@@ -102,43 +103,44 @@
           <label>Soyadı<input name="lastName" autocomplete="family-name" maxlength="80" required></label>
           <label>Doğum tarihi<input name="dob" type="date" required></label>
           <label>Cinsiyet <small>İsteğe bağlı</small><select name="gender"><option value="">Seçin</option><option>Kadın</option><option>Erkek</option><option>Belirtmek istemiyorum</option></select></label>
-          <label>T.C. kimlik numarası <small>Varsa</small><input name="tc" inputmode="numeric" pattern="[1-9][0-9]{10}" maxlength="11" minlength="11"></label>
-          <label>Pasaport / yabancı kimlik no. <small>Varsa</small><input name="passport" maxlength="40"></label>
-          <label>Uyruğu <small>İsteğe bağlı</small><input name="nationality" maxlength="60"></label>
-          <label>Aday telefonu <small>Varsa</small><input name="phone" type="tel" maxlength="30"></label>
+          <label>T.C. Kimlik No<input name="tc" inputmode="numeric" autocomplete="off" pattern="[1-9][0-9]{10}" maxlength="11" minlength="11" required></label>
+          <label>Aday Telefonu <span class="phone-field"><b aria-hidden="true">0</b><input name="phone" type="tel" inputmode="numeric" autocomplete="tel-national" maxlength="10" minlength="10" pattern="[0-9]{10}" placeholder="5xx xxx xx xx" required></span></label>
           <label class="form-wide">Aday e-posta adresi <small>Varsa</small><input name="email" type="email" maxlength="150"></label>
-          <label>İkamet ili<input name="province" autocomplete="address-level1" maxlength="80" required></label>
-          <label>İlçe<input name="district" autocomplete="address-level2" maxlength="80" required></label>
+          <label>İkamet İli<select name="province" autocomplete="address-level1" required><option value="">İl seçin</option></select></label>
+          <label>İlçesi<select name="district" autocomplete="address-level2" required disabled><option value="">Önce il seçin</option></select></label>
           <label class="form-wide">Açık adres<textarea name="address" autocomplete="street-address" maxlength="500" rows="3" required></textarea></label>
-          <label>Okulu <small>Varsa</small><input name="school" maxlength="150"></label>
-          <label>Sınıfı <small>Varsa</small><input name="grade" maxlength="40"></label>
+          <label>Okulu <small>(Lütfen tamamını büyük harfle yazınız)</small><input name="school" maxlength="150" style="text-transform:uppercase"></label>
+          <label>Sınıfı <small>(Lütfen tamamını büyük harfle yazınız)</small><input name="grade" maxlength="40" style="text-transform:uppercase"></label>
         </div>
       </fieldset>
       <fieldset class="form-step" data-step="2" hidden>
-        <legend>Anne, baba ve veli bilgileri</legend>
+        <legend>Anne ve Baba Bilgileri</legend>
         <label>Bilgilerini gireceğiniz kişiler<select name="familyMode" required><option value="parents">Anne ve baba</option><option value="mother">Yalnız anne</option><option value="father">Yalnız baba</option><option value="guardian">Diğer veli / vasi</option></select></label>
         <div id="family-fields"></div>
         <label>İletişim kurulacak kişi<select name="primaryContact" required></select></label>
       </fieldset>
       <fieldset class="form-step" data-step="3" hidden>
         <legend>Ücret ve ödeme bilgileri</legend>
-        <div class="fee-summary"><span id="fee-label">Adaylık ücreti</span><strong id="application-fee">—</strong><p id="fee-selection"></p></div>
+        <div class="fee-summary"><span id="fee-label">Sınav ücreti</span><strong id="application-fee">—</strong><p id="fee-selection"></p></div>
+        <label class="confirmation contract-confirmation"><input name="contractAccepted" type="checkbox" required><span><button type="button" class="contract-link" id="open-contract">Sözleşme</button>’yi okudum, onaylıyorum.</span></label>
         <p id="payment-instructions" class="payment-instructions"></p>
         <div class="payment-choice" role="group" aria-label="Ücret ödendi mi?">
           <label><input type="radio" name="paid" value="no" required> Ücret ödenmedi</label>
           <label><input type="radio" name="paid" value="yes" required> Ücret ödendi</label>
         </div>
-        <div id="receipt-field" hidden><label>PDF dekont<input name="receipt" type="file" accept="application/pdf,.pdf"></label><p class="field-help">En fazla 5 MB. Ödeme beyanınız dekontla birlikte panelde kontrol edilir.</p></div>
+        <div id="receipt-field" hidden><label>Lütfen sınav ödemesine dair dekontu yükleyiniz<input name="receipt" type="file" accept="application/pdf,.pdf"></label><p class="field-help">En fazla 5 MB. Ödeme beyanınız dekontla birlikte panelde kontrol edilir.</p></div>
         <label class="confirmation"><input name="confirmation" type="checkbox" required><span>Başvuru bilgilerini kontrol ettim ve doğruluğunu onaylıyorum.</span></label>
         <p class="field-help">Başvurunuz ve yüklediğiniz dekont yönetim panelinde görüntülenir.</p>
       </fieldset>
       <div class="form-actions"><button type="button" id="form-back" class="form-secondary">Geri</button><button type="button" id="form-next" class="form-primary">Devam et →</button><button type="submit" id="form-submit" class="form-primary" hidden>Başvuruyu gönder</button></div>
     </div>
-    <div id="form-success" class="form-success" role="status" hidden><span aria-hidden="true">✓</span><h3>Başvurunuz alındı</h3><p>Başvuru numaranız</p><strong id="application-reference"></strong><button type="button" id="form-done" class="form-primary">Tamam</button></div>
+    <div id="form-success" class="form-success" role="status" hidden><canvas id="confetti-canvas" aria-hidden="true"></canvas><span aria-hidden="true">✓</span><h3>Başvurunuz alınmıştır</h3><p>Başvuru numaranız</p><strong id="application-reference"></strong><p>Başvurunuz alınmıştır. Ekiplerimiz sizinle iletişime geçecektir.</p></div>
   </form>
 </dialog>
+<dialog class="contract-dialog" id="contract-dialog" aria-labelledby="contract-title"><div class="contract-dialog__card"><button type="button" class="dialog-close contract-close" aria-label="Sözleşmeyi kapat">×</button><p class="application-kicker">NOVA · SINAV MERKEZİ</p><h2 id="contract-title">Sınav Başvurusu Sözleşmesi</h2><div id="contract-text" class="contract-text"></div><button type="button" class="form-primary" id="close-contract">Kapat</button></div></dialog>
+<dialog class="track-dialog" id="track-dialog" aria-labelledby="track-title"><div class="track-dialog__card"><button type="button" class="dialog-close track-close" id="close-track" aria-label="Takip penceresini kapat">×</button><p class="application-kicker">NOVA · SINAV MERKEZİ</p><h2 id="track-title">Başvuru Takip</h2><form id="track-form"><label>Başvuru numarası<input name="reference" autocomplete="off" placeholder="01-ANK-001" required></label><button type="submit" class="form-primary">Durumu sorgula</button></form><div id="track-result" class="track-result" role="status" hidden></div></div></dialog>
 <script src="nova-header.js?v=20261017-1"></script>
 <script src="sinav-basvurusu.js?v=20261022-1"></script>
-<script src="nova-application-form.js?v=20261021-2"></script>
+<script src="nova-application-form.js?v=20261022-2"></script>
 </body>
 </html>
