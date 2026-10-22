@@ -41,3 +41,66 @@
 .filters{grid-template-columns:minmax(160px,1.6fr) repeat(3,minmax(125px,1fr)) auto auto}.badge.inceleniyor{background:#fff4df;color:#9b741b}.badge.onaylandi{background:#e8f5ee;color:#27774e}.badge.reddedildi{background:#fff0ef;color:#ad4b43}.branch-row{grid-template-columns:minmax(0,1.5fr) minmax(150px,1fr) auto}
 @media(max-width:1050px){.filters{grid-template-columns:repeat(2,minmax(0,1fr))}.filters .search-label{grid-column:span 2}.filters button{width:100%}}
 @media(max-width:600px){.filters{grid-template-columns:1fr}.filters .search-label{grid-column:auto}}
+
+/* Aday başvuru ayrıntısı: ortalanmış, sayfa düzeninde modal */
+.detail-dialog{position:fixed;inset:0;margin:auto;width:min(1240px,calc(100vw - 56px));max-width:1240px;height:auto;max-height:calc(100dvh - 48px);padding:0;border:1px solid #dbe5ef;border-radius:18px;background:#f4f7fb;color:#173653;overflow:hidden;box-shadow:0 28px 100px #061d3f45}
+.detail-dialog::backdrop{background:#061a31a6;backdrop-filter:blur(3px)}
+.detail-modal-shell{display:flex;flex-direction:column;max-height:calc(100dvh - 50px);min-height:0}
+.detail-top{flex:none;display:flex;align-items:center;justify-content:space-between;gap:18px;padding:20px 26px 18px;margin:0;background:#fff;border-bottom:1px solid #e3ebf2}
+.detail-top .eyebrow{font-size:10px;letter-spacing:.08em;margin:0 0 7px;color:#718aa1}
+.detail-top h2{font-size:24px;color:#102f4e;letter-spacing:-.035em;margin:0}
+.detail-subtitle{font-size:12px;color:#71869a;margin:5px 0 0}
+.detail-top-actions{display:flex;align-items:center;gap:9px}
+.detail-top-actions .secondary{min-height:38px;padding:8px 13px;font-size:11px}
+.detail-top-actions .icon-button{width:38px;height:38px;font-size:25px}
+.detail-body{display:grid;grid-template-columns:minmax(0,1fr) 286px;align-items:start;gap:18px;padding:20px 24px 24px;overflow:auto;min-height:0}
+.detail-primary{min-width:0;display:grid;gap:14px}
+.application-summary,.detail-section,.detail-side-card,.review-form{background:#fff;border:1px solid #e0e8f0;border-radius:13px;box-shadow:0 3px 12px #12365708}
+.application-summary{padding:14px 16px 0;overflow:hidden}
+.application-summary-main{min-height:72px;display:flex;align-items:center;gap:13px;padding:0 2px 13px}
+.candidate-avatar{width:50px;height:50px;display:grid;place-items:center;flex:none;border:1px solid #d7e6f3;border-radius:50%;background:linear-gradient(140deg,#edf6fc,#dfeefa);color:#3478b2;font-size:15px;font-weight:800}
+.application-summary-main h3{font-size:18px;letter-spacing:-.02em;color:#102f4e;margin:0 0 5px}
+.reference-chip{display:inline-flex;border-radius:20px;background:#edf4fa;color:#4b6d89;padding:4px 9px;font-size:10px;font-weight:800;letter-spacing:.02em}
+.summary-status{margin-left:auto;text-align:right;display:grid;justify-items:end;gap:6px}
+.summary-payment{display:inline-flex;border-radius:8px;padding:7px 10px;font-size:10px;font-weight:800;white-space:nowrap}
+.summary-payment.is-paid{background:#e6f7ed;color:#208751}.summary-payment.is-pending{background:#fff4df;color:#9a722a}
+.summary-status small{font-size:10px;color:#788da1}
+.application-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid #e8eef4}
+.application-metric{min-width:0;display:flex;align-items:center;gap:9px;padding:13px 10px;border-right:1px solid #edf1f5}
+.application-metric:last-child{border-right:0}
+.metric-icon{width:29px;height:29px;flex:none;display:grid;place-items:center;border-radius:50%;background:#edf5fc;color:#247ac1;font-size:15px;font-weight:800}
+.application-metric small{display:block;color:#8094a7;font-size:9px;font-weight:600;margin-bottom:3px}
+.application-metric strong{display:block;color:#264663;font-size:11px;line-height:1.4;overflow-wrap:anywhere}
+.detail-section{padding:16px 18px;margin:0;border-bottom:1px solid #e0e8f0}
+.detail-section h3,.review-form h3,.detail-side-card h3{display:flex;align-items:center;gap:9px;font-size:14px;color:#183b5c;margin:0 0 14px;letter-spacing:-.015em}
+.detail-section h3:before,.review-form h3:before,.detail-side-card h3:before{content:"";width:4px;height:18px;border-radius:4px;background:#2683cf}
+.detail-section dl{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 16px;margin:0}
+.detail-section dl>div{min-width:0;padding:9px 0;border-top:1px solid #edf1f5}
+.detail-section dl>div:nth-child(-n+2){border-top:0;padding-top:0}
+.detail-section dt,.detail-side-card dt{font-size:9px;color:#8294a5;font-weight:600;margin-bottom:4px}
+.detail-section dd,.detail-side-card dd{font-size:11px;line-height:1.55;color:#294a67;margin:0;white-space:pre-wrap;overflow-wrap:anywhere;font-weight:650}
+.detail-section .wide{grid-column:1/-1}
+.detail-aside{position:sticky;top:0;min-width:0;display:grid;gap:13px}
+.detail-side-card{padding:16px}
+.status-action{width:100%;min-height:40px;margin:0 0 8px;border:1px solid #dce7ef;border-radius:8px;background:#fff;color:#345873;font-size:11px;font-weight:800;text-align:left;padding:10px 12px;transition:transform .16s ease,box-shadow .16s ease,background .16s ease}
+.status-action:last-child{margin-bottom:0}
+.status-action:hover{transform:translateY(-1px);box-shadow:0 5px 14px #17365312}
+.approve-action{border-color:#c9eed9;background:#edfaf3;color:#218551}.approve-action:hover{background:#e1f6eb}
+.reject-action{border-color:#f2d6d6;background:#fff4f4;color:#be4646}.reject-action:hover{background:#ffebeb}
+.edit-action{background:#fff}
+.review-form{padding:16px;background:#f9fbfd}
+.review-form h3{margin-bottom:13px}
+.review-grid{display:grid;grid-template-columns:1fr;gap:11px}
+.review-grid .wide{grid-column:auto}
+.review-grid label{gap:6px;font-size:10px}
+.review-grid select,.review-grid textarea{font-size:11px;min-height:38px;padding:9px 10px}
+.review-grid textarea{min-height:78px}
+.review-form .detail-actions{margin-top:12px}
+.review-form .detail-actions button{width:100%;min-height:39px}
+.extra-info-card dl{margin:0 0 10px}.extra-info-card dl>div{padding:9px 0;border-top:1px solid #edf1f5}.extra-info-card dl>div:first-child{border-top:0;padding-top:0}
+.extra-info-card .secondary{width:100%;min-height:37px;margin-top:7px;font-size:10px}
+.detail-dialog .message{margin:10px 0 0;font-size:11px;padding:10px 12px}
+@media(max-width:950px){.detail-dialog{width:calc(100vw - 30px);max-height:calc(100dvh - 28px)}.detail-modal-shell{max-height:calc(100dvh - 30px)}.detail-body{grid-template-columns:minmax(0,1fr) 250px;gap:12px;padding:14px}.application-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.application-metric:nth-child(2){border-right:0}.application-metric:nth-child(n+3){border-top:1px solid #edf1f5}}
+@media(max-width:700px){.detail-dialog{width:calc(100vw - 16px);max-height:calc(100dvh - 16px);border-radius:14px}.detail-modal-shell{max-height:calc(100dvh - 18px)}.detail-top{align-items:flex-start;padding:15px 14px;gap:9px}.detail-top h2{font-size:20px}.detail-subtitle{font-size:10px}.detail-top-actions{gap:5px}.detail-top-actions .secondary{min-height:34px;padding:7px 8px;font-size:9px}.detail-top-actions .icon-button{width:33px;height:33px}.detail-body{grid-template-columns:1fr;gap:12px;padding:10px;overflow-y:auto}.detail-primary{gap:10px}.application-summary{padding:12px 11px 0}.application-summary-main{gap:9px}.candidate-avatar{width:42px;height:42px;font-size:13px}.application-summary-main h3{font-size:15px}.summary-payment{padding:6px 7px;font-size:9px}.summary-status small{font-size:9px}.application-metric{padding:10px 5px;gap:6px}.metric-icon{width:25px;height:25px;font-size:12px}.application-metric small{font-size:8px}.application-metric strong{font-size:10px}.detail-section{padding:14px 12px}.detail-section h3,.review-form h3,.detail-side-card h3{font-size:13px;margin-bottom:11px}.detail-section dl{gap:0 10px}.detail-section dt{font-size:8px}.detail-section dd{font-size:10px}.detail-aside{position:static;grid-template-columns:1fr}.detail-side-card,.review-form{padding:13px}.detail-aside .application-actions-card{order:0}.detail-aside .review-form{order:1}.detail-aside .extra-info-card{order:2}}
+@media(max-width:400px){.detail-top-actions .secondary{font-size:0;gap:0}.detail-top-actions .secondary:after{font-size:10px;content:"Yazdır"}.detail-top-actions #download-receipt:after{content:"Dekont"}.detail-section dl{grid-template-columns:1fr}.detail-section dl>div:nth-child(2){border-top:1px solid #edf1f5;padding-top:9px}.detail-section .wide{grid-column:auto}}
+@media print{body>*:not(#detail-dialog){display:none!important}.detail-dialog{position:static;inset:auto;margin:0;width:100%;max-width:none;height:auto;max-height:none;overflow:visible;border:0;border-radius:0;box-shadow:none;padding:0;background:#fff}.detail-dialog::backdrop{display:none}.detail-modal-shell{display:block;max-height:none;overflow:visible}.detail-top-actions,.detail-aside,.detail-subtitle{display:none!important}.detail-body{display:block;padding:0;overflow:visible}.application-summary,.detail-section{box-shadow:none;break-inside:avoid}.detail-primary{gap:10px}.detail-section dl{grid-template-columns:1fr 1fr}}
