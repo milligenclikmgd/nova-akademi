@@ -78,5 +78,5 @@
 
 
 /* Final hero sizing override: partner strip visible at the bottom of the first screen. */
-@media(min-width:641px){body:has(.partners-marquee) .hero{height:calc(100svh - 184px)!important;min-height:540px!important;max-height:820px!important}}
-@media(max-width:640px){body:has(.partners-marquee) .hero{height:calc(100svh - 146px)!important;min-height:440px!important;max-height:680px!important}}
+@media(min-width:641px){body:has(.partners-marquee) .hero{height:calc(100svh - 234px)!important;min-height:490px!important;max-height:770px!important}}
+@media(max-width:640px){body:has(.partners-marquee) .hero{height:calc(100svh - 196px)!important;min-height:390px!important;max-height:630px!important}}
