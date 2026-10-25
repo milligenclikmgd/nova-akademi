@@ -75,3 +75,8 @@
   .pg-principles--home .pg-principle,
   .pg-principles--home .pg-principle__icon{transition:none!important}
 }
+
+
+/* Final hero sizing override: partner strip visible at the bottom of the first screen. */
+@media(min-width:641px){body:has(.partners-marquee) .hero{height:calc(100svh - 112px)!important;min-height:620px!important;max-height:900px!important}}
+@media(max-width:640px){body:has(.partners-marquee) .hero{height:calc(100svh - 86px)!important;min-height:500px!important;max-height:760px!important}}
