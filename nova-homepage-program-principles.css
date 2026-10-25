@@ -82,10 +82,10 @@
 @media(max-width:640px){body:has(.partners-marquee) .hero{height:calc(100svh - 196px)!important;min-height:390px!important;max-height:630px!important}}
 
 
-/* NOVA intro video: preserve the authored navy area and keep only the requested title. */
+/* NOVA intro video and two-line white/light-blue title. */
 body:has(.hero-visuals) .hero-visuals .hero-slide:has(video)::after{display:none!important}
 body:has(.hero-visuals) .hero-visuals .hero-slide video{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;object-fit:cover!important;object-position:center!important;transform:none!important;z-index:0!important}
-body:has(.hero-visuals) .hero-slide:has(video) .hero-slide-copy{left:clamp(26px,6vw,96px)!important;width:min(58vw,800px)!important;top:50%!important;transform:translateY(-50%)!important;z-index:2!important}
-body:has(.hero-visuals) .hero-slide:has(video) .hero-slide-copy h1{max-width:800px!important;margin:0!important;color:#fff!important;font-size:clamp(34px,3.55vw,58px)!important;line-height:1.12!important;letter-spacing:-.04em!important;font-weight:800!important}
-body:has(.hero-visuals) .hero-slide:has(video) .hero-slide-copy h1 .nova-slide-accent{display:block!important;color:#c9eaff!important;white-space:normal!important}
-@media(max-width:760px){body:has(.hero-visuals) .hero-visuals .hero-slide video{object-position:66% center!important}body:has(.hero-visuals) .hero-slide:has(video) .hero-slide-copy{left:6%!important;width:88%!important;top:44%!important}body:has(.hero-visuals) .hero-slide:has(video) .hero-slide-copy h1{font-size:clamp(23px,6vw,36px)!important}}
+body:has(.hero-visuals) .hero>.hero-copy{position:absolute!important;left:clamp(26px,6vw,96px)!important;top:50%!important;transform:translateY(-50%)!important;width:min(58vw,800px)!important;max-width:800px!important;margin:0!important;z-index:3!important}
+body:has(.hero-visuals) .hero>.hero-copy h1{max-width:800px!important;margin:0!important;color:#fff!important;font-size:clamp(34px,3.55vw,58px)!important;line-height:1.12!important;letter-spacing:-.04em!important;font-weight:800!important}
+body:has(.hero-visuals) .hero>.hero-copy h1 .nova-slide-accent{display:block!important;color:#c9eaff!important;white-space:normal!important}
+@media(max-width:760px){body:has(.hero-visuals) .hero-visuals .hero-slide video{object-position:66% center!important}body:has(.hero-visuals) .hero>.hero-copy{left:6%!important;top:44%!important;width:88%!important}body:has(.hero-visuals) .hero>.hero-copy h1{font-size:clamp(23px,6vw,36px)!important}}
