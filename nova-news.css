@@ -6,3 +6,10 @@
 .nova-news .nova-news-head>.nova-news-all{grid-column:3!important;grid-row:1!important;justify-self:end!important;margin:0!important}
 @media(max-width:850px){.nova-news .nova-news-head{grid-template-columns:minmax(0,1fr) auto!important}.nova-news .nova-news-head>h2{grid-column:1!important;grid-row:1!important}.nova-news .nova-news-head>.nova-news-all{grid-column:2!important;grid-row:1!important}.nova-news .nova-news-head>.nova-news-tabs{grid-column:1/-1!important;grid-row:2!important;justify-self:center!important}}
 @media(max-width:540px){.nova-news .nova-news-head{grid-template-columns:minmax(0,1fr) auto!important}.nova-news .nova-news-head>h2{font-size:22px!important}.nova-news .nova-news-head>.nova-news-tabs{justify-self:start!important;gap:5px}.nova-news .nova-news-tabs button{padding:8px 10px;font-size:9px}}
+
+/* Override all historical header rules with a single stable 3-column layout */
+.nova-news .nova-news-head{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,1fr)!important;gap:16px!important;align-items:center!important;padding:24px 0 0!important}
+.nova-news .nova-news-head h2{grid-column:1!important;grid-row:1!important;justify-self:start!important;text-align:left!important;margin:0!important;font-size:clamp(20px,2vw,29px)!important;line-height:1.15!important;font-weight:400!important;letter-spacing:-.025em!important}
+.nova-news .nova-news-head .nova-news-tabs{grid-column:2!important;grid-row:1!important;justify-self:center!important;display:flex!important;gap:8px!important}
+.nova-news .nova-news-head .nova-news-all{grid-column:3!important;grid-row:1!important;justify-self:end!important;margin:0!important}
+@media(max-width:850px){.nova-news .nova-news-head{grid-template-columns:minmax(0,1fr) auto!important}.nova-news .nova-news-head h2{grid-column:1!important;grid-row:1!important;font-size:22px!important}.nova-news .nova-news-head .nova-news-tabs{grid-column:1/-1!important;grid-row:2!important;justify-self:center!important}.nova-news .nova-news-head .nova-news-all{grid-column:2!important;grid-row:1!important}}
