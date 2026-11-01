@@ -140,3 +140,4 @@
 @media(max-width:1180px){.scan-hero__inner{min-height:329px}.scan-hero__visual{height:287px}}
 @media(max-width:900px){.scan-hero__inner{min-height:301px}.scan-hero__visual{height:266px}}
 @media(max-width:640px){.scan-hero__inner{min-height:0}.scan-hero__visual{height:auto;aspect-ratio:1.9/1}}
+.scan-hero__visual img{object-position:center top}
