@@ -197,3 +197,6 @@ body.admission-page footer{padding-top:56px;padding-bottom:62px}
  .admission-detail-panel__visual{max-height:190px;aspect-ratio:1.8}
 }
 @media(prefers-reduced-motion:reduce){.admission-detail-panel,.admission-step summary,.admission-step__icon{transition:none!important}}
+
+/* Hero alanını aşağıdan daha kompakt tut */
+@media(min-width:761px){.admission-hero__grid{min-height:280px;height:280px;padding:8px 0}.admission-hero__visual{height:260px}}
