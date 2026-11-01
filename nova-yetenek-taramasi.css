@@ -134,3 +134,9 @@
     padding:21px 18px 18px!important;
   }
 }
+
+/* NOVA Yetenek Taraması: kısa hero ve scroll görünümü */
+.scan-hero__inner{min-height:354px}.scan-hero__visual{height:319px}
+@media(max-width:1180px){.scan-hero__inner{min-height:329px}.scan-hero__visual{height:287px}}
+@media(max-width:900px){.scan-hero__inner{min-height:301px}.scan-hero__visual{height:266px}}
+@media(max-width:640px){.scan-hero__inner{min-height:0}.scan-hero__visual{height:auto;aspect-ratio:1.9/1}}
