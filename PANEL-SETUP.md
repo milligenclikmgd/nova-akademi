@@ -18,7 +18,8 @@ Panel parolası ve kalıcı bağlama hazır olmadan sistem başvuru kabul etmez.
 
 - Başvurular ve en fazla 5 MB PDF dekontlar SQLite destekli Durable Object içinde tutulur. PDF'ler atomik işlemle 64 KB parçalar halinde kaydedilir; herkese açık asset klasöründe tutulmaz.
 - Ücret tarayıcıdan alınmaz; sunucu güncel branş üzerinden hesaplar. Ücret sürümü değişirse adayın yeni bilgiyi incelemesi gerekir. Eski başvurunun ücret ve başlık kopyası korunur.
-- Başvuru numaraları `01-ANK-001` biçimindedir; il kodu başvuru şehrine göre belirlenir (ör. İstanbul `IST`, Manisa `MAN`). Aday, numarasıyla başvuru durumunu sorgulayabilir. Reddedilen başvurularda paneldeki **Ret açıklaması** alana yazılan metin, adaya “Açıklamayı oku” düğmesiyle gösterilir.
+- Başvuru numaraları `NOVA-2026-01`, `NOVA-2026-02`, `NOVA-2026-015` biçiminde üretilir. Sıra numarasının önüne bir `0` eklenir ve her yıl sıra yeniden başlar. Aday, numarasıyla başvuru durumunu sorgulayabilir. Reddedilen başvurularda paneldeki **Ret açıklaması** alana yazılan metin, adaya “Açıklamayı oku” düğmesiyle gösterilir.
+- Paneldeki **Başvuruları ve sınavları sıfırla** işlemi tüm başvuruları, sonuçları, kesin kayıtları ve bağlı dekont/sağlık belgelerini kalıcı olarak siler; sınav merkezi atamalarını boşaltır ve başvuru alımını kapatır. Sınav şablonları korunur.
 - Panelde il, sınav/branş, durum ve aday adı filtreleri kullanılabilir. Excel çalışma kitabı dışa aktarımı geçerli filtreleri uygular.
 - Aynı gönderimin yeniden denenmesi aynı başvuru numarasını döndürür.
 - `Ödendi` aday beyanıdır. Panelde `Kontrol bekliyor` görünür; yönetici `Ödeme doğrulandı` yapabilir. Gerçek ödeme veya banka işlemi gerçekleştirilmez.
