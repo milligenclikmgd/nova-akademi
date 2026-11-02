@@ -393,3 +393,18 @@ body.application-page{margin:0;background:#fff;color:var(--app-navy);font-family
  .application-page .city-section__visual{transform:translateX(12px)}
  .application-page .turkey-map{max-width:780px}
 }
+
+
+/* Sınav başvurusu hero: sahne görseli ve beyaz metin */
+.application-page .application-hero:before{background:linear-gradient(90deg,rgba(4,18,45,.62) 0%,rgba(4,18,45,.48) 32%,rgba(4,18,45,.22) 52%,rgba(4,18,45,.03) 76%,transparent 100%)}
+.application-page .application-hero__image{object-position:center 50%}
+.application-page .application-hero__content,.application-page .application-hero__content h1,.application-page .application-hero__content>p,.application-page .application-hero .application-kicker,.application-page .application-breadcrumb,.application-page .application-breadcrumb a,.application-page .application-breadcrumb span{color:#fff;text-shadow:0 2px 12px rgba(0,12,34,.38)}
+.application-page .application-hero__content h1{font-weight:800}
+.application-page .application-hero__content>p:last-child{color:rgba(255,255,255,.96)}
+.application-page .application-hero .application-kicker span{background:#fff;box-shadow:0 0 12px rgba(255,255,255,.72)}
+.application-page .application-breadcrumb a{color:rgba(255,255,255,.92)}
+@media(max-width:900px){.application-page .application-hero__image{object-position:60% center}}
+@media(max-width:620px){
+ .application-page .application-hero:before{background:linear-gradient(90deg,rgba(4,18,45,.72) 0%,rgba(4,18,45,.58) 48%,rgba(4,18,45,.3) 78%,rgba(4,18,45,.12) 100%)}
+ .application-page .application-hero__image{object-position:62% center}
+}
