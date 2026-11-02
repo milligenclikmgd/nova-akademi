@@ -240,19 +240,14 @@ footer .footer-logo.footer-logo--white{filter:brightness(0) invert(1)!important;
 .nova-main-header .nova-apply:hover{background:#566777!important;border-color:#566777!important;color:#fff!important;transform:translateY(-2px)!important;box-shadow:0 12px 22px rgba(51,67,81,.24)!important}
 
 
-/* Brief reveal on the NOVA homepage brand mark */
-body.nova-homepage .nova-main-header .nova-brand img{
-  opacity:0;
-  transform:translateY(8px) scale(.97);
-  transform-origin:left center;
-  animation:nova-home-brand-reveal .9s cubic-bezier(.2,.75,.25,1) .08s both;
-  will-change:opacity,transform;
-}
-@keyframes nova-home-brand-reveal{
-  0%{opacity:0;transform:translateY(8px) scale(.97)}
-  68%{opacity:1;transform:translateY(-1px) scale(1.012)}
-  100%{opacity:1;transform:translateY(0) scale(1)}
-}
+
+/* Homepage entry cover: the site is ready underneath while the brand mark appears */
+.nova-entry-cover{position:fixed;inset:0;z-index:100000;display:grid;place-items:center;background:#eff8fc;opacity:1;visibility:visible;transition:opacity .42s ease,visibility .42s ease}
+.nova-entry-cover.is-dismissing{opacity:0;visibility:hidden;pointer-events:none}
+.nova-entry-cover img{display:block;width:min(450px,72vw);max-height:230px;height:auto;object-fit:contain;opacity:0;transform:translateY(10px) scale(.92);filter:drop-shadow(0 10px 24px rgba(48,113,160,.08));animation:nova-entry-mark-appear .95s cubic-bezier(.2,.72,.24,1) .08s forwards;will-change:opacity,transform}
+@keyframes nova-entry-mark-appear{0%{opacity:0;transform:translateY(10px) scale(.92)}55%{opacity:1;transform:translateY(-2px) scale(1.018)}100%{opacity:1;transform:translateY(0) scale(1)}}
+@media(max-width:600px){.nova-entry-cover img{width:min(350px,78vw);max-height:175px}}
 @media(prefers-reduced-motion:reduce){
-  body.nova-homepage .nova-main-header .nova-brand img{animation:none;opacity:1;transform:none;will-change:auto}
+ .nova-entry-cover img{animation:none;opacity:1;transform:none;will-change:auto}
+ .nova-entry-cover{transition-duration:.2s}
 }
