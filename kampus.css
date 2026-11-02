@@ -6,9 +6,9 @@ body.campus-page{margin:0;background:#fff;color:var(--campus-ink);font-family:Ma
 .campus-scene--gym{background-position:100% 0}
 .campus-scene--dance{background-position:0 100%}
 .campus-scene--study{background-position:100% 100%}
-.campus-hero{position:relative;isolation:isolate;height:314px;min-height:314px;overflow:hidden;background:#dceffc}
-.campus-hero__photo{position:absolute;inset:0;z-index:-2;transform:scale(1.015)}
-.campus-hero__wash{position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(236,247,253,.99) 0%,rgba(236,247,253,.94) 27%,rgba(236,247,253,.68) 43%,rgba(236,247,253,.08) 66%,rgba(236,247,253,0) 100%)}
+.campus-hero{position:relative;isolation:isolate;height:314px;min-height:314px;overflow:hidden;background:#eaf5fb}
+.campus-hero__photo{position:absolute;top:0;right:0;bottom:0;left:auto;z-index:-2;width:auto;height:100%;aspect-ratio:16/9;transform:none}
+.campus-hero__wash{position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,#eaf5fb 0%,#eaf5fb 47%,rgba(234,245,251,.96) 56%,rgba(234,245,251,.72) 66%,rgba(234,245,251,.24) 83%,rgba(234,245,251,0) 100%)}
 .campus-hero__inner{position:relative;z-index:2;width:min(1250px,calc(100% - 64px));height:100%;margin:0 auto;padding-top:38px}
 .campus-breadcrumb{display:flex;align-items:center;gap:10px;margin-bottom:22px;font-size:11px;line-height:1.4;color:#526c83}
 .campus-breadcrumb a{color:inherit;text-decoration:none}
@@ -78,8 +78,9 @@ body.campus-page{margin:0;background:#fff;color:var(--campus-ink);font-family:Ma
  .campus-breadcrumb{margin-bottom:24px;font-size:10px}
  .campus-hero h1{font-size:42px}
  .campus-hero__lead{max-width:265px;font-size:14px}
- .campus-hero__wash{background:linear-gradient(90deg,rgba(236,247,253,.98),rgba(236,247,253,.85) 55%,rgba(236,247,253,.15))}
- .campus-facade-sign{top:48%;right:7%;min-width:115px;padding:7px 12px 8px}
+ .campus-hero__photo{top:0;right:0;bottom:auto;width:100%;height:auto;aspect-ratio:16/9}
+ .campus-hero__wash{background:linear-gradient(90deg,rgba(234,245,251,.98) 0%,rgba(234,245,251,.72) 35%,rgba(234,245,251,.12) 76%,rgba(234,245,251,0) 100%),linear-gradient(0deg,#eaf5fb 0%,rgba(234,245,251,.92) 27%,rgba(234,245,251,0) 72%)}
+ .campus-facade-sign{top:25%;right:7%;min-width:115px;padding:7px 12px 8px}
  .campus-facade-sign strong{font-size:22px}.campus-facade-sign small{font-size:6px}
  .campus-shortcuts{grid-template-columns:repeat(2,1fr);width:calc(100% - 32px);padding:8px 0}
  .campus-shortcuts a{justify-content:flex-start;min-height:58px;padding-left:15px}
