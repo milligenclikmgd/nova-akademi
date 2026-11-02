@@ -283,3 +283,61 @@ body.application-page{margin:0;background:#fff;color:var(--app-navy);font-family
 @media(max-width:390px){.city-section__actions{align-items:flex-start;flex-direction:column}.city-legend{margin-top:2px}}
 .applications-closed{display:flex;align-items:center;gap:18px;margin:0 0 18px;padding:22px 25px;border:1px solid #d7e5ef;border-radius:14px;background:linear-gradient(110deg,#f3f8fc,#fff);color:#234e70}.applications-closed>span{display:grid;place-items:center;width:42px;height:42px;flex:none;border-radius:50%;background:#e4f1fa;color:#2879b5;font-size:21px}.applications-closed strong{display:block;font-size:17px;line-height:1.45}.applications-closed p{margin:5px 0 0;color:#71879a;font-size:12px;line-height:1.7}.turkey-map.is-applications-closed{filter:grayscale(.5);opacity:.62;pointer-events:none;user-select:none}.turkey-map.is-applications-closed .turkey-province-svg .turkey>g{cursor:default!important}.turkey-map.is-applications-closed+.city-index{opacity:.55;pointer-events:none;filter:grayscale(.7)}
 @media(max-width:620px){.applications-closed{padding:17px;gap:12px}.applications-closed strong{font-size:15px}}
+
+/* Harita sağda, başvuru açıklaması solda */
+.application-page .city-section{padding:54px 0 64px}
+.city-selection-layout{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(320px,.92fr);grid-template-areas:"copy map" "closed map";grid-template-rows:auto auto;align-items:center;gap:14px 52px}
+.city-section__copy{grid-area:copy;max-width:570px}
+.city-section__copy .application-kicker{margin-bottom:12px}
+.city-section__copy h2{margin:0 0 13px;color:#082b60;font-size:clamp(30px,3.25vw,42px);font-weight:800;line-height:1.12;letter-spacing:-.055em}
+.city-section__description{max-width:500px;margin:0;color:#5c718a;font-size:15px;line-height:1.8}
+.city-section__actions{display:flex;flex-direction:column;align-items:flex-start;gap:19px;margin-top:25px}
+.application-page .city-section__actions .application-track-trigger{position:static;display:inline-grid;grid-template-columns:44px minmax(0,1fr) 22px;align-items:center;gap:13px;min-width:min(100%,350px);padding:11px 16px;border:1px solid #1267ae;border-radius:11px;background:linear-gradient(135deg,#1679c4,#0c579a);color:#fff;text-align:left;box-shadow:0 10px 22px rgba(11,85,146,.2);cursor:pointer;transition:transform .2s ease,box-shadow .2s ease,background .2s ease}
+.application-page .city-section__actions .application-track-trigger:hover{transform:translateY(-2px);background:linear-gradient(135deg,#0e69b2,#08477f);box-shadow:0 13px 26px rgba(11,85,146,.27)}
+.application-track-trigger__icon{display:grid;place-items:center;width:42px;height:42px;border:1px solid rgba(255,255,255,.28);border-radius:10px;background:rgba(255,255,255,.13)}
+.application-track-trigger__icon svg{width:23px;height:23px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.application-track-trigger__copy{display:grid;gap:3px}
+.application-track-trigger__copy strong{font-size:13px;font-weight:800;line-height:1.3}
+.application-track-trigger__copy small{color:rgba(255,255,255,.8);font-size:10px;font-weight:500;line-height:1.4}
+.application-track-trigger__arrow{justify-self:end;font-size:22px;font-weight:500;transition:transform .2s ease}
+.application-track-trigger:hover .application-track-trigger__arrow{transform:translateX(3px)}
+.application-page .city-legend{display:flex;flex-wrap:wrap;gap:12px 18px;padding:0}
+.application-page .city-legend>span{font-size:10px}
+.application-page .applications-closed{grid-area:closed;margin:3px 0 0;padding:15px 17px;border-radius:11px}
+.application-page .applications-closed strong{font-size:14px}
+.application-page .applications-closed p{font-size:11px}
+.application-page .turkey-map{grid-area:map;align-self:center;justify-self:end;width:min(100%,510px);min-height:0;aspect-ratio:1.55/1;padding:12px;border-radius:17px;background:radial-gradient(ellipse at 52% 46%,#fff 0%,#f7fbff 58%,#eef6fc 100%);box-shadow:0 10px 28px rgba(13,61,104,.075)}
+.application-page .turkey-map:before{background-size:28px 28px}
+.application-page .turkey-map:after{inset:10px;border-radius:11px}
+.application-page .turkey-map__canvas{width:100%;max-width:100%;aspect-ratio:1005/490}
+.application-page .turkey-map__svg{width:100%;height:100%}
+.application-page .turkey-province-svg{width:100%;height:100%}
+.application-page .map-province-tooltip{font-size:11px}
+@media(max-width:760px){
+ .application-page .city-section{padding:36px 0 45px}
+ .city-selection-layout{grid-template-columns:minmax(0,1fr);grid-template-areas:"copy" "closed" "map";grid-template-rows:auto auto auto;gap:20px}
+ .city-section__copy{max-width:650px}
+ .city-section__copy h2{font-size:clamp(28px,6vw,36px)}
+ .city-section__description{font-size:14px;line-height:1.7}
+ .city-section__actions{flex-direction:row;align-items:center;flex-wrap:wrap;gap:14px 18px;margin-top:20px}
+ .application-page .city-section__actions .application-track-trigger{min-width:290px}
+ .application-page .city-legend{gap:10px 14px}
+ .application-page .turkey-map{justify-self:center;width:min(100%,530px);aspect-ratio:1.65/1;padding:10px}
+ .application-page .turkey-map__canvas{aspect-ratio:1005/520}
+}
+@media(max-width:480px){
+ .application-page .city-section{padding:28px 0 36px}
+ .city-section__copy .application-kicker{font-size:9px}
+ .city-section__copy h2{font-size:27px;margin-bottom:9px}
+ .city-section__description{font-size:13px}
+ .city-section__actions{display:grid;grid-template-columns:1fr;gap:15px;margin-top:17px}
+ .application-page .city-section__actions .application-track-trigger{width:100%;min-width:0;max-width:360px;grid-template-columns:40px minmax(0,1fr) 20px;padding:10px 12px}
+ .application-track-trigger__icon{width:38px;height:38px}
+ .application-track-trigger__copy strong{font-size:13px}
+ .application-track-trigger__copy small{font-size:9px}
+ .application-page .city-legend{gap:8px 13px}
+ .application-page .city-legend>span{font-size:9px}
+ .application-page .turkey-map{width:100%;aspect-ratio:1.42/1;padding:7px;border-radius:13px}
+ .application-page .turkey-map:after{inset:7px;border-radius:9px}
+ .application-page .turkey-map__canvas{aspect-ratio:1005/560}
+}
