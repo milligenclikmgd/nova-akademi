@@ -350,3 +350,17 @@ footer .footer-logo.footer-logo--white{filter:brightness(0) invert(1)!important;
 }
 @media(max-width:620px){.nova-mobile-actions{padding-top:14px;padding-bottom:9px}.nova-mobile-action{min-height:48px;font-size:11px}.nova-mobile-group__toggle,.nova-mobile-link{min-height:45px;font-size:14px}}
 @media(max-width:380px){.nova-mobile-group__toggle,.nova-mobile-link{min-height:43px;font-size:13.5px}.nova-mobile-submenu .nova-mobile-link,.nova-mobile-submenu .nova-mobile-group__toggle{min-height:37px;font-size:12px}}
+
+
+/* Fixes for legacy global header/nav rules at phone and tablet widths */
+@media(max-width:1120px){
+ html body [data-nova-header] .nova-main-header{position:relative!important;display:flex!important;flex-direction:row!important;justify-content:space-between!important;align-items:center!important;grid-template-columns:none!important}
+ html body [data-nova-header] .nova-main-header>.hamb{position:relative!important;inset:auto!important;left:auto!important;right:auto!important;top:auto!important;transform:none!important;order:2!important;flex:0 0 50px!important;margin:0 0 0 auto!important;align-self:center!important}
+ html body [data-nova-header] .nova-main-header>.nova-brand{order:1!important;margin-right:auto!important}
+ html body [data-nova-header] .nova-main-header>.nova-nav,html body [data-nova-header] .nova-main-header>.nova-results{display:none!important}
+ html body [data-nova-header] .nova-mobile-drawer .nova-mobile-nav{display:flex!important;flex-direction:column!important;align-items:stretch!important;justify-content:flex-start!important;gap:0!important;width:100%!important;white-space:normal!important}
+ html body [data-nova-header] .nova-mobile-nav>.nova-mobile-group,html body [data-nova-header] .nova-mobile-nav>.nova-mobile-link{flex:0 0 auto!important;width:100%!important}
+ html body [data-nova-header] .nova-mobile-nav .nova-mobile-group__toggle,html body [data-nova-header] .nova-mobile-nav .nova-mobile-link{white-space:normal!important}
+ html body [data-nova-header] .nova-mobile-social{padding:11px 0 0!important}
+}
+@media(max-width:620px){html body [data-nova-header] .nova-main-header>.hamb{flex-basis:46px!important}}
