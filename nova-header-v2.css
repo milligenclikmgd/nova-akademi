@@ -320,3 +320,33 @@ footer .footer-logo.footer-logo--white{filter:brightness(0) invert(1)!important;
 @media(prefers-reduced-motion:reduce){
  .nova-mobile-backdrop,.nova-mobile-drawer,.nova-mobile-group__toggle svg,.nova-mobile-submenu,.nova-mobile-social__links a,.nova-mobile-close{transition:none!important}
 }
+
+
+/* Compact mobile menu hierarchy and brand social marks */
+@media(max-width:1120px){
+ .nova-main-header .hamb{margin-left:auto!important}
+ .nova-mobile-action--apply{background:#7b8792!important;border-color:#7b8792!important;color:#fff!important;box-shadow:0 7px 15px rgba(44,57,68,.16)!important}
+ .nova-mobile-action--apply:hover{background:#65717b!important;border-color:#65717b!important;color:#fff!important}
+ .nova-mobile-actions{padding-top:17px;padding-bottom:11px}
+ .nova-mobile-group{border-bottom:1px solid #e9eef3}
+ .nova-mobile-group__toggle,.nova-mobile-link{min-height:48px;padding:10px 2px;font-size:15px;line-height:1.2}
+ .nova-mobile-group__toggle svg{width:20px;height:20px;flex-basis:20px}
+ .nova-mobile-submenu .nova-mobile-link,.nova-mobile-submenu .nova-mobile-group__toggle{min-height:40px;padding:9px 4px;font-size:13px}
+ .nova-mobile-submenu .nova-mobile-submenu .nova-mobile-link{min-height:36px;font-size:12px}
+ .nova-mobile-social{padding-top:11px}
+ .nova-mobile-social>p{margin-bottom:8px}
+ .nova-mobile-social__links{gap:10px}
+ .nova-mobile-social__links a{width:38px;height:38px;border-color:transparent;background:#fff}
+ .nova-mobile-social__links a:hover{background:#f3f7fa}
+ .nova-mobile-social__links svg{width:23px;height:23px;stroke:none}
+ .nova-mobile-social__links a:nth-child(1) svg{fill:none;stroke:none}
+ .nova-mobile-social__links a:nth-child(2){color:#1877f2}
+ .nova-mobile-social__links a:nth-child(2) svg{fill:currentColor;stroke:none}
+ .nova-mobile-social__links a:nth-child(3){color:#f00}
+ .nova-mobile-social__links a:nth-child(3) svg{fill:currentColor;stroke:none}
+ .nova-mobile-social__links .nova-youtube-play{fill:#fff!important}
+ .nova-mobile-social__links a:nth-child(4){color:#000}
+ .nova-mobile-social__links a:nth-child(4) svg{fill:currentColor;stroke:none}
+}
+@media(max-width:620px){.nova-mobile-actions{padding-top:14px;padding-bottom:9px}.nova-mobile-action{min-height:48px;font-size:11px}.nova-mobile-group__toggle,.nova-mobile-link{min-height:45px;font-size:14px}}
+@media(max-width:380px){.nova-mobile-group__toggle,.nova-mobile-link{min-height:43px;font-size:13.5px}.nova-mobile-submenu .nova-mobile-link,.nova-mobile-submenu .nova-mobile-group__toggle{min-height:37px;font-size:12px}}
