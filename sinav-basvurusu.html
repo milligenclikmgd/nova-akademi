@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="nova-header-v2.css?v=20261022-1">
-<link rel="stylesheet" href="sinav-basvurusu.css?v=20261103-1">
+<link rel="stylesheet" href="sinav-basvurusu.css?v=20261103-2">
 <link rel="stylesheet" href="nova-footer.css?v=20261017-1">
 </head>
 <body class="application-page">
@@ -43,14 +43,24 @@
         </div>
       </div>
       <div id="applications-closed" class="applications-closed" role="status" hidden><span aria-hidden="true">✦</span><div><strong>Başvurularımız henüz başlamamıştır.</strong><p>Başvuru takvimi açıldığında bu sayfadan duyurulacaktır.</p></div></div>
-      <div class="turkey-map" id="turkey-map" data-map-state="loading">
-        <div class="turkey-map__canvas">
-          <div class="turkey-map__loading" role="status">Türkiye haritası yükleniyor…</div>
-          <div class="turkey-map__svg" id="turkey-map-svg"></div>
+      <div class="city-section__visual">
+        <div class="city-view-tabs" role="tablist" aria-label="Sınav merkezi görünümü">
+          <button class="city-view-tab is-active" type="button" role="tab" id="city-map-tab" aria-selected="true" aria-controls="city-map-panel" tabindex="0" data-city-view-tab="map">HARİTA GÖRÜNÜMÜ</button>
+          <button class="city-view-tab" type="button" role="tab" id="city-list-tab" aria-selected="false" aria-controls="city-list-panel" tabindex="-1" data-city-view-tab="list">LİSTE GÖRÜNÜMÜ</button>
+        </div>
+        <div class="city-view-panel" id="city-map-panel" role="tabpanel" aria-labelledby="city-map-tab" data-city-view-panel="map">
+          <div class="turkey-map" id="turkey-map" data-map-state="loading">
+            <div class="turkey-map__canvas">
+              <div class="turkey-map__loading" role="status">Türkiye haritası yükleniyor…</div>
+              <div class="turkey-map__svg" id="turkey-map-svg"></div>
+            </div>
+          </div>
+        </div>
+        <div class="city-view-panel" id="city-list-panel" role="tabpanel" aria-labelledby="city-list-tab" data-city-view-panel="list" hidden>
+          <div class="city-index" id="city-index" aria-label="Sınav merkezi bulunan iller"></div>
         </div>
       </div>
-    </div>
-  </section>
+    </div>  </section>
   <dialog class="city-picker" id="city-picker" aria-labelledby="city-picker-title">
     <div class="city-picker__card">
       <header class="city-picker__header">
