@@ -129,30 +129,70 @@ html.nova-loader-seen .nova-loader{display:none!important}
 @media(prefers-reduced-motion:reduce){.nova-loader__trail{display:none!important}}
 
 
-/* NOVA shooting-star brand intro */
-.nova-loader{background:radial-gradient(ellipse at 50% 46%,#fff 0%,#fbfdff 62%,#f5faff 100%)}
-.nova-loader__stage{position:relative;width:min(700px,94vw);height:520px;display:grid;place-items:center}
-.nova-loader__halo{width:min(470px,84vw);height:min(470px,84vw);background:radial-gradient(circle,rgba(93,171,235,.2),rgba(139,203,247,.1) 42%,transparent 72%);filter:blur(8px);animation:nova-star-halo 2.65s ease-out both}
-.nova-loader__beams{position:absolute;z-index:1;left:50%;top:45%;width:min(680px,96vw);aspect-ratio:1;border-radius:50%;transform:translate(-50%,-50%);opacity:0;background:repeating-conic-gradient(from -8deg,transparent 0deg 9deg,rgba(116,188,240,.2) 9.35deg 9.9deg,transparent 10.25deg 18deg);-webkit-mask-image:radial-gradient(circle,transparent 0 11%,#000 23% 48%,transparent 72%);mask-image:radial-gradient(circle,transparent 0 11%,#000 23% 48%,transparent 72%);animation:nova-star-beams 2.65s ease-out both}
-.nova-loader__star{position:absolute;z-index:4;left:50%;top:46%;width:clamp(38px,6vw,64px);height:clamp(38px,6vw,64px);color:#1681d1;filter:drop-shadow(0 0 10px rgba(88,178,243,.9)) drop-shadow(0 0 24px rgba(92,176,239,.58));opacity:0;animation:nova-shooting-star 1.12s cubic-bezier(.18,.74,.18,1) both}
-.nova-loader__star svg{display:block;width:100%;height:100%;fill:currentColor}
-.nova-loader__logo{z-index:3;width:min(350px,74vw);max-height:210px;opacity:0;filter:drop-shadow(0 8px 24px rgba(49,115,174,.12));animation:nova-logo-reveal 1.05s 1s cubic-bezier(.18,.72,.22,1) both}
-.nova-loader__slogan{position:absolute;z-index:5;top:calc(50% + 146px);left:50%;width:min(600px,88vw);margin:0;transform:translate(-50%,10px);color:#526d89;text-align:center;font-family:Manrope,Arial,sans-serif;font-size:clamp(16px,2vw,21px);font-weight:300;letter-spacing:.12em;line-height:1.6;opacity:0;animation:nova-slogan-reveal .8s 1.55s ease-out both}
-@keyframes nova-shooting-star{0%{opacity:0;transform:translate(-46vw,-42vh) rotate(-16deg) scale(.38)}14%{opacity:1}78%{opacity:1;transform:translate(-50%,-50%) rotate(0) scale(1.18)}100%{opacity:0;transform:translate(-50%,-50%) rotate(0) scale(.2)}}
-@keyframes nova-star-beams{0%,34%{opacity:0;transform:translate(-50%,-50%) scale(.6) rotate(-8deg)}49%{opacity:.95}75%{opacity:.65;transform:translate(-50%,-50%) scale(1) rotate(0)}100%{opacity:0;transform:translate(-50%,-50%) scale(1.12) rotate(4deg)}}
-@keyframes nova-star-halo{0%,35%{opacity:.35;transform:scale(.72)}52%{opacity:1;transform:scale(1.03)}100%{opacity:.7;transform:scale(1)}}
-@keyframes nova-logo-reveal{0%{opacity:0;transform:scale(.84);filter:drop-shadow(0 0 0 rgba(49,115,174,0))}58%{opacity:1}100%{opacity:1;transform:scale(1);filter:drop-shadow(0 8px 24px rgba(49,115,174,.12))}}
-@keyframes nova-slogan-reveal{0%{opacity:0;transform:translate(-50%,10px)}100%{opacity:1;transform:translate(-50%,0)}}
-@media(max-width:600px){
- .nova-loader__stage{width:100vw;height:420px}
- .nova-loader__logo{width:min(285px,76vw);max-height:170px}
- .nova-loader__slogan{top:calc(50% + 118px);width:86vw;font-size:14px;letter-spacing:.085em;line-height:1.6}
- .nova-loader__beams{width:115vw}
+/* NOVA white-background brand intro */
+.nova-loader{background:#fff;overflow:hidden}
+.nova-loader__stage{position:relative;width:100%;height:100%;min-height:560px;display:block;overflow:hidden}
+.nova-loader__halo{position:absolute;z-index:0;left:50%;top:37%;width:min(570px,62vw);aspect-ratio:1;height:auto;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,rgba(205,235,255,.16) 0 50%,rgba(215,239,255,.1) 59%,transparent 71%);filter:none;animation:nova-white-halo 2.65s ease-out both}
+.nova-loader__orbit{position:absolute;z-index:1;left:50%;top:37%;width:min(530px,58vw);aspect-ratio:1;height:auto;transform:translate(-50%,-50%) scale(.92);border:1.5px solid rgba(99,174,228,.28);border-radius:50%;box-shadow:inset 0 0 28px rgba(148,206,241,.08),0 0 28px rgba(148,206,241,.08);opacity:0;animation:nova-orbit-appear 2.5s .25s ease-out both}
+.nova-loader__meteor{position:absolute;z-index:5;left:50%;top:37%;width:10px;height:10px;border-radius:50%;background:#fff;box-shadow:0 0 8px 4px #fff,0 0 18px 8px #88d4ff,0 0 38px 14px rgba(82,166,231,.55);opacity:0;animation:nova-meteor-arrive 1.1s cubic-bezier(.18,.68,.2,1) both}
+.nova-loader__meteor:before{content:"";position:absolute;right:3px;top:3px;width:190px;height:2px;transform:rotate(-27deg);transform-origin:right center;background:linear-gradient(90deg,transparent,rgba(119,199,247,.15),#78c9fa,white);box-shadow:0 0 9px rgba(87,181,239,.8)}
+.nova-loader__meteor i{position:absolute;inset:-5px;border-radius:50%;background:#fff;box-shadow:0 0 12px 6px #a6e1ff}
+.nova-loader__logo{position:absolute;z-index:3;left:50%;top:37%;width:min(490px,62vw);max-height:210px;height:auto;object-fit:contain;transform:translate(-50%,-50%) scale(.9);opacity:0;filter:drop-shadow(0 8px 24px rgba(41,104,157,.08));animation:nova-white-logo 1s .82s cubic-bezier(.2,.72,.22,1) both}
+.nova-loader__ribbons{position:absolute;z-index:2;left:0;top:55%;width:100%;height:24%;overflow:visible}
+.nova-ribbon{fill:none;stroke:url(#nova-ribbon-blue);stroke-width:2.5;stroke-linecap:round;stroke-dasharray:2100;stroke-dashoffset:2100;animation:nova-ribbon-draw 1.8s .58s ease-out forwards}
+.nova-ribbon--gold{stroke:url(#nova-ribbon-gold);stroke-width:2}
+.nova-ribbon-glow{fill:none;stroke-width:10;stroke-linecap:round;filter:url(#nova-ribbon-glow);opacity:0;stroke-dasharray:2100;stroke-dashoffset:2100;animation:nova-ribbon-glow 1.8s .58s ease-out forwards}
+.nova-ribbon-glow--blue{stroke:#9cdaff}
+.nova-ribbon-glow--gold{stroke:#f5dba8}
+.nova-loader__activities{position:absolute;z-index:3;left:50%;top:64%;width:min(1050px,88vw);height:120px;transform:translateX(-50%);display:flex;align-items:center;justify-content:space-between}
+.nova-loader__activity{width:76px;height:76px;fill:none;stroke:#80b9df;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 5px rgba(93,172,222,.24));opacity:0;animation:nova-activity-reveal .75s ease-out both}
+.nova-loader__activity--music{animation-delay:.9s}
+.nova-loader__activity--ball{width:82px;height:82px;animation-delay:1.12s}
+.nova-loader__activity--dance{width:108px;height:90px;stroke:#d9b977;animation-delay:1.32s}
+.nova-loader__progress{position:absolute;left:50%;top:82%;width:min(470px,68vw);height:12px;transform:translateX(-50%);border:1.5px solid #7cc7f0;border-radius:999px;padding:1px;opacity:0;animation:nova-progress-appear .35s 1.25s ease-out forwards;box-shadow:0 0 12px rgba(91,184,237,.12)}
+.nova-loader__progress span{display:block;width:0;height:100%;border-radius:inherit;background:linear-gradient(90deg,#87d4ff,#b6e8ff,#69c6f2);box-shadow:0 0 12px rgba(102,194,239,.48);animation:nova-progress-fill 1.25s 1.38s ease-out forwards}
+.nova-loader__slogan{position:absolute;left:50%;top:86%;width:90%;margin:0;transform:translate(-50%,8px);text-align:center;color:#526b83;font-family:Manrope,Arial,sans-serif;font-size:clamp(16px,1.9vw,22px);font-weight:300;letter-spacing:.2em;line-height:1.5;opacity:0;animation:nova-slogan-reveal .7s 1.58s ease-out forwards}
+@keyframes nova-meteor-arrive{0%{opacity:0;transform:translate(-46vw,-38vh) scale(.35)}14%{opacity:1}78%{opacity:1;transform:translate(140px,-126px) scale(1.15)}100%{opacity:0;transform:translate(140px,-126px) scale(.15)}}
+@keyframes nova-orbit-appear{0%,30%{opacity:0;transform:translate(-50%,-50%) scale(.85)}58%{opacity:.9}100%{opacity:.62;transform:translate(-50%,-50%) scale(1)}}
+@keyframes nova-white-halo{0%,33%{opacity:.25;scale:.82}55%{opacity:1;scale:1.04}100%{opacity:.85;scale:1}}
+@keyframes nova-white-logo{0%{opacity:0;transform:translate(-50%,-50%) scale(.87)}65%{opacity:1}100%{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+@keyframes nova-ribbon-draw{to{stroke-dashoffset:0}}
+@keyframes nova-ribbon-glow{0%{opacity:0}25%{opacity:.7}75%{opacity:.4}100%{opacity:0;stroke-dashoffset:0}}
+@keyframes nova-activity-reveal{0%{opacity:0;transform:translateY(12px) scale(.82)}100%{opacity:.88;transform:translateY(0) scale(1)}}
+@keyframes nova-progress-appear{to{opacity:1}}
+@keyframes nova-progress-fill{to{width:100%}}
+@keyframes nova-slogan-reveal{to{opacity:1;transform:translate(-50%,0)}}
+@media(max-width:700px){
+ .nova-loader__stage{min-height:520px}
+ .nova-loader__halo{top:34%;width:92vw}
+ .nova-loader__orbit{top:34%;width:86vw}
+ .nova-loader__logo{top:34%;width:min(370px,76vw);max-height:160px}
+ .nova-loader__meteor{top:34%}
+ .nova-loader__meteor:before{width:135px}
+ .nova-loader__ribbons{top:51%;height:22%}
+ .nova-loader__activities{top:61%;width:88vw;height:82px}
+ .nova-loader__activity{width:50px;height:50px}
+ .nova-loader__activity--ball{width:56px;height:56px}
+ .nova-loader__activity--dance{width:72px;height:64px}
+ .nova-loader__progress{top:79%;width:76vw;height:10px}
+ .nova-loader__slogan{top:84%;font-size:14px;letter-spacing:.16em}
 }
-@media(max-height:560px){.nova-loader__stage{transform:scale(.78)}}
+@media(max-height:620px) and (min-width:701px){
+ .nova-loader__stage{min-height:480px}
+ .nova-loader__halo,.nova-loader__orbit,.nova-loader__logo{top:34%}
+ .nova-loader__ribbons{top:51%;height:23%}
+ .nova-loader__activities{top:61%}
+ .nova-loader__progress{top:82%}
+ .nova-loader__slogan{top:87%}
+}
 @media(prefers-reduced-motion:reduce){
- .nova-loader__star,.nova-loader__beams{display:none!important}
- .nova-loader__logo{opacity:1!important;animation:none!important}
- .nova-loader__slogan{opacity:1!important;animation:none!important;transform:translate(-50%,0)!important}
- .nova-loader__halo{animation:none!important;opacity:.8!important}
+ .nova-loader__meteor,.nova-loader__orbit,.nova-loader__ribbons,.nova-loader__activity,.nova-loader__progress,.nova-loader__progress span,.nova-loader__slogan,.nova-loader__logo,.nova-loader__halo{animation:none!important}
+ .nova-loader__meteor{display:none}
+ .nova-loader__orbit,.nova-loader__logo,.nova-loader__slogan{opacity:1}
+ .nova-loader__progress{opacity:1}
+ .nova-loader__progress span{width:100%}
+ .nova-loader__ribbons{opacity:.35}
+ .nova-loader__activity{opacity:.8}
+ .nova-loader__logo{transform:translate(-50%,-50%)}
+ .nova-loader__slogan{transform:translate(-50%,0)}
 }
