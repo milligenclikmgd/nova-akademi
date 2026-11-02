@@ -26,6 +26,7 @@ window.novaApplicationEndpoint=path=>(location.hostname==="nova-akademi.vercel.a
   picker.close();
  }
  function createCityIndex(){
+  if(!cityIndex)return;
   cityIndex.replaceChildren();
   for(const city of cities){
    const active=assignmentFor(city.id).length>0,chip=document.createElement("button");
