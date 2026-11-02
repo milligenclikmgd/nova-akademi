@@ -385,3 +385,11 @@ body.application-page{margin:0;background:#fff;color:var(--app-navy);font-family
 @media(prefers-reduced-motion:reduce){
  .city-view-tab{transition:none}
 }
+
+/* Masaüstünde haritayı sağa taşı ve daha geniş kullan */
+@media(min-width:901px){
+ .application-page .city-section.application-shell{width:min(1280px,calc(100% - 56px))}
+ .application-page .city-selection-layout{grid-template-columns:minmax(0,.78fr) minmax(0,1.22fr);column-gap:36px}
+ .application-page .city-section__visual{transform:translateX(12px)}
+ .application-page .turkey-map{max-width:780px}
+}
