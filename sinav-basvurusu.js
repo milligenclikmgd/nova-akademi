@@ -3,6 +3,19 @@ window.novaApplicationEndpoint=path=>(location.hostname==="nova-akademi.vercel.a
  let cities=[];
  const map=document.querySelector("#turkey-map"),mount=document.querySelector("#turkey-map-svg"),cityIndex=document.querySelector("#city-index"),picker=document.querySelector("#city-picker");
  const title=document.querySelector("#city-picker-title"),back=document.querySelector("#picker-back");
+ const viewTabs=[...document.querySelectorAll("[data-city-view-tab]")],viewPanels=[...document.querySelectorAll("[data-city-view-panel]")];
+ const setCityView=name=>{
+  viewTabs.forEach(tab=>{const active=tab.dataset.cityViewTab===name;tab.classList.toggle("is-active",active);tab.setAttribute("aria-selected",String(active));tab.tabIndex=active?0:-1});
+  viewPanels.forEach(panel=>{panel.hidden=panel.dataset.cityViewPanel!==name});
+ };
+ viewTabs.forEach(tab=>tab.addEventListener("click",()=>setCityView(tab.dataset.cityViewTab)));
+ document.querySelector(".city-view-tabs")?.addEventListener("keydown",event=>{
+  if(!["ArrowLeft","ArrowRight","Home","End"].includes(event.key))return;
+  event.preventDefault();
+  const current=Math.max(0,viewTabs.indexOf(document.activeElement));
+  const next=event.key==="Home"?0:event.key==="End"?viewTabs.length-1:(current+(event.key==="ArrowRight"?1:viewTabs.length-1))%viewTabs.length;
+  viewTabs[next]?.focus();setCityView(viewTabs[next]?.dataset.cityViewTab);
+ });
  const views=[...picker.querySelectorAll("[data-picker-view]")];
  let selectedCity=null,settings=null,provinceNodes=new Map();
  const tooltip=document.createElement("div");tooltip.className="map-province-tooltip";tooltip.hidden=true;tooltip.setAttribute("role","status");document.body.append(tooltip);
