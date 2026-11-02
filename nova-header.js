@@ -41,9 +41,41 @@
     ? `<div class="nova-submenu-group">${link(item,'nova-submenu-level2')}${renderThird(item.children)}</div>`
     : link(item,'nova-submenu-level2')).join('');
   const renderTop=item=>`<div class="nova-nav-item">${link(item,'nova-nav-link')}${item.children?.length?`<div class="nova-submenu">${renderSecond(item.children)}</div>`:''}</div>`;
-  const html=`<header class="nova-main-header"><button class="hamb" type="button" aria-label="Menüyü aç">☰</button><a class="nova-brand" href="index.html#top"><img src="assets/nova-logo2.png?v=20261011-6" alt="NOVA Performans Sanatları Gelişim Merkezi"></a><nav class="nova-nav" aria-label="Ana menü">${navigation.map(renderTop).join('')}</nav><a class="nova-results nova-apply" href="sinav-basvurusu.html">BAŞVURU <span aria-hidden="true">↗</span></a><a class="nova-results" href="sinavlar.html">SINAV SONUÇLARI <span aria-hidden="true">↗</span></a></header>`;
+  const renderMobileItems=items=>items.map(item=>item.children?.length
+    ? `<div class="nova-mobile-group"><button class="nova-mobile-group__toggle" type="button" aria-expanded="false"><span>${item.label}</span><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 7.5 5 5 5-5"/></svg></button><div class="nova-mobile-submenu">${renderMobileItems(item.children)}</div></div>`
+    : `<a class="nova-mobile-link" href="${item.href||'#'}">${item.label}<span aria-hidden="true">↗</span></a>`).join('');
+  const socialIcons=`<section class="nova-mobile-social" aria-label="Sosyal medya"><p>BİZİ TAKİP EDİN</p><div class="nova-mobile-social__links">
+    <a href="https://www.instagram.com/novaakademi/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></a>
+    <a href="https://www.facebook.com/novaakademi/" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 21v-8h3l.5-3H14V8.2c0-.9.3-1.7 1.8-1.7H18V3.8c-.6-.1-1.5-.2-2.5-.2-2.6 0-4.4 1.6-4.4 4.5V10H8v3h3.1v8H14Z"/></svg></a>
+    <a href="https://www.youtube.com/@novaakademi" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12s0-3.2-.4-4.7a2.4 2.4 0 0 0-1.7-1.7C17.4 5.2 12 5.2 12 5.2s-5.4 0-6.9.4a2.4 2.4 0 0 0-1.7 1.7C3 8.8 3 12 3 12s0 3.2.4 4.7a2.4 2.4 0 0 0 1.7 1.7c1.5.4 6.9.4 6.9.4s5.4 0 6.9-.4a2.4 2.4 0 0 0 1.7-1.7c.4-1.5.4-4.7.4-4.7Z"/><path d="m10 15.5 5-3.5-5-3.5v7Z"/></svg></a>
+    <a href="https://x.com/novaakademi" target="_blank" rel="noopener noreferrer" aria-label="X"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4l6.2 8.3L4.4 20h2.3l4.5-5.9 4.4 5.9H20l-6.6-8.8L18.8 4h-2.3l-4.1 5.4L8.3 4H4Zm3.7 1.7h1.7l6.8 9.1h-1.7L7.7 5.7Z"/></svg></a>
+  </div></section>`;
+  const html=`<header class="nova-main-header"><a class="nova-brand" href="index.html#top"><img src="assets/nova-logo2.png?v=20261011-6" alt="NOVA Performans Sanatları Gelişim Merkezi"></a><nav class="nova-nav" aria-label="Ana menü">${navigation.map(renderTop).join('')}</nav><a class="nova-results nova-apply" href="sinav-basvurusu.html">BAŞVURU <span aria-hidden="true">↗</span></a><a class="nova-results" href="sinavlar.html">SINAV SONUÇLARI <span aria-hidden="true">↗</span></a><button class="hamb" type="button" aria-label="Menüyü aç" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button></header>
+  <button class="nova-mobile-backdrop" type="button" aria-label="Menüyü kapat" tabindex="-1"></button>
+  <aside class="nova-mobile-drawer" aria-label="Mobil menü" aria-hidden="true">
+    <div class="nova-mobile-drawer__top"><a class="nova-brand" href="index.html#top"><img src="assets/nova-logo2.png?v=20261011-6" alt="NOVA"></a><button class="nova-mobile-close" type="button" aria-label="Menüyü kapat"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div>
+    <div class="nova-mobile-actions"><a class="nova-mobile-action nova-mobile-action--apply" href="sinav-basvurusu.html">BAŞVUR <span aria-hidden="true">↗</span></a><a class="nova-mobile-action" href="sinavlar.html">SINAV SONUÇLARI <span aria-hidden="true">↗</span></a></div>
+    <nav class="nova-mobile-nav" aria-label="Mobil ana menü">${renderMobileItems(navigation)}</nav>${socialIcons}
+  </aside>`;
 
-  document.querySelectorAll('[data-nova-header]').forEach(slot=>slot.innerHTML=html);
+  document.querySelectorAll('[data-nova-header]').forEach((slot,slotIndex)=>{
+    slot.innerHTML=html;
+    const header=slot.querySelector('.nova-main-header');
+    const drawer=slot.querySelector('.nova-mobile-drawer');
+    const backdrop=slot.querySelector('.nova-mobile-backdrop');
+    const openMenu=()=>{header.classList.add('is-menu-open');drawer.classList.add('is-open');backdrop.classList.add('is-open');drawer.setAttribute('aria-hidden','false');header.querySelector('.hamb').setAttribute('aria-expanded','true');document.body.classList.add('nova-mobile-menu-open')};
+    const closeMenu=()=>{header.classList.remove('is-menu-open');drawer.classList.remove('is-open');backdrop.classList.remove('is-open');drawer.setAttribute('aria-hidden','true');header.querySelector('.hamb').setAttribute('aria-expanded','false');document.body.classList.remove('nova-mobile-menu-open')};
+    header.querySelector('.hamb').addEventListener('click',openMenu);
+    drawer.querySelector('.nova-mobile-close').addEventListener('click',closeMenu);
+    backdrop.addEventListener('click',closeMenu);
+    drawer.querySelectorAll('.nova-mobile-group__toggle').forEach(toggle=>toggle.addEventListener('click',()=>{
+      const group=toggle.closest('.nova-mobile-group');
+      const expanded=toggle.getAttribute('aria-expanded')==='true';
+      toggle.setAttribute('aria-expanded',String(!expanded));
+      group.classList.toggle('is-open',!expanded);
+    }));
+    document.addEventListener('keydown',event=>{if(event.key==='Escape'&&drawer.classList.contains('is-open'))closeMenu()});
+  });
   const close=item=>{item.classList.remove('is-open');item.querySelector('.nova-sub-toggle')?.setAttribute('aria-expanded','false')};
   const open=item=>{document.querySelectorAll('.nova-nav-item.is-open').forEach(other=>{if(other!==item)close(other)});item.classList.add('is-open');item.querySelector('.nova-sub-toggle')?.setAttribute('aria-expanded','true')};
   document.querySelectorAll('.nova-nav-item').forEach(item=>{
@@ -60,7 +92,7 @@
     item.addEventListener('focusin',()=>open(item));
     item.addEventListener('focusout',event=>{if(!item.contains(event.relatedTarget))close(item)});
   });
-  document.querySelectorAll('.nova-main-header .hamb').forEach(button=>button.addEventListener('click',()=>button.closest('.nova-main-header').querySelector('.nova-nav').classList.toggle('open')));
+
 })();
 const mountFooterPhone=()=>document.querySelectorAll('footer#iletisim .footer-bottom').forEach(bottom=>{const kriter=bottom.querySelector('.kriter-media img');if(kriter){kriter.src='assets/kriter-medya-white.png?v=20261017-1';kriter.alt='Kriter Medya'}if(bottom.querySelector('.footer-phone'))return;const phone=document.createElement('a');phone.className='footer-phone';phone.href='tel:+908503038957';phone.setAttribute('aria-label','NOVA telefon numarası 0850 303 89 57');phone.innerHTML='<small>BİZE ULAŞIN</small><strong>0850 303 89 57</strong>';bottom.append(phone)});
 /* Production sync: 2026-10-11 · footer phone and transparent Kriter logo */
