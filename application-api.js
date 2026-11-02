@@ -160,7 +160,7 @@ export class ApplicationStore {
   if(path==='/api/applications/config'&&method==='GET'){const settings=this.getSettings();delete settings.cms;delete settings.cmsRevision;return reply({settings,ready:(this.env.NOVA_PANEL_PASSWORD||'').length>=MIN_PANEL_PASSWORD_LENGTH});}
   if(path==='/api/applications/track'&&method==='GET'){
    this.rate('track:'+(request.headers.get('CF-Connecting-IP')||'local'),60);
-   const reference=(url.searchParams.get('reference')||'').trim().toUpperCase();if(!/^\d{2}-[A-ZÇĞİÖŞÜ]{3}-\d{3,}$/.test(reference))return reply({found:false});
+   const reference=(url.searchParams.get('reference')||'').trim().toUpperCase();if(!/^NOVA-\d{4}-0[1-9]\d*$/.test(reference))return reply({found:false});
    const row=this.sql.exec('SELECT reference,created_at,city,status,data,rejection_explanation FROM applications WHERE reference=?',reference).toArray()[0];if(!row)return reply({found:false});
    const item=JSON.parse(row.data),status=['onaylandi','reddedildi'].includes(row.status)?row.status:'kontrol-ediliyor';
    return reply({found:true,reference:row.reference,city:item.cityName,branch:item.branchName,status,createdAt:row.created_at,rejectionExplanation:status==='reddedildi'?row.rejection_explanation:''});
@@ -242,6 +242,17 @@ export class ApplicationStore {
   }
   if(path.startsWith('/api/panel/')){
    if(!await this.authorized(request))fail('Panel oturumunuz sona erdi. Lütfen giriş yapın.',401);
+   if(path==='/api/panel/reset-application-cycle'&&method==='POST'){
+    const input=await readJson(request,1024);if(input?.confirmation!=='SIFIRLA')fail('Başvuruları ve açık sınavları sıfırlamak için onay gerekli.',400);
+    let removed={};this.ctx.storage.transactionSync(()=>{
+     const counts=['applications','receipts','exam_results','definitive_registrations','registration_payment_receipts','registration_payment_chunks','registration_health'];
+     for(const table of counts)removed[table]=this.sql.exec('SELECT count(*) AS count FROM '+table).one().count;
+     for(const table of counts)this.sql.exec('DELETE FROM '+table);
+     const settings=this.getSettings();settings.cityExams={};settings.accepting=false;settings.revision=(settings.revision||1)+1;
+     this.sql.exec('INSERT INTO settings(id,data) VALUES(1,?) ON CONFLICT(id) DO UPDATE SET data=excluded.data',JSON.stringify(settings));
+    });
+    return reply({ok:true,removed});
+   }
    if(path==='/api/panel/cms'){
     if(method==='GET'){const settings=this.getSettings();return reply({cms:settings.cms,revision:settings.cmsRevision||1});}
     if(method==='PUT'){const input=await readJson(request,524288),previous=this.getSettings(),cmsRevision=previous.cmsRevision||1;if(input.revision!==cmsRevision)fail('Site içerikleri başka bir oturumda değişti. Sayfayı yenileyin.',409);const cms=validateCMS(input.cms,previous.cms);const settings={...previous,cms,cmsRevision:cmsRevision+1};this.sql.exec('INSERT INTO settings(id,data) VALUES(1,?) ON CONFLICT(id) DO UPDATE SET data=excluded.data',JSON.stringify(settings));return reply({cms,revision:settings.cmsRevision});}
@@ -358,7 +369,7 @@ export class ApplicationStore {
     /* PDF okunurken ayarlar değişmiş olabilir: aynı işlemde yeniden doğrula. */
     validateApplication(input,this.getSettings());
     const duplicate=this.sql.exec('SELECT id,reference FROM applications WHERE request_id=?',requestId).toArray()[0];if(duplicate){reference=duplicate.reference;return}
-    const code=cityCode(data.city),last=this.sql.exec('SELECT max(CAST(substr(reference,8) AS INTEGER)) AS value FROM applications WHERE city=? AND reference LIKE ?',data.city,'01-'+code+'-%').one().value||0;reference='01-'+code+'-'+String(last+1).padStart(3,'0');
+    const year=new Intl.DateTimeFormat('en-US',{timeZone:'Europe/Istanbul',year:'numeric'}).format(new Date()),last=this.sql.exec('SELECT max(CAST(substr(reference,12) AS INTEGER)) AS value FROM applications WHERE reference LIKE ?',`NOVA-${year}-0%`).one().value||0;reference=`NOVA-${year}-0${last+1}`;
     this.sql.exec('INSERT INTO applications(id,request_id,reference,created_at,name,city,status,payment,data,receipt) VALUES(?,?,?,?,?,?,?,?,?,?)',id,requestId,reference,createdAt,data.candidate.firstName+' '+data.candidate.lastName,data.city,'yeni',data.paid?'beyan-edildi':'odenmedi',JSON.stringify(data),bytes?1:0);
     if(bytes)for(let part=0,offset=0;offset<bytes.length;part++,offset+=65536)this.sql.exec('INSERT INTO receipts(application_id,part,data) VALUES(?,?,?)',id,part,bytes.slice(offset,offset+65536).buffer);
    });
