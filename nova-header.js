@@ -1,3 +1,25 @@
+/* İlk açılışta tarayıcının eski kaydırma konumunu geri yüklemesini engelle. */
+(()=>{
+  if(location.hash)return;
+  try{if('scrollRestoration' in history)history.scrollRestoration='manual'}catch{}
+  const goToTop=()=>{
+    if(location.hash)return;
+    const root=document.documentElement,body=document.body,oldBehavior=root.style.scrollBehavior;
+    root.style.scrollBehavior='auto';
+    window.scrollTo(0,0);
+    root.scrollTop=0;
+    if(body)body.scrollTop=0;
+    requestAnimationFrame(()=>{
+      if(!location.hash){
+        window.scrollTo(0,0);
+        root.scrollTop=0;
+        if(body)body.scrollTop=0;
+      }
+      root.style.scrollBehavior=oldBehavior;
+    });
+  };
+  window.addEventListener('pageshow',event=>{if(!event.persisted)goToTop()},{once:true});
+})();
 /* NOVA ortak header: Menü eklemek için yalnızca navigation dizisini düzenleyin.
    children alanı olan ana başlıklar 2. seviye panel açar.
    2. seviye başlığa children eklerseniz, seçenekler otomatik sağda 3. seviye panel olarak açılır. */
