@@ -129,35 +129,30 @@ html.nova-loader-seen .nova-loader{display:none!important}
 @media(prefers-reduced-motion:reduce){.nova-loader__trail{display:none!important}}
 
 
-/* Larger, clearer NOVA intro animation */
-.nova-loader__stage{width:min(560px,92vw);height:430px}
-.nova-loader__logo{width:min(270px,66vw);max-height:190px}
-.nova-loader__halo{width:340px;height:340px}
-.nova-loader__ring{width:220px;height:220px}
-.nova-loader__icon{width:64px;height:64px}
-.nova-loader__dance{width:68px;height:68px}
-.nova-loader__trail{width:132px;height:7px}
-.nova-loader__trail--violin{left:calc(50% - 180px)}
-.nova-loader__trail--ball{left:calc(50% + 48px)}
-.nova-loader__trail--dance{top:calc(50% + 104px);height:92px}
-.nova-loader__message{position:absolute;top:calc(50% + 142px);left:50%;width:min(500px,90vw);transform:translateX(-50%);display:grid;gap:12px;text-align:center;color:#173b69}
-.nova-loader__message strong{font-size:clamp(17px,2.25vw,23px);line-height:1.35;font-weight:800;letter-spacing:.055em}
-.nova-loader__message span{font-size:clamp(14px,1.8vw,18px);line-height:1.4;font-weight:700;letter-spacing:.12em;color:#4b79a9}
-.nova-loader__message i{font-style:normal;color:#8cc8f3;padding:0 .22em}
+/* NOVA shooting-star brand intro */
+.nova-loader{background:radial-gradient(ellipse at 50% 46%,#fff 0%,#fbfdff 62%,#f5faff 100%)}
+.nova-loader__stage{position:relative;width:min(700px,94vw);height:520px;display:grid;place-items:center}
+.nova-loader__halo{width:min(470px,84vw);height:min(470px,84vw);background:radial-gradient(circle,rgba(93,171,235,.2),rgba(139,203,247,.1) 42%,transparent 72%);filter:blur(8px);animation:nova-star-halo 2.65s ease-out both}
+.nova-loader__beams{position:absolute;z-index:1;left:50%;top:45%;width:min(680px,96vw);aspect-ratio:1;border-radius:50%;transform:translate(-50%,-50%);opacity:0;background:repeating-conic-gradient(from -8deg,transparent 0deg 9deg,rgba(116,188,240,.2) 9.35deg 9.9deg,transparent 10.25deg 18deg);-webkit-mask-image:radial-gradient(circle,transparent 0 11%,#000 23% 48%,transparent 72%);mask-image:radial-gradient(circle,transparent 0 11%,#000 23% 48%,transparent 72%);animation:nova-star-beams 2.65s ease-out both}
+.nova-loader__star{position:absolute;z-index:4;left:50%;top:46%;width:clamp(38px,6vw,64px);height:clamp(38px,6vw,64px);color:#1681d1;filter:drop-shadow(0 0 10px rgba(88,178,243,.9)) drop-shadow(0 0 24px rgba(92,176,239,.58));opacity:0;animation:nova-shooting-star 1.12s cubic-bezier(.18,.74,.18,1) both}
+.nova-loader__star svg{display:block;width:100%;height:100%;fill:currentColor}
+.nova-loader__logo{z-index:3;width:min(350px,74vw);max-height:210px;opacity:0;filter:drop-shadow(0 8px 24px rgba(49,115,174,.12));animation:nova-logo-reveal 1.05s 1s cubic-bezier(.18,.72,.22,1) both}
+.nova-loader__slogan{position:absolute;z-index:5;top:calc(50% + 146px);left:50%;width:min(600px,88vw);margin:0;transform:translate(-50%,10px);color:#526d89;text-align:center;font-family:Manrope,Arial,sans-serif;font-size:clamp(16px,2vw,21px);font-weight:300;letter-spacing:.12em;line-height:1.6;opacity:0;animation:nova-slogan-reveal .8s 1.55s ease-out both}
+@keyframes nova-shooting-star{0%{opacity:0;transform:translate(-46vw,-42vh) rotate(-16deg) scale(.38)}14%{opacity:1}78%{opacity:1;transform:translate(-50%,-50%) rotate(0) scale(1.18)}100%{opacity:0;transform:translate(-50%,-50%) rotate(0) scale(.2)}}
+@keyframes nova-star-beams{0%,34%{opacity:0;transform:translate(-50%,-50%) scale(.6) rotate(-8deg)}49%{opacity:.95}75%{opacity:.65;transform:translate(-50%,-50%) scale(1) rotate(0)}100%{opacity:0;transform:translate(-50%,-50%) scale(1.12) rotate(4deg)}}
+@keyframes nova-star-halo{0%,35%{opacity:.35;transform:scale(.72)}52%{opacity:1;transform:scale(1.03)}100%{opacity:.7;transform:scale(1)}}
+@keyframes nova-logo-reveal{0%{opacity:0;transform:scale(.84);filter:drop-shadow(0 0 0 rgba(49,115,174,0))}58%{opacity:1}100%{opacity:1;transform:scale(1);filter:drop-shadow(0 8px 24px rgba(49,115,174,.12))}}
+@keyframes nova-slogan-reveal{0%{opacity:0;transform:translate(-50%,10px)}100%{opacity:1;transform:translate(-50%,0)}}
 @media(max-width:600px){
- .nova-loader__stage{width:100vw;height:380px}
- .nova-loader__logo{width:min(218px,64vw);max-height:150px}
- .nova-loader__halo{width:280px;height:280px}
- .nova-loader__ring{width:184px;height:184px}
- .nova-loader__icon{width:52px;height:52px}
- .nova-loader__dance{width:56px;height:56px}
- .nova-loader__trail--violin{left:calc(50% - 145px)}
- .nova-loader__trail--ball{left:calc(50% + 20px)}
- .nova-loader__trail--dance{top:calc(50% + 84px);height:72px}
- .nova-loader__message{top:calc(50% + 122px);gap:9px}
- .nova-loader__message strong{font-size:16px;letter-spacing:.025em}
- .nova-loader__message span{font-size:13px;letter-spacing:.07em}
+ .nova-loader__stage{width:100vw;height:420px}
+ .nova-loader__logo{width:min(285px,76vw);max-height:170px}
+ .nova-loader__slogan{top:calc(50% + 118px);width:86vw;font-size:14px;letter-spacing:.085em;line-height:1.6}
+ .nova-loader__beams{width:115vw}
 }
-@media(max-height:520px){
- .nova-loader__stage{transform:scale(.78)}
+@media(max-height:560px){.nova-loader__stage{transform:scale(.78)}}
+@media(prefers-reduced-motion:reduce){
+ .nova-loader__star,.nova-loader__beams{display:none!important}
+ .nova-loader__logo{opacity:1!important;animation:none!important}
+ .nova-loader__slogan{opacity:1!important;animation:none!important;transform:translate(-50%,0)!important}
+ .nova-loader__halo{animation:none!important;opacity:.8!important}
 }
