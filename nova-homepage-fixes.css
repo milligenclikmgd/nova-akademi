@@ -39,3 +39,6 @@ body:has(.partners-marquee) .quick-access a:nth-child(4){--shortcut-icon:#6251b7
 body:has(.partners-marquee) .quick-access a>b{color:var(--shortcut-icon)!important}
 body:has(.partners-marquee) .quick-access a:hover>b{background:var(--shortcut-icon)!important;border-color:var(--shortcut-icon)!important;color:#fff!important}
 body:has(.partners-marquee) .quick-access a:hover>b .card-icon{stroke:#fff!important}
+
+
+#nova-home-news>.nova-news-empty{grid-column:1/-1;margin:0;padding:22px 24px;border:1px solid rgba(24,91,145,.14);border-radius:14px;background:#f7fbff;color:#42617c;text-align:center;font:600 14px/1.6 Manrope,Arial,sans-serif}
