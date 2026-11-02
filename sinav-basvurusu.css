@@ -417,3 +417,6 @@ body.application-page{margin:0;background:#fff;color:var(--app-navy);font-family
  .application-page .application-hero .application-kicker,.application-page .city-section__copy>.application-kicker{display:none!important}
  .application-page .application-hero__content h1,.application-page .city-section__copy h2{text-transform:uppercase}
 }
+
+.city-heading--mobile{display:none}
+@media(max-width:760px){.application-page .city-heading--desktop{display:none}.application-page .city-heading--mobile{display:inline}}
