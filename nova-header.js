@@ -24,12 +24,13 @@
     ]},
     {label:'KABUL SÜRECİ',href:'index.html#sistem',children:[
       {label:'Değerlendirme',href:'nova-yetenek-taramasi.html'},
-      {label:'Kabul Süreci',href:'ogrenci-kabul-sureci.html'}
+      {label:'Kabul Süreci',href:'ogrenci-kabul-sureci.html'},
+      {label:'Kariyer Hazırlığı',href:'kariyer-hazirligi.html'}
     ]},
-    {label:'ÖĞRENCİ YOLCULUĞU',href:'index.html#yolculuk',children:[
+    {label:'GELİŞİM MERKEZİ',href:'index.html#yolculuk',children:[
       {label:'Gelişim Planı',href:'gelisim-plani.html'},
       {label:'Performans Takibi',href:'performans-takibi.html'},
-      {label:'Kariyer Hazırlığı',href:'kariyer-hazirligi.html'}
+      {label:'Kampüs',href:'kampus.html'}
     ]},
     {label:'İLETİŞİM',href:'iletisim.html'}
   ];
