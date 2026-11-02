@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="nova-header-v2.css?v=20261022-1">
-<link rel="stylesheet" href="sinav-basvurusu.css?v=20261022-2">
+<link rel="stylesheet" href="sinav-basvurusu.css?v=20261103-1">
 <link rel="stylesheet" href="nova-footer.css?v=20261017-1">
 </head>
 <body class="application-page">
@@ -28,18 +28,28 @@
     </div>
   </section>
   <section class="city-section application-shell" aria-labelledby="city-heading">
-    <div class="city-section__heading">
-      <div><p class="application-kicker"><span></span>BAŞVURU MERKEZLERİ</p><h2 id="city-heading">Sınav Merkezini Seçin</h2><p>Sınav ataması yapılmış mavi illerden birini seçerek seçenekleri görüntüleyin.</p></div>
-      <div class="city-section__actions"><button type="button" class="application-track-trigger" id="open-application-track">Başvuru Takip <span aria-hidden="true">↗</span></button><div class="city-legend" aria-label="Harita açıklaması"><span><i></i>Şehirde sınav var</span><span><i class="city-legend__inactive"></i>Şehirde sınav yok</span></div></div>
-    </div>
-    <div id="applications-closed" class="applications-closed" role="status" hidden><span aria-hidden="true">✦</span><div><strong>Başvurularımız henüz başlamamıştır.</strong><p>Başvuru takvimi açıldığında bu sayfadan duyurulacaktır.</p></div></div>
-    <div class="turkey-map" id="turkey-map" data-map-state="loading">
-      <div class="turkey-map__canvas">
-        <div class="turkey-map__loading" role="status">Türkiye haritası yükleniyor…</div>
-        <div class="turkey-map__svg" id="turkey-map-svg"></div>
+    <div class="city-selection-layout">
+      <div class="city-section__copy">
+        <p class="application-kicker"><span></span>BAŞVURU MERKEZLERİ</p>
+        <h2 id="city-heading">Sınav Merkezini Seçin</h2>
+        <p class="city-section__description">Harita üzerinde sınav merkezi bulunan şehirleri görüntüleyin. Şehrinizi seçerek açık sınav alanlarına ve başvuru adımlarına ulaşın.</p>
+        <div class="city-section__actions">
+          <button type="button" class="application-track-trigger" id="open-application-track">
+            <span class="application-track-trigger__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 3.75h7l4.25 4.3v12.2H7a2 2 0 0 1-2-2V5.75a2 2 0 0 1 2-2Z"/><path d="M14 4v5h5M8.5 13h7M8.5 16.5h5"/></svg></span>
+            <span class="application-track-trigger__copy"><strong>Başvuru Takibi</strong><small>Başvuru numaranızla durumu sorgulayın</small></span>
+            <span class="application-track-trigger__arrow" aria-hidden="true">→</span>
+          </button>
+          <div class="city-legend" aria-label="Harita açıklaması"><span><i></i>Şehirde sınav var</span><span><i class="city-legend__inactive"></i>Şehirde sınav yok</span></div>
+        </div>
+      </div>
+      <div id="applications-closed" class="applications-closed" role="status" hidden><span aria-hidden="true">✦</span><div><strong>Başvurularımız henüz başlamamıştır.</strong><p>Başvuru takvimi açıldığında bu sayfadan duyurulacaktır.</p></div></div>
+      <div class="turkey-map" id="turkey-map" data-map-state="loading">
+        <div class="turkey-map__canvas">
+          <div class="turkey-map__loading" role="status">Türkiye haritası yükleniyor…</div>
+          <div class="turkey-map__svg" id="turkey-map-svg"></div>
+        </div>
       </div>
     </div>
-    <div class="city-index" id="city-index" aria-label="Sınav merkezi bulunan iller"></div>
   </section>
   <dialog class="city-picker" id="city-picker" aria-labelledby="city-picker-title">
     <div class="city-picker__card">
