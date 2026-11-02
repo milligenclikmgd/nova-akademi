@@ -127,3 +127,37 @@ html.nova-loader-seen .nova-loader{display:none!important}
 @keyframes nova-trail-up{0%{opacity:0;transform:translate(-50%,calc(50% + 45vh)) scaleY(.25)}15%{opacity:.72}70%{opacity:.55;transform:translate(-50%,-50%) scaleY(.8)}100%{opacity:0;transform:translate(-50%,-50%) scaleY(.12)}}
 @media(max-width:600px){.nova-loader__trail--violin{left:calc(50% - 110px)}.nova-loader__trail--ball{left:calc(50% + 18px)}.nova-loader__trail--dance{top:calc(50% + 58px);height:54px}}
 @media(prefers-reduced-motion:reduce){.nova-loader__trail{display:none!important}}
+
+
+/* Larger, clearer NOVA intro animation */
+.nova-loader__stage{width:min(560px,92vw);height:430px}
+.nova-loader__logo{width:min(270px,66vw);max-height:190px}
+.nova-loader__halo{width:340px;height:340px}
+.nova-loader__ring{width:220px;height:220px}
+.nova-loader__icon{width:64px;height:64px}
+.nova-loader__dance{width:68px;height:68px}
+.nova-loader__trail{width:132px;height:7px}
+.nova-loader__trail--violin{left:calc(50% - 180px)}
+.nova-loader__trail--ball{left:calc(50% + 48px)}
+.nova-loader__trail--dance{top:calc(50% + 104px);height:92px}
+.nova-loader__message{position:absolute;top:calc(50% + 142px);left:50%;width:min(500px,90vw);transform:translateX(-50%);display:grid;gap:12px;text-align:center;color:#173b69}
+.nova-loader__message strong{font-size:clamp(17px,2.25vw,23px);line-height:1.35;font-weight:800;letter-spacing:.055em}
+.nova-loader__message span{font-size:clamp(14px,1.8vw,18px);line-height:1.4;font-weight:700;letter-spacing:.12em;color:#4b79a9}
+.nova-loader__message i{font-style:normal;color:#8cc8f3;padding:0 .22em}
+@media(max-width:600px){
+ .nova-loader__stage{width:100vw;height:380px}
+ .nova-loader__logo{width:min(218px,64vw);max-height:150px}
+ .nova-loader__halo{width:280px;height:280px}
+ .nova-loader__ring{width:184px;height:184px}
+ .nova-loader__icon{width:52px;height:52px}
+ .nova-loader__dance{width:56px;height:56px}
+ .nova-loader__trail--violin{left:calc(50% - 145px)}
+ .nova-loader__trail--ball{left:calc(50% + 20px)}
+ .nova-loader__trail--dance{top:calc(50% + 84px);height:72px}
+ .nova-loader__message{top:calc(50% + 122px);gap:9px}
+ .nova-loader__message strong{font-size:16px;letter-spacing:.025em}
+ .nova-loader__message span{font-size:13px;letter-spacing:.07em}
+}
+@media(max-height:520px){
+ .nova-loader__stage{transform:scale(.78)}
+}
