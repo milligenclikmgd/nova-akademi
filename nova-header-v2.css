@@ -238,3 +238,21 @@ footer .footer-logo.footer-logo--white{filter:brightness(0) invert(1)!important;
 /* Sınav başvuru bağlantısının gri görünümü */
 .nova-main-header .nova-apply{background:#758493!important;border-color:#758493!important;color:#fff!important;box-shadow:0 7px 16px rgba(51,67,81,.16)!important;transition:transform .22s cubic-bezier(.2,.75,.25,1),box-shadow .22s ease,background-color .22s ease!important}
 .nova-main-header .nova-apply:hover{background:#566777!important;border-color:#566777!important;color:#fff!important;transform:translateY(-2px)!important;box-shadow:0 12px 22px rgba(51,67,81,.24)!important}
+
+
+/* Brief reveal on the NOVA homepage brand mark */
+body.nova-homepage .nova-main-header .nova-brand img{
+  opacity:0;
+  transform:translateY(8px) scale(.97);
+  transform-origin:left center;
+  animation:nova-home-brand-reveal .9s cubic-bezier(.2,.75,.25,1) .08s both;
+  will-change:opacity,transform;
+}
+@keyframes nova-home-brand-reveal{
+  0%{opacity:0;transform:translateY(8px) scale(.97)}
+  68%{opacity:1;transform:translateY(-1px) scale(1.012)}
+  100%{opacity:1;transform:translateY(0) scale(1)}
+}
+@media(prefers-reduced-motion:reduce){
+  body.nova-homepage .nova-main-header .nova-brand img{animation:none;opacity:1;transform:none;will-change:auto}
+}
