@@ -109,7 +109,7 @@ export function validateApplication(input,settings){
  if(input.paid!==true&&input.paid!==false)fail('Ödeme durumunu seçin.');
  if(input.contractAccepted!==true)fail('Sınav başvurusu sözleşmesini onaylayın.');
  if(input.confirmation!==true)fail('Başvuru bilgilerini kontrol edip onaylayın.');
- return {city:city.id,cityName:city.name,group:group.id,groupName:group.name,branch:branch.id,branchName:branch.name,feeType:'candidate',candidate,familyMode:input.familyMode,contacts,primaryContact:input.primaryContact,fee,currency:'TRY',paid:input.paid,contractAccepted:true,confirmation:true,settingsRevision:settings.revision};
+ return {city:city.id,cityName:city.name,group:group.id,groupName:group.name,branch:branch.id,branchName:branch.name,feeType:'candidate',candidate,familyMode:input.familyMode,contacts,primaryContact:input.primaryContact,guardianOpinion:text(input.guardianOpinion??'',2000),fee,currency:'TRY',paid:input.paid,contractAccepted:true,confirmation:true,settingsRevision:settings.revision};
 }
 async function digest(value){return [...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(value)))].map(x=>x.toString(16).padStart(2,'0')).join('')}
 async function sameSecret(a,b){const aa=await digest(a),bb=await digest(b);let delta=0;for(let i=0;i<aa.length;i++)delta|=aa.charCodeAt(i)^bb.charCodeAt(i);return delta===0}
