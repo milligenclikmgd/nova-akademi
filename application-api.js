@@ -187,7 +187,7 @@ export class ApplicationStore {
    if(!city||!branch||(sessionId?(!session||!session.resultsPublished):(settings.cityExams?.[cityId]||[]).indexOf(branchId)<0))return reply({error:'Bu şehir ve sınav için sonuç bulunamadı veya sonuçlar henüz yayımlanmadı.'},404);
    const rows=this.sql.exec('SELECT a.name,a.data,r.result FROM exam_results r JOIN applications a ON a.id=r.application_id WHERE a.city=? AND r.result IN (\'asil\',\'yedek1\',\'yedek2\',\'yedek3\')',cityId).toArray().filter(row=>{const item=JSON.parse(row.data);return session?item.sessionId===session.id:item.branch===branchId&&!item.sessionId});
    const order={asil:0,yedek1:1,yedek2:2,yedek3:3},results=rows.map(row=>({name:row.name,result:row.result})).sort((a,b)=>order[a.result]-order[b.result]||a.name.localeCompare(b.name,'tr'));
-   return reply({city:city.name,branch:branch.name,results});
+   return reply({city:city.name,branch:branch.name,period:session?.period||'',results});
   }
   if(path==='/api/enrollment/lookup'&&method==='POST'){
    this.rate('enroll-lookup:'+(request.headers.get('CF-Connecting-IP')||'local'),8);const input=await readJson(request),reference=required(String(input.reference||'').toUpperCase(),'Başvuru numarası',32),tc=required(String(input.tc||''),'T.C. kimlik numarası',11);
