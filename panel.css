@@ -175,3 +175,8 @@
 .panel-view.is-sidebar-compact{display:block}.panel-view.is-sidebar-compact .sidebar{width:min(280px,86vw)}.panel-view.is-sidebar-compact .panel-brand .panel-original-logo{width:168px}.panel-view.is-sidebar-compact .panel-brand>small,.panel-view.is-sidebar-compact .nav-label,.panel-view.is-sidebar-compact .sidebar-label{display:block}.panel-view.is-sidebar-compact .sidebar nav button{justify-content:flex-start}.panel-view.is-sidebar-compact .sidebar-bottom a,.panel-view.is-sidebar-compact .sidebar-bottom button{justify-content:flex-start;font-size:12px}
 }
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+
+/* Yan menü başlıklarını görünür tut ve NOVA logosunu beyaz göster. */
+.panel-brand .panel-original-logo{filter:brightness(0) invert(1)}
+.sidebar nav button{font-size:10.5px;line-height:1.25;gap:9px}
+.sidebar nav button .nav-label{flex:1;min-width:0;white-space:normal;overflow:hidden;text-overflow:clip;overflow-wrap:anywhere;line-height:1.25}
