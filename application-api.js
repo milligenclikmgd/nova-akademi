@@ -277,7 +277,7 @@ export class ApplicationStore {
    if(path==='/api/panel/reset-application-cycle'&&method==='POST'){
     const input=await readJson(request,1024);if(input?.confirmation!=='SIFIRLA')fail('Başvuruları ve açık sınavları sıfırlamak için onay gerekli.',400);
     let removed={};this.ctx.storage.transactionSync(()=>{
-     const counts=['applications','receipts','exam_results','definitive_registrations','registration_payment_receipts','registration_payment_chunks','registration_health'];
+     const counts=['applications','receipts','receipt_metadata','exam_results','exam_sessions','definitive_registrations','registration_payment_receipts','registration_payment_chunks','registration_health'];
      for(const table of counts)removed[table]=this.sql.exec('SELECT count(*) AS count FROM '+table).one().count;
      for(const table of counts)this.sql.exec('DELETE FROM '+table);
      const settings=this.getSettings();settings.cityExams={};settings.accepting=false;settings.revision=(settings.revision||1)+1;
