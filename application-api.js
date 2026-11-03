@@ -383,7 +383,7 @@ export class ApplicationStore {
      const workbookBytes=makeXlsx([contentTypes,rootRels,workbook,workbookRels,sheet]);return new Response(workbookBytes,{headers:{'Content-Type':'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet','Content-Disposition':'attachment; filename="nova-basvurular.xlsx"','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'}});
     }
     const rows=this.sql.exec('SELECT id,reference,created_at,name,city,status,payment,receipt,data FROM applications '+where+' ORDER BY created_at DESC,id DESC LIMIT 30 OFFSET ?',...args,(page-1)*30).toArray();
-    return reply({total,page,applications:rows.map(({data,...row})=>{const item=JSON.parse(data);return {...row,cityName:item.cityName,groupName:item.groupName,branchName:item.branchName,fee:item.fee,session:item.session||null}})});
+    return reply({total,page,applications:rows.map(({data,...row})=>{const item=JSON.parse(data);return {...row,cityName:item.cityName,groupName:item.groupName,branchName:item.branchName,guardianName:item.contacts?.find(contact=>contact.role===item.primaryContact)?.fullName||'',fee:item.fee,session:item.session||null}})});
    }
    const match=path.match(/^\/api\/panel\/applications\/([a-f0-9-]{36})(\/receipt|\/registration-payment-receipt)?$/);
    if(match){
