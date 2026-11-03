@@ -301,20 +301,20 @@ export class ApplicationStore {
     return reply({settings});
    }
    if(path==='/api/panel/results'&&method==='GET'){
-    const settings=this.getSettings(),cityId=(url.searchParams.get('city')||'').toLowerCase(),branchId=(url.searchParams.get('branch')||'').slice(0,80);
-    if(!cityId)return reply({cities:settings.cities.filter(city=>(settings.cityExams?.[city.id]||[]).length).map(city=>({id:city.id,name:city.name,provinceIds:city.provinceIds}))});
+    const settings=this.getSettings(),cityId=(url.searchParams.get('city')||'').toLowerCase(),branchId=(url.searchParams.get('branch')||'').slice(0,80),sessionId=(url.searchParams.get('session')||'').slice(0,80);
+    if(!cityId){const sessionCities=settings.examSessions.map(item=>item.city),legacyCities=Object.keys(settings.cityExams||{}).filter(id=>(settings.cityExams[id]||[]).length),ids=[...new Set([...sessionCities,...legacyCities])];return reply({cities:settings.cities.filter(city=>ids.includes(city.id)).map(city=>({id:city.id,name:city.name,provinceIds:city.provinceIds}))})}
     const city=settings.cities.find(item=>item.id===cityId);if(!city)fail('İl bulunamadı.',404);
-    const branches=settings.groups.flatMap(group=>group.branches.filter(branch=>(settings.cityExams?.[cityId]||[]).includes(branch.id)).map(branch=>({...branch,groupName:group.name})));
-    if(!branchId)return reply({city:{id:city.id,name:city.name},branches});
-    const branch=branches.find(item=>item.id===branchId);if(!branch)fail('Bu ilde sınav bulunamadı.',404);
-    const rows=this.sql.exec('SELECT a.id,a.reference,a.created_at,a.name,a.status,a.data,r.result FROM applications a LEFT JOIN exam_results r ON r.application_id=a.id WHERE a.city=? ORDER BY a.name COLLATE NOCASE',cityId).toArray().filter(row=>JSON.parse(row.data).branch===branchId);
+    if(!branchId){const sessions=settings.examSessions.filter(item=>item.city===cityId);if(sessions.length)return reply({city:{id:city.id,name:city.name},branches:sessions.map(item=>({id:item.branch,name:item.title,groupName:item.groupName,period:item.period,sessionId:item.id}))});const branches=settings.groups.flatMap(group=>group.branches.filter(branch=>(settings.cityExams?.[cityId]||[]).includes(branch.id)).map(branch=>({...branch,groupName:group.name})));return reply({city:{id:city.id,name:city.name},branches})}
+    const session=sessionId?settings.examSessions.find(item=>item.id===sessionId&&item.city===cityId&&item.branch===branchId):null;if(sessionId&&!session)fail('Sınav oturumu bulunamadı.',404);
+    const branch=session?{id:session.branch,name:session.title,groupName:session.groupName,period:session.period,sessionId:session.id}:settings.groups.flatMap(group=>group.branches.filter(item=>item.id===branchId).map(item=>({...item,groupName:group.name})))[0];if(!branch)fail('Bu ilde sınav bulunamadı.',404);
+    const rows=this.sql.exec('SELECT a.id,a.reference,a.created_at,a.name,a.status,a.data,r.result FROM applications a LEFT JOIN exam_results r ON r.application_id=a.id WHERE a.city=? ORDER BY a.name COLLATE NOCASE',cityId).toArray().filter(row=>{const item=JSON.parse(row.data);return session?item.sessionId===session.id:item.branch===branchId&&!item.sessionId});
     return reply({city:{id:city.id,name:city.name},branch,applications:rows.map(row=>{const item=JSON.parse(row.data);return{id:row.id,reference:row.reference,name:row.name,phone:item.candidate?.phone||'',status:row.status,result:row.result||'',createdAt:row.created_at}})});
    }
    const resultMatch=path.match(/^\/api\/panel\/results\/([a-f0-9-]{36})$/);
    if(resultMatch&&method==='PATCH'){
     const input=await readJson(request),row=this.sql.exec('SELECT id,data FROM applications WHERE id=?',resultMatch[1]).toArray()[0];if(!row)fail('Başvuru bulunamadı.',404);
     const result=String(input.result||'');if(!['','asil','yedek1','yedek2','yedek3'].includes(result))fail('Geçersiz sınav sonucu.');
-    const item=JSON.parse(row.data),cityExams=this.getSettings().cityExams?.[item.city]||[];if(!cityExams.includes(item.branch))fail('Bu sınav şu anda bu ilde tanımlı değil.',409);
+    const item=JSON.parse(row.data),resultSettings=this.getSettings(),cityExams=resultSettings.cityExams?.[item.city]||[],session=item.sessionId&&resultSettings.examSessions.find(value=>value.id===item.sessionId);if(item.sessionId?!session:!cityExams.includes(item.branch))fail('Bu sınav şu anda bu ilde tanımlı değil.',409);
     if(result)this.sql.exec('INSERT INTO exam_results(application_id,result,updated_at) VALUES(?,?,?) ON CONFLICT(application_id) DO UPDATE SET result=excluded.result,updated_at=excluded.updated_at',row.id,result,new Date().toISOString());else this.sql.exec('DELETE FROM exam_results WHERE application_id=?',row.id);
     return reply({ok:true,result});
    }
