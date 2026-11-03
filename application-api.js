@@ -264,9 +264,10 @@ export class ApplicationStore {
    if(!await this.authorized(request))fail('Panel oturumunuz sona erdi. Lütfen giriş yapın.',401);
    if(path==='/api/panel/exam-sessions'&&method==='GET')return reply({sessions:this.sql.exec('SELECT data FROM exam_sessions ORDER BY created_at DESC').toArray().map(row=>JSON.parse(row.data))});
    if(path==='/api/panel/exam-sessions'&&method==='POST'){
-    const input=await readJson(request,32768),settings=this.getSettings(),session=validateExamSession(input,settings),stamp=new Date().toISOString();
-    const duplicate=this.sql.exec('SELECT id FROM exam_sessions WHERE city=? AND branch_id=? AND json_extract(data,\'$.period\')=?',session.city,session.branch,session.period).toArray()[0];if(duplicate)fail('Bu il, sınav türü ve dönem için zaten bir oturum var.',409);
-    session.createdAt=stamp;this.sql.exec('INSERT INTO exam_sessions(id,created_at,updated_at,city,group_id,branch_id,status,data) VALUES(?,?,?,?,?,?,?,?)',session.id,stamp,stamp,session.city,session.group,session.branch,session.status,JSON.stringify(session));return reply({session},201);
+    const input=await readJson(request,32768),settings=this.getSettings(),cityIds=[...new Set(Array.isArray(input.cities)?input.cities:[input.city])].filter(Boolean);if(!cityIds.length||cityIds.length>81)fail('Bir veya daha fazla il seçin.');
+    const stamp=new Date().toISOString(),created=[];
+    this.ctx.storage.transactionSync(()=>{for(const cityId of cityIds){const session=validateExamSession({...input,city:cityId},settings),duplicate=this.sql.exec('SELECT id FROM exam_sessions WHERE city=? AND branch_id=? AND json_extract(data,\'$.period\')=?',session.city,session.branch,session.period).toArray()[0];if(duplicate)fail(session.cityName+' için bu sınav dönemi zaten tanımlı.',409);session.createdAt=stamp;this.sql.exec('INSERT INTO exam_sessions(id,created_at,updated_at,city,group_id,branch_id,status,data) VALUES(?,?,?,?,?,?,?,?)',session.id,stamp,stamp,session.city,session.group,session.branch,session.status,JSON.stringify(session));created.push(session)}});
+    return reply({sessions:created},201);
    }
    const sessionId=path.slice('/api/panel/exam-sessions/'.length),sessionMatch=path.startsWith('/api/panel/exam-sessions/')&&/^[a-f0-9-]{36}$/.test(sessionId)?[null,sessionId]:null;
    if(sessionMatch){
