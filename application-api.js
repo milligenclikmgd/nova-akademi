@@ -148,6 +148,7 @@ export class ApplicationStore {
   const legacy=this.sql.exec('SELECT id,city FROM applications WHERE reference IS NULL ORDER BY created_at,id').toArray(),sequences={};
   for(const row of legacy){sequences[row.city]=(sequences[row.city]||0)+1;this.sql.exec('UPDATE applications SET reference=? WHERE id=?','01-'+cityCode(row.city)+'-'+String(sequences[row.city]).padStart(3,'0'),row.id)}
   this.sql.exec('CREATE TABLE IF NOT EXISTS receipts (application_id TEXT NOT NULL, part INTEGER NOT NULL, data BLOB NOT NULL, PRIMARY KEY(application_id,part))');
+  this.sql.exec('CREATE TABLE IF NOT EXISTS receipt_metadata (application_id TEXT PRIMARY KEY, name TEXT NOT NULL, type TEXT NOT NULL, size INTEGER NOT NULL)');
   this.sql.exec('CREATE TABLE IF NOT EXISTS exam_results (application_id TEXT PRIMARY KEY, result TEXT NOT NULL, updated_at TEXT NOT NULL)');const resultColumns=this.sql.exec('PRAGMA table_info(exam_results)').toArray();if(!resultColumns.some(column=>column.name==='score'))this.sql.exec('ALTER TABLE exam_results ADD COLUMN score REAL');if(!resultColumns.some(column=>column.name==='note'))this.sql.exec('ALTER TABLE exam_results ADD COLUMN note TEXT NOT NULL DEFAULT \'\'');
   this.sql.exec('CREATE TABLE IF NOT EXISTS definitive_registrations (application_id TEXT PRIMARY KEY, updated_at TEXT NOT NULL, data TEXT NOT NULL, health_name TEXT NOT NULL, health_type TEXT NOT NULL, health_size INTEGER NOT NULL, status TEXT NOT NULL, checkout_token_hash TEXT, checkout_token_expires_at TEXT)');
   const registrationColumns=this.sql.exec('PRAGMA table_info(definitive_registrations)').toArray();if(!registrationColumns.some(column=>column.name==='checkout_token_hash'))this.sql.exec('ALTER TABLE definitive_registrations ADD COLUMN checkout_token_hash TEXT');if(!registrationColumns.some(column=>column.name==='checkout_token_expires_at'))this.sql.exec('ALTER TABLE definitive_registrations ADD COLUMN checkout_token_expires_at TEXT');
@@ -360,8 +361,8 @@ export class ApplicationStore {
       return new Response(new Blob(chunks,{type:receipt.type}),{headers:{'Content-Type':receipt.type,'Content-Disposition':'attachment; filename="kesin-kayit-dekontu-'+row.id+'"','Cache-Control':'no-store','X-Content-Type-Options':'nosniff','Content-Security-Policy':"sandbox"}});
      }
      if(!row.receipt)fail('Dekont bulunamadı.',404);
-     const chunks=this.sql.exec('SELECT data FROM receipts WHERE application_id=? ORDER BY part',row.id).toArray().map(item=>item.data);
-     return new Response(new Blob(chunks,{type:'application/pdf'}),{headers:{'Content-Type':'application/pdf','Content-Disposition':'attachment; filename="dekont-'+row.id+'.pdf"','Cache-Control':'no-store','X-Content-Type-Options':'nosniff','Content-Security-Policy':"sandbox"}});
+     const metadata=this.sql.exec('SELECT name,type FROM receipt_metadata WHERE application_id=?',row.id).toArray()[0],chunks=this.sql.exec('SELECT data FROM receipts WHERE application_id=? ORDER BY part',row.id).toArray().map(item=>item.data),type=metadata?.type||'application/pdf',name=metadata?.name||('dekont-'+row.id);
+     return new Response(new Blob(chunks,{type}),{headers:{'Content-Type':type,'Content-Disposition':'attachment; filename="'+name+'"','Cache-Control':'no-store','X-Content-Type-Options':'nosniff','Content-Security-Policy':"sandbox"}});
     }
     if(!match[2]&&method==='GET'){
      const registration=this.sql.exec('SELECT data,status FROM definitive_registrations WHERE application_id=?',row.id).toArray()[0],paymentReceipt=this.sql.exec('SELECT name,type,size,updated_at FROM registration_payment_receipts WHERE application_id=?',row.id).toArray()[0];
@@ -390,10 +391,10 @@ export class ApplicationStore {
    let input;try{input=JSON.parse(raw)}catch{fail('Geçersiz başvuru.')}if(!input||typeof input!=='object'||Array.isArray(input))fail('Geçersiz başvuru.');
    const requestId=required(input.requestId,'Başvuru kodu',36);if(!/^[a-f0-9-]{36}$/.test(requestId))fail('Başvuru kodu geçersiz.');
    const previous=this.sql.exec('SELECT id,reference FROM applications WHERE request_id=?',requestId).toArray()[0];if(previous)return reply({id:previous.id,reference:previous.reference},200);
-   const data=validateApplication(input,this.getSettings()),file=form.get('receipt');let bytes;
+   const data=validateApplication(input,this.getSettings()),file=form.get('receipt');let bytes,receiptType='',receiptName='';
    if(data.paid){
-    if(!file||typeof file==='string'||!file.size||file.size>MAX_PDF)fail('Ödendi seçildiğinde en fazla 5 MB PDF dekont yükleyin.');
-    bytes=new Uint8Array(await file.arrayBuffer());if(new TextDecoder().decode(bytes.slice(0,5))!=='%PDF-')fail('Dekont geçerli bir PDF dosyası olmalı.');
+    if(!file||typeof file==='string'||!file.size||file.size>MAX_PDF)fail('Ödendi seçildiğinde en fazla 5 MB PDF, JPG veya PNG dekont yükleyin.');
+    bytes=new Uint8Array(await file.arrayBuffer());receiptType=new TextDecoder().decode(bytes.slice(0,5))==='%PDF-'?'application/pdf':bytes[0]===137&&bytes[1]===80&&bytes[2]===78&&bytes[3]===71?'image/png':bytes[0]===255&&bytes[1]===216&&bytes[2]===255?'image/jpeg':'';if(!receiptType)fail('Dekont PDF, JPG veya PNG olmalı.');receiptName=String(file.name||'dekont').replace(/[^a-zA-Z0-9._-]/g,'_').slice(0,120);
    }else if(file&&typeof file!=='string'&&file.size)fail('Ödenmedi seçimiyle dekont gönderilemez.');
    const id=crypto.randomUUID(),createdAt=new Date().toISOString();
    let reference='';this.ctx.storage.transactionSync(()=>{
@@ -402,7 +403,7 @@ export class ApplicationStore {
     const duplicate=this.sql.exec('SELECT id,reference FROM applications WHERE request_id=?',requestId).toArray()[0];if(duplicate){reference=duplicate.reference;return}if(data.sessionId&&data.session?.capacity!==null){const occupied=this.sql.exec('SELECT count(*) AS count FROM applications WHERE json_extract(data,\'$.sessionId\')=?',data.sessionId).one().count;if(occupied>=data.session.capacity)fail('Bu sınavın kontenjanı dolmuştur.',409)}
     const year=new Intl.DateTimeFormat('en-US',{timeZone:'Europe/Istanbul',year:'numeric'}).format(new Date()),last=this.sql.exec('SELECT max(CAST(substr(reference,12) AS INTEGER)) AS value FROM applications WHERE reference LIKE ?',`NOVA-${year}-0%`).one().value||0;reference=`NOVA-${year}-0${last+1}`;
     this.sql.exec('INSERT INTO applications(id,request_id,reference,created_at,name,city,status,payment,data,receipt) VALUES(?,?,?,?,?,?,?,?,?,?)',id,requestId,reference,createdAt,data.candidate.firstName+' '+data.candidate.lastName,data.city,'yeni',data.paid?'beyan-edildi':'odenmedi',JSON.stringify(data),bytes?1:0);
-    if(bytes)for(let part=0,offset=0;offset<bytes.length;part++,offset+=65536)this.sql.exec('INSERT INTO receipts(application_id,part,data) VALUES(?,?,?)',id,part,bytes.slice(offset,offset+65536).buffer);
+    if(bytes){this.sql.exec('INSERT INTO receipt_metadata(application_id,name,type,size) VALUES(?,?,?,?)',id,receiptName,receiptType,bytes.length);for(let part=0,offset=0;offset<bytes.length;part++,offset+=65536)this.sql.exec('INSERT INTO receipts(application_id,part,data) VALUES(?,?,?)',id,part,bytes.slice(offset,offset+65536).buffer)}
    });
    return reply({id:this.sql.exec('SELECT id FROM applications WHERE request_id=?',requestId).one().id,reference},201);
   }
