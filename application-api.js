@@ -184,9 +184,9 @@ export class ApplicationStore {
   if(path==='/api/applications/track'&&method==='GET'){
    this.rate('track:'+(request.headers.get('CF-Connecting-IP')||'local'),60);
    const reference=(url.searchParams.get('reference')||'').trim().toUpperCase();if(!/^NOVA-\d{4}-0[1-9]\d*$/.test(reference))return reply({found:false});
-   const row=this.sql.exec('SELECT reference,created_at,city,status,data,rejection_explanation FROM applications WHERE reference=?',reference).toArray()[0];if(!row)return reply({found:false});
+   const row=this.sql.exec('SELECT reference,created_at,city,status,payment,data,rejection_explanation FROM applications WHERE reference=?',reference).toArray()[0];if(!row)return reply({found:false});
    const item=JSON.parse(row.data),status=['onaylandi','reddedildi','eksik-bilgi','iptal','tamamlandi'].includes(row.status)?row.status:'kontrol-ediliyor';
-   return reply({found:true,reference:row.reference,city:item.cityName,branch:item.branchName,status,createdAt:row.created_at,rejectionExplanation:['reddedildi','eksik-bilgi'].includes(status)?row.rejection_explanation:''});
+   return reply({found:true,reference:row.reference,city:item.cityName,branch:item.branchName,status,payment:row.payment,paymentExplanation:['odeme-reddedildi','yeni-dekont'].includes(row.payment)?row.rejection_explanation:'',createdAt:row.created_at,rejectionExplanation:['reddedildi','eksik-bilgi'].includes(status)?row.rejection_explanation:''});
   }
   if(path==='/api/results/sessions'&&method==='GET'){const sessions=this.getSettings().examSessions.filter(item=>item.resultsPublished).filter(item=>this.sql.exec('SELECT a.id FROM applications a JOIN exam_results r ON r.application_id=a.id WHERE json_extract(a.data,\'$.sessionId\')=? LIMIT 1',item.id).toArray().length).map(({id,city,cityName,group,groupName,branch,branchName,title,period,examAt})=>({id,city,cityName,group,groupName,branch,branchName,title,period,examAt}));return reply({sessions})}
   if(path==='/api/results'&&method==='GET'){
