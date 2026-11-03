@@ -143,7 +143,7 @@
         <legend>Ücret ve ödeme bilgileri</legend>
         <div class="fee-summary"><span id="fee-label">Sınav ücreti</span><strong id="application-fee">—</strong><p id="fee-selection"></p></div>
         <label class="confirmation contract-confirmation"><input name="contractAccepted" type="checkbox" required><span><button type="button" class="contract-link" id="open-contract">Sözleşme</button>’yi okudum, onaylıyorum.</span></label>
-        <p id="payment-instructions" class="payment-instructions"></p>
+        <div id="session-payment-details" class="session-payment-details" hidden><p><span>Banka</span><strong id="session-bank-name"></strong></p><p><span>Hesap sahibi</span><strong id="session-account-name"></strong></p><p><span>IBAN</span><strong id="session-iban"></strong><button type="button" id="copy-session-iban" class="form-secondary">Kopyala</button></p><p><span>Ödeme açıklaması</span><strong id="session-payment-description"></strong></p></div><p id="payment-instructions" class="payment-instructions"></p>
         <div class="payment-choice" role="group" aria-label="Ücret ödendi mi?">
           <label><input type="radio" name="paid" value="no" required> Ücret ödenmedi</label>
           <label><input type="radio" name="paid" value="yes" required> Ücret ödendi</label>
