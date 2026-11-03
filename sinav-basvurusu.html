@@ -104,7 +104,7 @@
     <p class="application-kicker">NOVA · SINAV MERKEZİ</p>
     <h2 id="application-dialog-title">Sınav Başvuru Formu</h2>
     <p class="dialog-intro"><strong id="dialog-city">—</strong> başvuru merkezi</p>
-    <ol class="form-progress" aria-label="Başvuru adımları"><li>Sınav</li><li>Aday</li><li>Veli</li><li>Ödeme</li></ol>
+    <ol class="form-progress" aria-label="Başvuru adımları"><li>Sınav</li><li>Aday</li><li>Veli</li><li>Özet</li><li>Ödeme</li></ol>
     <p id="form-message" class="form-message" role="alert" hidden></p>
     <div id="form-fields">
       <fieldset class="form-step" data-step="0">
@@ -139,8 +139,9 @@
         <div id="family-fields"></div>
         <label>İletişim kurulacak kişi<select name="primaryContact" required></select></label><label class="form-wide">Veli görüşü ve öğrenci değerlendirmesi <small id="guardian-opinion-hint">İsteğe bağlı · En fazla 2.000 karakter</small><textarea name="guardianOpinion" rows="5" maxlength="2000" aria-describedby="guardian-opinion-hint guardian-opinion-count" placeholder="Öğrencinin ilgi alanları, yetenekleri ve sınava katılma isteği hakkında görüşünüzü paylaşın."></textarea><small id="guardian-opinion-count">0 / 2.000</small></label>
       </fieldset>
-      <fieldset class="form-step" data-step="3" hidden>
-        <legend>Ücret ve ödeme bilgileri</legend>
+      <fieldset class="form-step" data-step="3" hidden><legend>Başvuru özeti</legend><div id="application-review" class="application-review"></div><label class="confirmation"><input name="confirmation" type="checkbox" required><span>Başvuru formunda verdiğim bilgilerin doğru ve eksiksiz olduğunu onaylıyorum.</span></label></fieldset>
+      <fieldset class="form-step" data-step="4" hidden>
+        <legend>Sözleşme ve ödeme bilgileri</legend>
         <div class="fee-summary"><span id="fee-label">Sınav ücreti</span><strong id="application-fee">—</strong><p id="fee-selection"></p></div>
         <label class="confirmation contract-confirmation"><input name="contractAccepted" type="checkbox" required><span><button type="button" class="contract-link" id="open-contract">Sözleşme</button>’yi okudum, onaylıyorum.</span></label>
         <div id="session-payment-details" class="session-payment-details" hidden><p><span>Banka</span><strong id="session-bank-name"></strong></p><p><span>Hesap sahibi</span><strong id="session-account-name"></strong></p><p><span>IBAN</span><strong id="session-iban"></strong><button type="button" id="copy-session-iban" class="form-secondary">Kopyala</button></p><p><span>Ödeme açıklaması</span><strong id="session-payment-description"></strong></p></div><p id="payment-instructions" class="payment-instructions"></p>
@@ -149,7 +150,7 @@
           <label><input type="radio" name="paid" value="yes" required> Ücret ödendi</label>
         </div>
         <div id="receipt-field" hidden><label>Lütfen sınav ödemesine dair dekontu yükleyiniz<input name="receipt" type="file" accept="application/pdf,image/jpeg,image/png,.pdf,.jpg,.jpeg,.png"></label><div id="receipt-preview" class="receipt-preview" hidden></div><p class="field-help">En fazla 5 MB. PDF, JPG veya PNG. Ödeme beyanınız dekontla birlikte panelde kontrol edilir.</p></div>
-        <label class="confirmation"><input name="confirmation" type="checkbox" required><span>Başvuru bilgilerini kontrol ettim ve doğruluğunu onaylıyorum.</span></label>
+        
         <p class="field-help">Başvurunuz ve yüklediğiniz dekont yönetim panelinde görüntülenir.</p>
       </fieldset>
       <div class="form-actions"><button type="button" id="form-back" class="form-secondary">Geri</button><button type="button" id="form-next" class="form-primary">Devam et →</button><button type="submit" id="form-submit" class="form-primary" hidden>Başvuruyu gönder</button></div>
