@@ -17,21 +17,54 @@ window.novaApplicationEndpoint=path=>(location.hostname==="nova-akademi.vercel.a
   viewTabs[next]?.focus();setCityView(viewTabs[next]?.dataset.cityViewTab);
  });
  const views=[...picker.querySelectorAll("[data-picker-view]")];
- let selectedCity=null,settings=null,provinceNodes=new Map();
+ let selectedCity=null,selectedGroupId='',settings=null,provinceNodes=new Map();
+ const groupTemplate=picker.querySelector('[data-picker-view="groups"] [data-group]')?.cloneNode(true),branchTemplate=picker.querySelector('[data-picker-view="arts"] [data-branch]')?.cloneNode(true);
  const tooltip=document.createElement("div");tooltip.className="map-province-tooltip";tooltip.hidden=true;tooltip.setAttribute("role","status");document.body.append(tooltip);
  const cityForProvince=id=>cities.find(item=>item.provinceIds?.includes(id));
  function showProvinceTooltip(event,city){if(!city||event.pointerType==="touch")return;tooltip.textContent=city.name;tooltip.hidden=false;const gap=14,rect=tooltip.getBoundingClientRect();tooltip.style.left=Math.min(event.clientX+gap,window.innerWidth-rect.width-8)+"px";tooltip.style.top=Math.min(event.clientY+gap,window.innerHeight-rect.height-8)+"px"}
  const assignmentFor=id=>settings?.accepting&&Array.isArray(settings?.cityExams?.[id])?settings.cityExams[id]:[];
+ const assignmentFor=id=>settings?.accepting&&Array.isArray(settings?.cityExams?.[id])?settings.cityExams[id]:[];
  const setView=name=>{views.forEach(view=>view.hidden=view.dataset.pickerView!==name);back.hidden=name==="groups";picker.dataset.view=name};
- const openPicker=city=>{if(!settings?.accepting||!assignmentFor(city.id).length)return;selectedCity=city;title.textContent=city.name;updateChoices(city);setView("groups");picker.showModal()};
- const availableBranches=(group,city=selectedCity)=>group?.branches.filter(branch=>assignmentFor(city?.id).includes(branch.id))||[];
- const branchForAlias=(group,alias,city=selectedCity)=>{const patterns={dance:/dans|halk oyun|bale/i,symphony:/senfoni|orkestra/i,stage:/sahne|tiyatro/i};return availableBranches(group,city).find(branch=>patterns[alias]?.test(branch.name))};
+ const availableBranches=(group,city=selectedCity)=>(group?.branches||[]).filter(branch=>branch.active!==false&&assignmentFor(city?.id).includes(branch.id));
  function updateChoices(city){
+  selectedGroupId='';
   const groups=picker.querySelector('[data-picker-view="groups"]');
-  groups.querySelectorAll("[data-group]").forEach(button=>{const group=settings.groups.find(item=>item.id===button.dataset.group);button.hidden=!availableBranches(group,city).length});
-  const arts=picker.querySelector('[data-picker-view="arts"]'),artsGroup=settings.groups.find(item=>item.id==="sanat");
-  arts.querySelectorAll("[data-branch]").forEach(button=>button.hidden=!branchForAlias(artsGroup,button.dataset.branch,city));
+  groups.querySelectorAll("[data-group]").forEach(button=>button.remove());
+  (settings?.groups||[]).filter(group=>group.active!==false&&availableBranches(group,city).length).forEach(group=>{
+   if(!groupTemplate)return;
+   const branches=availableBranches(group,city),button=groupTemplate.cloneNode(true);
+   button.hidden=false;button.dataset.group=group.id;
+   button.querySelector("strong").textContent=group.name;
+   button.querySelector("small").textContent=branches.length===1?"1 sınav türü":"Sınav türleri";
+   button.addEventListener("click",()=>{
+    selectedGroupId=group.id;
+    renderBranchChoices(group,city);
+    setView("arts");
+   });
+   groups.append(button);
+  });
+  const arts=picker.querySelector('[data-picker-view="arts"]');
+  arts.querySelectorAll("[data-branch]").forEach(button=>button.remove());
+  const prompt=arts.querySelector(".city-picker__prompt");
+  if(prompt)prompt.textContent="Önce bir sınav alanı seçin.";
  }
+ function renderBranchChoices(group,city){
+  const arts=picker.querySelector('[data-picker-view="arts"]');
+  arts.querySelectorAll("[data-branch]").forEach(button=>button.remove());
+  const prompt=arts.querySelector(".city-picker__prompt");
+  if(prompt)prompt.textContent=group.name+" · Sınav türünü seçin.";
+  availableBranches(group,city).forEach((branch,index)=>{
+   if(!branchTemplate)return;
+   const button=branchTemplate.cloneNode(true);
+   button.hidden=false;button.dataset.branch=branch.id;
+   const number=button.querySelector(".branch-choice__number"),name=button.querySelector("strong");
+   if(number)number.textContent=String(index+1).padStart(2,"0");
+   if(name)name.textContent=branch.name;
+   button.addEventListener("click",()=>launchForm(group.id,branch.id));
+   arts.append(button);
+  });
+ }
+ const openPicker=city=>{if(!settings?.accepting||!assignmentFor(city.id).length)return;selectedCity=city;title.textContent=city.name;updateChoices(city);setView("groups");picker.showModal()};
  function launchForm(group,branch){
   if(!selectedCity)return;
   const city=selectedCity;
@@ -82,7 +115,6 @@ window.novaApplicationEndpoint=path=>(location.hostname==="nova-akademi.vercel.a
  document.querySelector("#picker-close").addEventListener("click",()=>picker.close());
  back.addEventListener("click",()=>setView("groups"));
  picker.addEventListener("click",event=>{if(event.target===picker)picker.close()});
- picker.querySelectorAll("[data-group]").forEach(button=>button.addEventListener("click",()=>{if(button.dataset.group==="sanat")setView("arts");else launchForm(button.dataset.group,"")}));
- picker.querySelectorAll("[data-branch]").forEach(button=>button.addEventListener("click",()=>launchForm("sanat",button.dataset.branch)));
+
  Promise.all([loadMap(),loadSettings()]);
 })();
