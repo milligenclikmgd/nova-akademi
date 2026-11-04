@@ -78,3 +78,31 @@ body.nova-homepage .hero .home-slider__slide img{display:block!important;width:1
   padding:0!important;
  }
 }
+
+/* Mobile hero occupies roughly half the visible screen; separate mobile artwork fills the frame. */
+@media(max-width:760px){
+ body.nova-homepage .hero{
+  height:50vh!important;
+  height:50svh!important;
+  min-height:0!important;
+  max-height:none!important;
+  aspect-ratio:auto!important;
+  margin:0!important;
+  padding:0!important;
+  overflow:hidden!important;
+ }
+ body.nova-homepage .hero .home-slider-picture{
+  position:absolute!important;
+  inset:0!important;
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+ }
+ body.nova-homepage .hero .home-slider__slide img{
+  width:100%!important;
+  height:100%!important;
+  object-fit:cover!important;
+  object-position:center!important;
+  background:transparent!important;
+ }
+}
