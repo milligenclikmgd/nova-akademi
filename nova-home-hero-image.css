@@ -81,7 +81,7 @@ body.nova-homepage .hero .home-slider__slide img{display:block!important;width:1
 
 /* Mobile hero occupies roughly half the visible screen; separate mobile artwork fills the frame. */
 @media(max-width:760px){
- body.nova-homepage .hero{
+ body.nova-homepage:has(.partners-marquee) .hero{
   height:50vh!important;
   height:50svh!important;
   min-height:0!important;
