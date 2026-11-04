@@ -273,3 +273,40 @@
  .builder-period-fields{max-width:none}
  .builder-collapse-hint{display:none}
 }
+
+
+/* Mobile layout for news and announcements: separate rows and editor from their wrapper. */
+#news-view{min-width:0;max-width:100%}
+#news-view .section-title{min-width:0}
+#news-view .cms-list,#news-view .cms-editor{min-width:0;max-width:100%}
+#news-view .cms-row{min-width:0}
+#news-view .cms-row-copy{overflow-wrap:anywhere}
+#news-view .cms-row-actions{min-width:0}
+#news-view .cms-editor>*{min-width:0}
+#news-view .rich-editor{max-width:100%;overflow-wrap:anywhere;word-break:break-word}
+@media(max-width:700px){
+ #news-view .section-title{align-items:stretch;flex-direction:column;gap:12px;margin-bottom:16px}
+ #news-view .section-title h1{font-size:23px;line-height:1.25;overflow-wrap:anywhere}
+ #news-view .section-title p:last-child{font-size:12px}
+ #news-view #add-cms-article{width:100%;min-height:44px}
+ #news-view>.settings-card:not(.cms-editor){padding:0;border:0;border-radius:0;background:transparent;box-shadow:none}
+ #news-view .cms-list{gap:10px}
+ #news-view .cms-row{grid-template-columns:minmax(0,1fr);gap:10px;padding:12px;border:1px solid #dfe7ef;border-radius:10px;background:#fff}
+ #news-view .cms-row-main{align-items:flex-start;gap:10px}
+ #news-view .cms-row-thumb{width:54px;height:48px}
+ #news-view .cms-row-copy strong,#news-view .cms-row-copy small{white-space:normal;overflow:visible;text-overflow:clip;line-height:1.45}
+ #news-view .cms-row-copy strong{font-size:12px}
+ #news-view .cms-row-copy small{font-size:10px;overflow-wrap:anywhere}
+ #news-view .cms-row-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+ #news-view .cms-row-actions .published-state{grid-column:1/-1;justify-self:start}
+ #news-view .cms-row-actions button{width:100%;min-height:40px}
+ #news-view #cms-article-form{padding:14px}
+ #news-view .cms-editor{gap:11px}
+ #news-view .rich-toolbar{gap:4px;padding:6px}
+ #news-view .rich-toolbar button{min-height:36px;padding:6px 8px}
+ #news-view .rich-editor{min-height:190px;padding:11px;font-size:13px}
+}
+@media(max-width:380px){
+ #news-view #cms-article-form{padding:11px}
+ #news-view .cms-row{padding:10px}
+}
