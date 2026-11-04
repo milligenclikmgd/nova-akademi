@@ -167,16 +167,16 @@ export class ApplicationStore {
  resetTaxonomyForNewBuilder(){
   const settings=this.getSettings();
   if(settings.taxonomyResetVersion===1)return settings;
-  const rows=this.sql.exec('SELECT id,data FROM exam_sessions').toArray(),stamp=new Date().toISOString();
+  const rows=this.sql.exec('SELECT id,data FROM exam_sessions').toArray(),stamp=new Date().toISOString(),previousGroups=(settings.groups||[]).map(group=>({id:group.id,name:group.name,branches:(group.branches||[]).map(branch=>({id:branch.id,name:branch.name}))}));let closedSessions=0,deletedSessions=0;
   this.ctx.storage.transactionSync(()=>{
    for(const row of rows){
     const linked=this.sql.exec("SELECT id FROM applications WHERE json_extract(data,'$.sessionId')=? LIMIT 1",row.id).toArray().length>0;
-    if(linked){const data=JSON.parse(row.data);data.status='closed';data.updatedAt=stamp;this.sql.exec('UPDATE exam_sessions SET status=?,updated_at=?,data=? WHERE id=?','closed',stamp,JSON.stringify(data),row.id)}
-    else this.sql.exec('DELETE FROM exam_sessions WHERE id=?',row.id);
+    if(linked){const data=JSON.parse(row.data);data.status='closed';data.updatedAt=stamp;this.sql.exec('UPDATE exam_sessions SET status=?,updated_at=?,data=? WHERE id=?','closed',stamp,JSON.stringify(data),row.id);closedSessions++}
+    else{this.sql.exec('DELETE FROM exam_sessions WHERE id=?',row.id);deletedSessions++}
    }
    settings.groups=[];settings.cityExams={};settings.accepting=false;settings.taxonomyResetVersion=1;settings.revision=(settings.revision||1)+1;
    this.sql.exec('INSERT INTO settings(id,data) VALUES(1,?) ON CONFLICT(id) DO UPDATE SET data=excluded.data',JSON.stringify(settings));
-   this.sql.exec('INSERT INTO admin_audit_logs(created_at,action,entity_type,entity_id,detail) VALUES(?,?,?,?,?)',stamp,'exam_taxonomy_reset','settings','exam-taxonomy-v1',JSON.stringify({closedSessions:rows.length}));
+   this.sql.exec('INSERT INTO admin_audit_logs(created_at,action,entity_type,entity_id,detail) VALUES(?,?,?,?,?)',stamp,'exam_taxonomy_reset','settings','exam-taxonomy-v1',JSON.stringify({previousGroups,closedSessions,deletedSessions}));
   });
   return this.getSettings();
  }
