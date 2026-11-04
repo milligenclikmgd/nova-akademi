@@ -236,3 +236,13 @@
  .taxonomy-row .taxonomy-name{grid-column:1/-1;width:100%;text-align:left}
  .taxonomy-row>button:not(.taxonomy-name){min-height:36px;padding:6px 4px;font-size:12px}
 }
+
+/* Compact taxonomy manager: keep category actions and labels within each row. */
+#exam-session-manager-v2 .builder-section:first-of-type .builder-heading h2{font-size:17px}
+#exam-session-manager-v2 .builder-section:first-of-type .builder-heading p{font-size:12px;line-height:1.4}
+#exam-session-manager-v2 .taxonomy-grid{gap:10px}
+#exam-session-manager-v2 .taxonomy-column,#exam-session-manager-v2 .taxonomy-summary{padding:9px}
+#exam-session-manager-v2 .taxonomy-column h3,#exam-session-manager-v2 .taxonomy-summary h3{font-size:13px;line-height:1.35}
+#exam-session-manager-v2 .taxonomy-row{gap:3px;padding:5px 6px}
+#exam-session-manager-v2 .taxonomy-row button{font-size:12px;padding:4px 3px}
+#exam-session-manager-v2 .taxonomy-row .taxonomy-name{font-size:12px}
