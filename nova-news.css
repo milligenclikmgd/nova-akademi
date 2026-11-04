@@ -77,3 +77,22 @@
  .nova-news .nova-news-head>.nova-news-tabs{margin-bottom:28px!important}
  .nova-news #nova-home-news{margin-top:34px!important}
 }
+
+
+/* Definitive compact layout: filter controls and news cards flow in separate rows. */
+@media(max-width:850px){
+ .nova-news .nova-news-head{display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;grid-template-rows:auto auto!important;align-items:center!important;gap:18px 10px!important;padding:24px 0 0!important;}
+ .nova-news .nova-news-head>h2{grid-column:1!important;grid-row:1!important;position:static!important;margin:0!important;min-width:0!important;font-size:clamp(16px,4vw,22px)!important;line-height:1.2!important;white-space:normal!important;}
+ .nova-news .nova-news-head>.nova-news-all{grid-column:2!important;grid-row:1!important;position:static!important;justify-self:end!important;margin:0!important;padding:8px 10px!important;font-size:10px!important;line-height:1.2!important;}
+ .nova-news .nova-news-head>.nova-news-tabs{grid-column:1/-1!important;grid-row:2!important;position:static!important;justify-self:start!important;display:flex!important;flex-wrap:wrap!important;gap:8px!important;width:100%!important;margin:0!important;padding:0!important;transform:none!important;}
+ .nova-news .nova-news-tabs button{position:static!important;margin:0!important;min-height:36px!important;padding:8px 12px!important;line-height:1.2!important;}
+ .nova-news .nova-news-grid,#nova-home-news{position:relative!important;display:grid!important;grid-template-columns:minmax(0,1fr)!important;clear:both!important;width:100%!important;margin:30px 0 0!important;padding:0!important;transform:none!important;}
+ .nova-news .nova-news-card,.nova-news .nova-news-card>a,.nova-news .nova-news-card-image{position:relative!important;min-width:0!important;}
+}
+@media(max-width:540px){
+ .nova-news .nova-news-head{row-gap:20px!important;padding-top:22px!important;}
+ .nova-news .nova-news-head>h2{font-size:clamp(16px,4vw,20px)!important;}
+ .nova-news .nova-news-head>.nova-news-all{font-size:9px!important;padding:7px 9px!important;}
+ .nova-news .nova-news-tabs button{min-height:36px!important;padding:8px 10px!important;font-size:9px!important;}
+ .nova-news .nova-news-grid,#nova-home-news{margin-top:38px!important;}
+}
