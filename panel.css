@@ -246,3 +246,30 @@
 #exam-session-manager-v2 .taxonomy-row{gap:3px;padding:5px 6px}
 #exam-session-manager-v2 .taxonomy-row button{font-size:12px;padding:4px 3px}
 #exam-session-manager-v2 .taxonomy-row .taxonomy-name{font-size:12px}
+
+/* Rebuilt exam category and session workflow */
+#builder-definition-details[hidden]{display:none}
+#builder-definition-details{border:1px solid #dbe4ef;border-radius:12px;padding:16px;background:#fff}
+#builder-definition-details>summary{list-style:none;cursor:pointer}
+#builder-definition-details>summary::-webkit-details-marker{display:none}
+#builder-definition-details[open]>summary{margin-bottom:14px}
+.builder-collapse-hint{margin-left:auto;color:#61758f;font-size:12px}
+.builder-period-fields{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:520px}
+.builder-session-filters{display:grid;grid-template-columns:minmax(180px,1.5fr) minmax(120px,.7fr) minmax(150px,1fr) auto;align-items:end;gap:10px;margin:12px 0}
+.builder-session-filters label{display:grid;gap:5px;font-size:12px;font-weight:650;color:#203956}
+.builder-session-filters input,.builder-session-filters select{min-width:0}
+#builder-branch-form{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+#builder-branch-form h2,#builder-branch-form .icon-button,#builder-branch-form .settings-actions{grid-column:1/-1}
+#builder-branch-form label{min-width:0}
+#builder-session-edit-form{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+#builder-session-edit-form h2,#builder-session-edit-form .eyebrow,#builder-session-edit-form #builder-session-edit-caption,#builder-session-edit-form label:nth-of-type(4),#builder-session-edit-form #builder-session-edit-message,#builder-session-edit-form .settings-actions,#builder-session-edit-form .icon-button{grid-column:1/-1}
+#builder-session-edit-dialog{width:min(640px,calc(100vw - 28px))}
+@media(max-width:760px){
+ .builder-session-filters{grid-template-columns:1fr 1fr}
+ .builder-session-filters label:first-child{grid-column:1/-1}
+ .builder-session-filters #builder-clear-filters{grid-column:1/-1}
+ #builder-session-edit-form,#builder-branch-form{grid-template-columns:1fr}
+ #builder-session-edit-form>* ,#builder-branch-form>*{grid-column:1}
+ .builder-period-fields{max-width:none}
+ .builder-collapse-hint{display:none}
+}
