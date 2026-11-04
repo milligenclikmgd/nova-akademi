@@ -67,3 +67,13 @@
  .nova-news .nova-news-tabs button{min-height:34px!important;padding:7px 9px!important;font-size:9px!important}
  .nova-news .nova-news-grid{margin-top:14px!important}
 }
+
+/* Reserve a clear mobile gap after the filter row so the lead image cannot overlap it. */
+@media(max-width:850px){
+ .nova-news .nova-news-head>.nova-news-tabs{position:relative!important;z-index:2!important;margin-bottom:24px!important}
+ .nova-news #nova-home-news{position:relative!important;z-index:0!important;margin-top:30px!important;padding-top:0!important}
+}
+@media(max-width:540px){
+ .nova-news .nova-news-head>.nova-news-tabs{margin-bottom:28px!important}
+ .nova-news #nova-home-news{margin-top:34px!important}
+}
