@@ -25,3 +25,32 @@ body.nova-homepage .hero .home-slider__slide img{display:block!important;width:1
 .home-slider-dots button.is-active{width:26px;background:#fff}
 @media(max-width:760px){body.nova-homepage .hero{height:clamp(300px,92vw,470px)!important;min-height:0!important;padding:0!important}body.nova-homepage .hero .home-slider__slide img{object-position:center!important}.home-slider-dots{right:18px;bottom:16px}}
 @media(prefers-reduced-motion:reduce){body.nova-homepage .hero .home-slider__slide,.home-slider-dots button{transition:none!important}}
+
+
+/* Mobilde slider görselinin tamamını oranını koruyarak göster. */
+@media(max-width:760px){
+ body.nova-homepage .hero{
+  width:100%!important;
+  height:auto!important;
+  min-height:0!important;
+  max-height:none!important;
+  aspect-ratio:3/1!important;
+  padding:0!important;
+  overflow:hidden!important;
+  background:#fff!important;
+ }
+ body.nova-homepage .hero .hero-visuals,
+ body.nova-homepage .hero .home-slider__slide{
+  width:100%!important;
+  height:100%!important;
+  min-height:0!important;
+ }
+ body.nova-homepage .hero .home-slider__slide img{
+  width:100%!important;
+  height:100%!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  background:#fff!important;
+ }
+ body.nova-homepage .home-slider-dots{right:12px!important;bottom:9px!important}
+}
