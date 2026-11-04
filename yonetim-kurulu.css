@@ -145,3 +145,7 @@
 .bio-panel .bio-cv p{font-size:20px;line-height:1.78}
 @media(max-width:900px){.bio-panel{padding-top:122px}.bio-panel .bio-name{font-size:44px}.bio-panel .bio-role{font-size:20px}.bio-panel .bio-cv p{font-size:19px}}
 @media(max-width:600px){.bio-panel{padding-top:100px}.bio-panel .bio-name{font-size:35px}.bio-panel .bio-role{font-size:18px;margin-bottom:24px}.bio-panel .bio-cv p{font-size:17px;line-height:1.7}}
+
+
+/* CV alanında panelden girilen satır ve boş satır aralarını koru. */
+.bio-panel .bio-cv p{white-space:pre-wrap;overflow-wrap:anywhere}
