@@ -39,7 +39,7 @@
   slides.forEach((slide,index)=>{
    const row=node('article',undefined,'home-slide-row'),thumb=slide.mediaType==='video'?node('video',undefined,'home-slide-thumb'):node('img',undefined,'home-slide-thumb');
    if(slide.mediaType==='video'){thumb.src=slide.video;thumb.muted=true;thumb.playsInline=true;thumb.preload='metadata'}else{thumb.src=slide.image;thumb.alt=slide.alt||''}
-   const copy=node('div',undefined,'home-slide-copy'),name=node('strong',slide.alt||'Başlıksız görsel'),meta=node('small',(slide.mediaType==='video'?'Video':'Görsel')+' · '+(slide.hotspot?.enabled?'Tıklama alanı eklendi':'Tıklama alanı yok'));
+   const copy=node('div',undefined,'home-slide-copy'),name=node('strong',slide.alt||'Başlıksız görsel'),meta=node('small',(slide.mediaType==='video'?'Video':'Görsel')+' · '+(slide.mobileImage?'Mobil görsel var':'Mobil görsel yok')+' · '+(slide.hotspot?.enabled?'Tıklama alanı eklendi':'Tıklama alanı yok'));
    copy.append(name,meta,node('span',slide.published?'Yayında':'Taslak','home-slide-state'+(slide.published?'':' is-draft')));
    const actions=node('div',undefined,'home-slide-actions');
    const up=node('button','↑','secondary'),down=node('button','↓','secondary'),edit=node('button','Düzenle','secondary'),toggle=node('button',slide.published?'Taslağa al':'Yayınla','secondary'),remove=node('button','Sil','secondary');
@@ -60,8 +60,10 @@
   try{await save();renderSlides()}catch(error){cms.slides=old;renderSlides();window.novaNotify(error.message,{type:'error'})}
  }
  const slideDialog=$('#home-slider-dialog'),slideForm=$('#home-slider-form'),slidePreview=$('#home-slider-preview'),slidePreviewImage=$('#home-slider-preview-image'),slidePlaceholder=$('#home-slider-preview-placeholder'),hotspotBox=$('#slider-hotspot-box'),hotspotFields=$('#slider-hotspot-fields');
- let slideObjectUrl='';
+ let slideObjectUrl='',mobileSlideObjectUrl='';
  function previewImage(src){if(slideObjectUrl){URL.revokeObjectURL(slideObjectUrl);slideObjectUrl=''}if(src&&src.startsWith('blob:'))slideObjectUrl=src;slidePreviewImage.src=src||'';slidePreviewImage.hidden=!src;slidePlaceholder.hidden=!!src}
+ const mobilePreviewImage=$('#home-slider-mobile-preview-image'),mobilePreviewPlaceholder=$('#home-slider-mobile-preview-placeholder');
+ function previewMobileImage(src){if(mobileSlideObjectUrl){URL.revokeObjectURL(mobileSlideObjectUrl);mobileSlideObjectUrl=''}if(src&&src.startsWith('blob:'))mobileSlideObjectUrl=src;mobilePreviewImage.src=src||'';mobilePreviewImage.hidden=!src;mobilePreviewPlaceholder.hidden=!!src}
  function updateHotspotPreview(){
   const enabled=slideForm.elements.hotspotEnabled.checked,fields=['hotspotX','hotspotY','hotspotWidth','hotspotHeight'];
   hotspotFields.hidden=!enabled;hotspotBox.hidden=!enabled;
@@ -69,20 +71,20 @@
   slideForm.elements.link.required=enabled;
  }
  function openSlideEditor(slide=null){
-  slideForm.reset();slideForm.elements.id.value=slide?.id||'';slideForm.elements.image.value=slide?.image||'';slideForm.elements.alt.value=slide?.alt||'';slideForm.elements.link.value=slide?.link||'';slideForm.elements.published.checked=slide?slide.published!==false:true;slideForm.elements.file.value='';
+  slideForm.reset();slideForm.elements.id.value=slide?.id||'';slideForm.elements.image.value=slide?.image||'';slideForm.elements.mobileImage.value=slide?.mobileImage||'';slideForm.elements.alt.value=slide?.alt||'';slideForm.elements.link.value=slide?.link||'';slideForm.elements.published.checked=slide?slide.published!==false:true;slideForm.elements.file.value='';slideForm.elements.mobileFile.value='';previewMobileImage(slide?.mobileImage||'');
   const hotspot=slide?.hotspot||{};slideForm.elements.hotspotEnabled.checked=hotspot.enabled===true;slideForm.elements.hotspotX.value=hotspot.x??10;slideForm.elements.hotspotY.value=hotspot.y??72;slideForm.elements.hotspotWidth.value=hotspot.width??28;slideForm.elements.hotspotHeight.value=hotspot.height??18;
   $('#home-slider-dialog-title').textContent=slide?'Sliderı düzenle':'Slider ekle';previewImage(slide?.image||'');updateHotspotPreview();slideDialog.showModal();
  }
  async function saveSlide(event){
   event.preventDefault();const button=event.submitter;button.disabled=true;note(slideForm);
   try{
-   const current=cms.slides.find(item=>item.id===slideForm.elements.id.value),file=slideForm.elements.file.files[0];let image=slideForm.elements.image.value.trim()||current?.image||'';
-   if(file){const uploaded=await upload(file);image=uploaded.url}
+   const current=cms.slides.find(item=>item.id===slideForm.elements.id.value),file=slideForm.elements.file.files[0];let image=slideForm.elements.image.value.trim()||current?.image||'',mobileImage=slideForm.elements.mobileImage.value.trim();const mobileFile=slideForm.elements.mobileFile.files[0];
+   if(file){const uploaded=await upload(file);image=uploaded.url}if(mobileFile){const uploaded=await upload(mobileFile);mobileImage=uploaded.url}
    if(!image)throw Error('Bir slider görseli yükleyin veya görsel adresi girin.');
    const enabled=slideForm.elements.hotspotEnabled.checked,hotspot={enabled,x:Number(slideForm.elements.hotspotX.value),y:Number(slideForm.elements.hotspotY.value),width:Number(slideForm.elements.hotspotWidth.value),height:Number(slideForm.elements.hotspotHeight.value)};
    const link=slideForm.elements.link.value.trim();if(enabled&&!link)throw Error('Tıklama alanı için bağlantı adresi girin.');
    if([hotspot.x,hotspot.y,hotspot.width,hotspot.height].some(value=>!Number.isFinite(value))||hotspot.x<0||hotspot.y<0||hotspot.width<=0||hotspot.height<=0||hotspot.x+hotspot.width>100||hotspot.y+hotspot.height>100)throw Error('Tıklama alanı görsel sınırları içinde kalmalıdır.');
-   const item={id:current?.id||slug(),mediaType:'image',image,video:'',alt:slideForm.elements.alt.value.trim(),link,hotspot,order:current?.order??cms.slides.length,published:slideForm.elements.published.checked};
+   const item={id:current?.id||slug(),mediaType:'image',image,mobileImage,video:'',alt:slideForm.elements.alt.value.trim(),link,hotspot,order:current?.order??cms.slides.length,published:slideForm.elements.published.checked};
    if(!item.alt)throw Error('Görsel açıklaması gerekli.');
    const old=cms.slides;cms.slides=current?old.map(value=>value.id===current.id?item:value):[...old,item];
    await save();renderSlides();slideDialog.close();window.novaNotify(current?'Slider güncellendi.':'Slider eklendi ve kaydedildi.');
@@ -92,6 +94,8 @@
  $('#close-home-slider')?.addEventListener('click',()=>slideDialog.close());$('#cancel-home-slider')?.addEventListener('click',()=>slideDialog.close());
  slideForm?.addEventListener('submit',saveSlide);
  slideForm?.elements.file.addEventListener('change',()=>{const file=slideForm.elements.file.files[0];if(file){const url=URL.createObjectURL(file);previewImage(url)}});
+ slideForm?.elements.mobileFile.addEventListener('change',()=>{const file=slideForm.elements.mobileFile.files[0];if(file){slideForm.elements.mobileImage.value='';previewMobileImage(URL.createObjectURL(file))}});
+ slideForm?.elements.mobileImage.addEventListener('input',()=>{if(!slideForm.elements.mobileFile.files.length)previewMobileImage(slideForm.elements.mobileImage.value.trim())});
  slideForm?.elements.image.addEventListener('input',()=>{if(!slideForm.elements.file.files.length)previewImage(slideForm.elements.image.value.trim())});
  slideForm?.elements.hotspotEnabled.addEventListener('change',updateHotspotPreview);
  ['hotspotX','hotspotY','hotspotWidth','hotspotHeight'].forEach(name=>slideForm?.elements[name].addEventListener('input',updateHotspotPreview));
