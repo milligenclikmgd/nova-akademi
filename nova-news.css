@@ -17,3 +17,19 @@
 /* Keep the first news card clearly below the category tabs on compact layouts. */
 @media(max-width:850px){.nova-news .nova-news-grid{margin-top:24px!important}}
 @media(max-width:540px){.nova-news .nova-news-grid{margin-top:20px!important}}
+
+/* Mobile: stack the title, all-news link, filters, then the first story in normal flow. */
+@media(max-width:850px){
+ .nova-news .nova-news-head{display:flex!important;position:relative!important;flex-direction:column!important;align-items:stretch!important;justify-content:flex-start!important;gap:14px!important;padding:24px 0 0!important}
+ .nova-news .nova-news-head>h2{position:static!important;order:0!important;width:100%!important;grid-column:auto!important;grid-row:auto!important;margin:0!important;line-height:1.2!important}
+ .nova-news .nova-news-head>.nova-news-all{position:static!important;order:1!important;align-self:flex-end!important;grid-column:auto!important;grid-row:auto!important;margin:0!important}
+ .nova-news .nova-news-head>.nova-news-tabs{position:static!important;order:2!important;display:flex!important;align-self:stretch!important;justify-self:stretch!important;grid-column:auto!important;grid-row:auto!important;flex-wrap:wrap!important;justify-content:flex-start!important;gap:7px!important;white-space:normal!important;transform:none!important}
+ .nova-news .nova-news-grid{position:relative!important;clear:both!important;display:grid!important;margin:18px 0 0!important;transform:none!important}
+}
+@media(max-width:540px){
+ .nova-news .nova-news-head{gap:12px!important;padding-top:22px!important}
+ .nova-news .nova-news-head>h2{font-size:23px!important}
+ .nova-news .nova-news-head>.nova-news-all{align-self:flex-start!important;padding:10px 14px!important}
+ .nova-news .nova-news-tabs button{min-height:38px;padding:8px 11px!important;font-size:9px!important}
+ .nova-news .nova-news-grid{margin-top:16px!important}
+}
