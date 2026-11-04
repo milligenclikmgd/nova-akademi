@@ -3,20 +3,10 @@ window.novaApplicationEndpoint=path=>(location.hostname==="nova-akademi.vercel.a
  let cities=[];
  const map=document.querySelector("#turkey-map"),mount=document.querySelector("#turkey-map-svg"),cityIndex=document.querySelector("#city-index"),picker=document.querySelector("#city-picker");
  const title=document.querySelector("#city-picker-title"),back=document.querySelector("#picker-back");
- const viewTabs=[...document.querySelectorAll("[data-city-view-tab]")],viewPanels=[...document.querySelectorAll("[data-city-view-panel]")];
- const setCityView=name=>{
-  viewTabs.forEach(tab=>{const active=tab.dataset.cityViewTab===name;tab.classList.toggle("is-active",active);tab.setAttribute("aria-selected",String(active));tab.tabIndex=active?0:-1});
-  viewPanels.forEach(panel=>{panel.hidden=panel.dataset.cityViewPanel!==name});
- };
- viewTabs.forEach(tab=>tab.addEventListener("click",()=>setCityView(tab.dataset.cityViewTab)));
- document.querySelector(".city-view-tabs")?.addEventListener("keydown",event=>{
-  if(!["ArrowLeft","ArrowRight","Home","End"].includes(event.key))return;
-  event.preventDefault();
-  const current=Math.max(0,viewTabs.indexOf(document.activeElement));
-  const next=event.key==="Home"?0:event.key==="End"?viewTabs.length-1:(current+(event.key==="ArrowRight"?1:viewTabs.length-1))%viewTabs.length;
-  viewTabs[next]?.focus();setCityView(viewTabs[next]?.dataset.cityViewTab);
- });
+ const citySearchInput=document.querySelector("#city-search");
+ let citySearch="";
  const views=[...picker.querySelectorAll("[data-picker-view]")];
+ citySearchInput?.addEventListener("input",()=>{citySearch=citySearchInput.value;createCityIndex()});
  let selectedCity=null,selectedGroupId='',settings=null,provinceNodes=new Map();
  const groupTemplate=picker.querySelector('[data-picker-view="groups"] [data-group]')?.cloneNode(true),branchTemplate=picker.querySelector('[data-picker-view="arts"] [data-branch]')?.cloneNode(true);
  const tooltip=document.createElement("div");tooltip.className="map-province-tooltip";tooltip.hidden=true;tooltip.setAttribute("role","status");document.body.append(tooltip);
@@ -73,11 +63,24 @@ window.novaApplicationEndpoint=path=>(location.hostname==="nova-akademi.vercel.a
  function createCityIndex(){
   if(!cityIndex)return;
   cityIndex.replaceChildren();
-  for(const city of cities){
-   const active=assignmentFor(city.id).length>0,chip=document.createElement("button");
-   chip.type="button";chip.className="city-index__item"+(active?" has-exams":"");chip.disabled=!active;chip.setAttribute("aria-label",city.name+(active?" sınav merkezini seç":" sınav ataması bulunmuyor"));
-   const pin=document.createElement("span");pin.className="city-index__pin";pin.setAttribute("aria-hidden","true");chip.append(pin,document.createTextNode(city.name));
-   if(active)chip.addEventListener("click",()=>openPicker(city));else chip.title="Bu şehirde henüz sınav tanımlanmadı";
+  const query=citySearch.trim().toLocaleLowerCase("tr-TR");
+  const activeCities=settings?.accepting?cities.filter(city=>assignmentFor(city.id).length>0):[];
+  const visibleCities=activeCities.filter(city=>city.name.toLocaleLowerCase("tr-TR").includes(query));
+  if(!visibleCities.length){
+   const empty=document.createElement("p");
+   empty.className="city-index__empty";
+   empty.textContent=query?"Aramanızla eşleşen açık sınav ili bulunamadı.":settings?.accepting?"Şu anda sınav başvurusu açık il bulunmuyor.":"Başvurular henüz açılmadı.";
+   cityIndex.append(empty);
+   return;
+  }
+  for(const city of visibleCities){
+   const chip=document.createElement("button");
+   chip.type="button";chip.className="city-index__item has-exams";chip.setAttribute("aria-label",city.name+" sınav merkezini seç");
+   const pin=document.createElement("span");pin.className="city-index__pin";pin.setAttribute("aria-hidden","true");
+   const name=document.createElement("span");name.className="city-index__name";name.textContent=city.name;
+   const arrow=document.createElement("span");arrow.className="city-index__arrow";arrow.setAttribute("aria-hidden","true");arrow.textContent="›";
+   chip.append(pin,name,arrow);
+   chip.addEventListener("click",()=>openPicker(city));
    cityIndex.append(chip);
   }
  }
