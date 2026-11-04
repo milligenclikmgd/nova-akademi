@@ -1,0 +1,46 @@
+(()=>{
+ if(window.novaNotify&&window.novaConfirm&&window.novaPrompt)return;
+ const style=document.createElement('style');
+ style.textContent=`
+ .nova-feedback-stack{position:fixed;z-index:99999;top:18px;right:18px;display:grid;gap:10px;width:min(420px,calc(100vw - 36px));pointer-events:none;font-family:Manrope,Arial,sans-serif}
+ .nova-feedback-toast{display:grid;grid-template-columns:30px minmax(0,1fr) 30px;align-items:start;gap:10px;padding:14px 13px;border:1px solid #d7e3ee;border-left:4px solid #3487c5;border-radius:12px;background:#fff;color:#163553;box-shadow:0 12px 35px #08284924;pointer-events:auto;animation:nova-toast-in .2s ease both}
+ .nova-feedback-toast[data-type=success]{border-left-color:#27875d}.nova-feedback-toast[data-type=error]{border-left-color:#cf4545}.nova-feedback-toast[data-type=warning]{border-left-color:#d69a24}
+ .nova-feedback-icon{display:grid;place-items:center;width:27px;height:27px;border-radius:50%;background:#eaf3fb;color:#176da9;font-size:14px;font-weight:800}
+ .nova-feedback-toast[data-type=success] .nova-feedback-icon{background:#eaf7ef;color:#25734e}.nova-feedback-toast[data-type=error] .nova-feedback-icon{background:#fff0f0;color:#b43535}.nova-feedback-toast[data-type=warning] .nova-feedback-icon{background:#fff7e7;color:#996b12}
+ .nova-feedback-copy{min-width:0}.nova-feedback-copy strong{display:block;margin:1px 0 3px;font-size:13px;line-height:1.35;color:#102b48}.nova-feedback-copy p{margin:0;font-size:12px;line-height:1.55;color:#536b80;overflow-wrap:anywhere}
+ .nova-feedback-close{width:28px;height:28px;border:0;border-radius:7px;background:transparent;color:#718397;font-size:20px;line-height:1;cursor:pointer}.nova-feedback-close:hover{background:#f1f5f8;color:#183b5a}
+ .nova-feedback-dialog{width:min(460px,calc(100vw - 28px));max-width:none;max-height:min(85dvh,700px);padding:0;border:1px solid #dce6ef;border-radius:16px;background:#fff;color:#18344f;box-shadow:0 24px 80px #061d3a40;overflow:auto}
+ .nova-feedback-dialog::backdrop{background:#09233f77;backdrop-filter:blur(3px)}
+ .nova-feedback-card{display:grid;gap:14px;padding:24px}
+ .nova-feedback-mark{display:grid;place-items:center;width:42px;height:42px;border-radius:13px;background:#edf5fc;color:#176eae;font-size:20px;font-weight:800}
+ .nova-feedback-dialog[data-tone=danger] .nova-feedback-mark{background:#fff0f0;color:#b4232b}
+ .nova-feedback-dialog h2{margin:0;color:#102b48;font:750 19px/1.3 Manrope,Arial,sans-serif}
+ .nova-feedback-dialog p{margin:0;color:#526a80;font:500 13px/1.65 Manrope,Arial,sans-serif;white-space:pre-line}
+ .nova-feedback-prompt{display:grid;gap:6px;color:#34516d;font:700 12px/1.4 Manrope,Arial,sans-serif}
+ .nova-feedback-prompt input{width:100%;min-height:44px;padding:10px 12px;border:1px solid #cbd9e6;border-radius:9px;background:#fff;color:#173b5b;font:500 14px Manrope,Arial,sans-serif}
+ .nova-feedback-prompt input:focus{outline:3px solid #1683d21c;border-color:#4b9bd1}.nova-feedback-prompt-error{min-height:0;color:#b4232b;font:600 11px/1.45 Manrope,Arial,sans-serif}
+ .nova-feedback-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:4px}
+ .nova-feedback-actions button{min-height:42px;padding:9px 15px;border:1px solid #d6e1eb;border-radius:9px;background:#fff;color:#34516d;font:700 12px Manrope,Arial,sans-serif;cursor:pointer}
+ .nova-feedback-actions button:hover{background:#f3f7fa}
+ .nova-feedback-actions .nova-feedback-primary{border-color:#1268aa;background:#1268aa;color:#fff}.nova-feedback-actions .nova-feedback-primary:hover{background:#0e578f}
+ .nova-feedback-dialog[data-tone=danger] .nova-feedback-actions .nova-feedback-primary{border-color:#b93838;background:#b93838}
+ .nova-feedback-dialog[data-tone=danger] .nova-feedback-actions .nova-feedback-primary:hover{background:#982c2c}
+ @keyframes nova-toast-in{from{opacity:0;transform:translateY(-7px)}to{opacity:1;transform:translateY(0)}}
+ @media(max-width:600px){.nova-feedback-stack{top:max(10px,env(safe-area-inset-top));right:12px;left:12px;width:auto}.nova-feedback-toast{grid-template-columns:28px minmax(0,1fr) 28px;padding:12px 10px}.nova-feedback-card{padding:20px}.nova-feedback-dialog h2{font-size:17px}.nova-feedback-actions button{flex:1}}
+ @media(prefers-reduced-motion:reduce){.nova-feedback-toast{animation:none}}
+ `;
+ document.head.append(style);
+ const stack=document.createElement('div');stack.className='nova-feedback-stack';stack.setAttribute('aria-live','polite');stack.setAttribute('aria-relevant','additions');document.body.append(stack);
+ const dialog=document.createElement('dialog');dialog.className='nova-feedback-dialog';dialog.innerHTML='<form class="nova-feedback-card"><div class="nova-feedback-mark" aria-hidden="true">i</div><h2 id="nova-feedback-title"></h2><p id="nova-feedback-description"></p><label class="nova-feedback-prompt" hidden><span></span><input></label><div class="nova-feedback-actions"><button class="nova-feedback-cancel" type="button">İptal</button><button class="nova-feedback-primary" type="submit">Devam</button></div></form>';document.body.append(dialog);dialog.setAttribute('aria-labelledby','nova-feedback-title');dialog.setAttribute('aria-describedby','nova-feedback-description');
+ const form=dialog.querySelector('form'),heading=dialog.querySelector('h2'),copy=dialog.querySelector('p'),mark=dialog.querySelector('.nova-feedback-mark'),promptLabel=dialog.querySelector('.nova-feedback-prompt'),promptCaption=promptLabel.querySelector('span'),promptInput=promptLabel.querySelector('input'),cancelButton=dialog.querySelector('.nova-feedback-cancel'),primaryButton=dialog.querySelector('.nova-feedback-primary');
+ let resolveDialog=null,dialogMode='confirm';
+ function finish(value){if(!resolveDialog)return;const resolve=resolveDialog;resolveDialog=null;if(dialog.open)dialog.close();resolve(value)}
+ dialog.addEventListener('cancel',event=>{event.preventDefault();finish(dialogMode==='prompt'?null:false)});dialog.addEventListener('click',event=>{if(event.target===dialog)finish(dialogMode==='prompt'?null:false)});
+ dialog.addEventListener('close',()=>{if(resolveDialog){const resolve=resolveDialog;resolveDialog=null;resolve(dialogMode==='prompt'?null:false)}});
+ form.addEventListener('submit',event=>{event.preventDefault();if(dialogMode==='prompt'){const value=promptInput.value.trim();promptError.textContent='';if(promptRequired&&!value){promptError.textContent='Bu alanı doldurun.';promptInput.focus();return}if(promptInput.type==='url'&&value){try{const parsed=new URL(value);if(!['http:','https:'].includes(parsed.protocol))throw Error()}catch{promptError.textContent='https:// ile başlayan geçerli bir bağlantı girin.';promptInput.focus();return}}finish(value)}else finish(true)});
+ cancelButton.addEventListener('click',()=>finish(dialogMode==='prompt'?null:false));
+ function ask(mode,message,options={}){if(resolveDialog)finish(dialogMode==='prompt'?null:false);dialogMode=mode;heading.textContent=options.title||({confirm:'Onay gerekiyor',prompt:'Bilgi girin'}[mode]);copy.textContent=String(message||'');promptLabel.hidden=mode!=='prompt';promptInput.type=options.inputType||'text';promptInput.value=options.value||'';promptInput.placeholder=options.placeholder||'';promptRequired=!!options.required;promptInput.required=false;promptError.textContent='';promptCaption.textContent=options.inputLabel||'Değer';cancelButton.textContent=options.cancelText||'İptal';cancelButton.hidden=false;primaryButton.textContent=options.confirmText||(mode==='prompt'?'Kaydet':'Onayla');dialog.dataset.tone=options.tone||'info';mark.textContent=options.tone==='danger'?'!':mode==='prompt'?'✎':'?';return new Promise(resolve=>{resolveDialog=resolve;dialog.showModal();requestAnimationFrame(()=>{if(mode==='prompt')promptInput.focus();else cancelButton.focus()})})}
+ window.novaNotify=(message,options={})=>{const type=options.type||'info',toast=document.createElement('section');toast.className='nova-feedback-toast';toast.dataset.type=type;toast.setAttribute('role',type==='error'?'alert':'status');const icon=document.createElement('span');icon.className='nova-feedback-icon';icon.setAttribute('aria-hidden','true');icon.textContent=type==='success'?'✓':type==='warning'?'!':type==='error'?'×':'i';const body=document.createElement('div');body.className='nova-feedback-copy';const title=document.createElement('strong');title.textContent=options.title||({success:'Tamamlandı',error:'İşlem tamamlanamadı',warning:'Kontrol edin',info:'Bilgilendirme'}[type]||'Bilgilendirme');const text=document.createElement('p');text.textContent=String(message||'');body.append(title,text);const close=document.createElement('button');close.type='button';close.className='nova-feedback-close';close.setAttribute('aria-label','Bildirimi kapat');close.textContent='×';close.addEventListener('click',()=>toast.remove());toast.append(icon,body,close);stack.append(toast);const duration=options.duration??(type==='error'?7500:4800);if(duration>0)setTimeout(()=>toast.remove(),duration);return toast};
+ window.novaConfirm=(message,options={})=>ask('confirm',message,options);
+ window.novaPrompt=(message,options={})=>ask('prompt',message,options);
+})();
