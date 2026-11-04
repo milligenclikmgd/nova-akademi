@@ -276,6 +276,12 @@ export class ApplicationStore {
     const auditAt=new Date().toISOString();for(const session of created)this.sql.exec('INSERT INTO admin_audit_logs(created_at,action,entity_type,entity_id,detail) VALUES(?,?,?,?,?)',auditAt,'exam_session_created','exam_session',session.id,JSON.stringify({city:session.city,branch:session.branch,period:session.period}));
     return reply({sessions:created},201);
    }
+   if(path==='/api/panel/exam-sessions/bulk-delete'&&method==='POST'){
+    const input=await readJson(request,32768),ids=[...new Set(Array.isArray(input?.ids)?input.ids:[])];if(!ids.length||ids.length>500||ids.some(id=>typeof id!=='string'||!/^[a-f0-9-]{36}$/.test(id)))fail('Silinecek sınav oturumlarını kontrol edin.',400);
+    const deleted=[],protectedIds=[],missing=[],stamp=new Date().toISOString();
+    this.ctx.storage.transactionSync(()=>{for(const id of ids){const row=this.sql.exec('SELECT id FROM exam_sessions WHERE id=?',id).toArray()[0];if(!row){missing.push(id);continue}if(this.sql.exec("SELECT id FROM applications WHERE json_extract(data,'$.sessionId')=? LIMIT 1",id).toArray().length){protectedIds.push(id);continue}this.sql.exec('DELETE FROM exam_sessions WHERE id=?',id);this.sql.exec('INSERT INTO admin_audit_logs(created_at,action,entity_type,entity_id,detail) VALUES(?,?,?,?,?)',stamp,'exam_session_deleted','exam_session',id,JSON.stringify({bulk:true}));deleted.push(id)}});
+    return reply({deleted,protected:protectedIds,missing});
+   }
    const sessionId=path.slice('/api/panel/exam-sessions/'.length),sessionMatch=path.startsWith('/api/panel/exam-sessions/')&&/^[a-f0-9-]{36}$/.test(sessionId)?[null,sessionId]:null;
    if(sessionMatch){
     const current=this.sql.exec('SELECT data FROM exam_sessions WHERE id=?',sessionMatch[1]).toArray()[0];if(!current)fail('Sınav oturumu bulunamadı.',404);
