@@ -23,7 +23,6 @@ window.novaApplicationEndpoint=path=>(location.hostname==="nova-akademi.vercel.a
  const cityForProvince=id=>cities.find(item=>item.provinceIds?.includes(id));
  function showProvinceTooltip(event,city){if(!city||event.pointerType==="touch")return;tooltip.textContent=city.name;tooltip.hidden=false;const gap=14,rect=tooltip.getBoundingClientRect();tooltip.style.left=Math.min(event.clientX+gap,window.innerWidth-rect.width-8)+"px";tooltip.style.top=Math.min(event.clientY+gap,window.innerHeight-rect.height-8)+"px"}
  const assignmentFor=id=>settings?.accepting&&Array.isArray(settings?.cityExams?.[id])?settings.cityExams[id]:[];
- const assignmentFor=id=>settings?.accepting&&Array.isArray(settings?.cityExams?.[id])?settings.cityExams[id]:[];
  const setView=name=>{views.forEach(view=>view.hidden=view.dataset.pickerView!==name);back.hidden=name==="groups";picker.dataset.view=name};
  const availableBranches=(group,city=selectedCity)=>(group?.branches||[]).filter(branch=>branch.active!==false&&assignmentFor(city?.id).includes(branch.id));
  function updateChoices(city){
