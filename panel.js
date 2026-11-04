@@ -27,7 +27,7 @@
   $('#page-breadcrumb').textContent=isExam?title+' / '+(labels[active]||''):title;
   document.querySelectorAll('.panel-main>section').forEach(section=>section.classList.toggle('module-home',!isExam&&section.id===sectionId));
   if(active==='slider')loadActivityVideo();if(active==='results')loadResultCities();if(active==='applications')loadApplications();
-  if(['news','contact','partners','board'].includes(active))window.loadPanelCMS?.(active);
+  if(['news','contact','partners','board','slider'].includes(active))window.loadPanelCMS?.(active);
   if(matchMedia('(max-width:700px)').matches)closeSidebar();
   notice('#panel-message')
  }

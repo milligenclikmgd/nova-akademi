@@ -8,3 +8,20 @@
  .hero{overflow:hidden!important}
  .hero-visuals .hero-slide:nth-child(1){background-image:linear-gradient(90deg,#fff 0%,rgba(255,255,255,.96) 33%,rgba(255,255,255,.72) 52%,rgba(255,255,255,.14) 100%),url('/assets/nova-folkdance-hero.jpg?v=20261104-1')!important;background-size:100% 100%,auto 76%!important;background-position:left center,right bottom!important}
 }
+
+
+/* Image-only, CMS-driven homepage slider: no text or white overlay layers. */
+body.nova-homepage .hero{position:relative!important;display:block!important;height:clamp(340px,42vw,640px)!important;min-height:0!important;padding:0!important;overflow:hidden!important;background:#f7faff!important;isolation:isolate!important}
+body.nova-homepage .hero:before,body.nova-homepage .hero:after,body.nova-homepage .hero-copy{display:none!important;content:none!important}
+body.nova-homepage .hero .hero-visuals{position:absolute!important;inset:0!important;z-index:1!important;width:100%!important;height:100%!important;max-width:none!important;margin:0!important;overflow:hidden!important}
+body.nova-homepage .hero .home-slider__slide{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;margin:0!important;opacity:0;visibility:hidden;transform:translateX(2.5%) scale(1.01);transition:opacity 850ms ease,transform 1050ms cubic-bezier(.22,.7,.2,1),visibility 850ms ease!important;background:none!important}
+body.nova-homepage .hero .home-slider__slide.is-active{opacity:1!important;visibility:visible;transform:translateX(0) scale(1)}
+body.nova-homepage .hero .home-slider__slide.is-before{transform:translateX(-2.5%) scale(1.01)}
+body.nova-homepage .hero .home-slider__slide img{display:block!important;width:100%!important;height:100%!important;max-width:none!important;object-fit:cover!important;object-position:center!important}
+.home-slider-hotspot{position:absolute;z-index:3;display:block;border:1px solid transparent;border-radius:4px;background:transparent;cursor:pointer}
+.home-slider-hotspot:hover,.home-slider-hotspot:focus-visible{border-color:rgba(255,255,255,.8);background:rgba(255,255,255,.06);outline:2px solid rgba(23,102,197,.55);outline-offset:2px}
+.home-slider-dots{position:absolute;z-index:5;right:clamp(18px,4vw,56px);bottom:clamp(16px,3vw,32px);display:flex;align-items:center;gap:8px}
+.home-slider-dots button{width:8px;height:8px;padding:0;border:0;border-radius:20px;background:rgba(255,255,255,.64);box-shadow:0 1px 6px rgba(10,35,65,.3);cursor:pointer;transition:width .25s ease,background-color .25s ease}
+.home-slider-dots button.is-active{width:26px;background:#fff}
+@media(max-width:760px){body.nova-homepage .hero{height:clamp(300px,92vw,470px)!important;min-height:0!important;padding:0!important}body.nova-homepage .hero .home-slider__slide img{object-position:center!important}.home-slider-dots{right:18px;bottom:16px}}
+@media(prefers-reduced-motion:reduce){body.nova-homepage .hero .home-slider__slide,.home-slider-dots button{transition:none!important}}
