@@ -206,6 +206,14 @@ export class ApplicationStore {
    const item=JSON.parse(row.data),status=['onaylandi','reddedildi','eksik-bilgi','iptal','tamamlandi'].includes(row.status)?row.status:'kontrol-ediliyor';
    return reply({found:true,reference:row.reference,city:item.cityName,branch:item.branchName,status,payment:row.payment,paymentExplanation:['odeme-reddedildi','yeni-dekont'].includes(row.payment)?row.rejection_explanation:'',createdAt:row.created_at,rejectionExplanation:['reddedildi','eksik-bilgi'].includes(status)?row.rejection_explanation:''});
   }
+  if(path==='/api/results/track'&&method==='GET'){
+   this.rate('results-track:'+(request.headers.get('CF-Connecting-IP')||'local'),30);
+   const reference=(url.searchParams.get('reference')||'').trim().toUpperCase();if(!/^NOVA-\d{4}-0[1-9]\d*$/.test(reference))return reply({found:false});
+   const row=this.sql.exec('SELECT a.reference,a.city,a.data,r.result FROM applications a LEFT JOIN exam_results r ON r.application_id=a.id WHERE a.reference=? LIMIT 1',reference).toArray()[0];if(!row)return reply({found:false});
+   const data=JSON.parse(row.data),settings=this.getSettings(),sessionId=String(data.sessionId||''),session=sessionId?settings.examSessions.find(item=>item.id===sessionId&&item.city===row.city):null,branch=String(data.branch||''),published=session?Boolean(session.resultsPublished):Boolean(branch&&(settings.cityExams?.[row.city]||[]).includes(branch));
+   const result=['asil','yedek1','yedek2','yedek3','kazanamadi','katilmadi','bekliyor'].includes(row.result)?row.result:'bekliyor';
+   return reply({found:true,published,city:data.cityName||settings.cities.find(item=>item.id===row.city)?.name||row.city,exam:data.title||data.branchName||'',period:data.period||'',result:published?result:null});
+  }
   if(path==='/api/results/sessions'&&method==='GET'){const sessions=this.getSettings().examSessions.filter(item=>item.resultsPublished).filter(item=>this.sql.exec('SELECT a.id FROM applications a JOIN exam_results r ON r.application_id=a.id WHERE json_extract(a.data,\'$.sessionId\')=? LIMIT 1',item.id).toArray().length).map(({id,city,cityName,group,groupName,branch,branchName,title,period,examAt})=>({id,city,cityName,group,groupName,branch,branchName,title,period,examAt}));return reply({sessions})}
   if(path==='/api/results'&&method==='GET'){
    const cityId=(url.searchParams.get('city')||'').toLowerCase(),branchId=(url.searchParams.get('branch')||'').slice(0,80),sessionId=(url.searchParams.get('session')||'').slice(0,80),settings=this.getSettings(),session=sessionId?settings.examSessions.find(item=>item.id===sessionId&&item.city===cityId):null,city=settings.cities.find(item=>item.id===cityId),branch=session?{...session,name:session.title}:settings.groups.flatMap(group=>group.branches).find(item=>item.id===branchId);
