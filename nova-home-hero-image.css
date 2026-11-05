@@ -144,3 +144,20 @@ body.nova-homepage .hero .home-slider__slide img{display:block!important;width:1
  body.nova-homepage .nova-news .nova-news-date-badge>span{font-size:19.2px!important}
  body.nova-homepage .nova-news .nova-news-date-badge>small{font-size:7.2px!important}
 }
+
+/* Center mobile news filters and give the first story clear separation. */
+@media(max-width:760px){
+ body.nova-homepage .nova-news .nova-news-head>.nova-news-tabs{
+  position:static!important;
+  justify-self:center!important;
+  justify-content:center!important;
+  width:100%!important;
+  margin:0 0 20px!important;
+  transform:none!important;
+ }
+ body.nova-homepage .nova-news #nova-home-news,
+ body.nova-homepage .nova-news .nova-news-grid{
+  margin-top:52px!important;
+  clear:both!important;
+ }
+}
