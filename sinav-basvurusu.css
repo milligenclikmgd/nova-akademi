@@ -492,3 +492,5 @@ body.application-page{margin:0;background:#fff;color:var(--app-navy);font-family
  .application-page .turkey-map{aspect-ratio:1.4/1}
  .application-page .turkey-map__canvas{aspect-ratio:1005/570}
 }
+
+.application-page .city-legend i{background:#2c78b7;box-shadow:0 0 0 4px rgba(44,120,183,.12)}.application-page .city-legend i.city-legend__exam{background:#1766ae;box-shadow:0 0 0 4px rgba(23,102,174,.13)}
