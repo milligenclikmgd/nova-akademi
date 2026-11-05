@@ -338,7 +338,7 @@ export class ApplicationStore {
    if(path==='/api/panel/logout'&&method==='POST'){await boundedBody(request,1024);this.sql.exec('DELETE FROM sessions WHERE token=?',await this.sessionKey(cookieToken(request)));return reply({ok:true},200,{'Set-Cookie':COOKIE+'=; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=0'})}
    if(path==='/api/panel/settings'&&method==='GET'){const current=this.getSettings();return reply({settings:current.taxonomyResetVersion===1?current:this.resetTaxonomyForNewBuilder()})}
    if(path==='/api/panel/settings'&&method==='PUT'){
-    const input=await readJson(request);let settings;
+    const input=await readJson(request,262144);let settings;
     this.ctx.storage.transactionSync(()=>{settings=validateSettings(input,this.getSettings());this.sql.exec('INSERT INTO settings(id,data) VALUES(1,?) ON CONFLICT(id) DO UPDATE SET data=excluded.data',JSON.stringify(settings))});
     return reply({settings});
    }
