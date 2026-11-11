@@ -46,8 +46,7 @@
     ]},
     {label:'KABUL SÜRECİ',href:'index.html#sistem',children:[
       {label:'Değerlendirme',href:'nova-yetenek-taramasi.html'},
-      {label:'Kabul Süreci',href:'ogrenci-kabul-sureci.html'},
-      {label:'Kariyer Hazırlığı',href:'kariyer-hazirligi.html'}
+      {label:'Kabul Süreci',href:'ogrenci-kabul-sureci.html'}
     ]},
     {label:'GELİŞİM MERKEZİ',href:'index.html#yolculuk',children:[
       {label:'Kampüs',href:'kampus.html'}
