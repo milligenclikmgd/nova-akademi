@@ -1,0 +1,4 @@
+RewriteEngine On
+
+# cPanel ana alan adında /panel adresini yönetim paneline yönlendir
+RewriteRule ^panel/?$ https://nova-akademi.milligenclikmgd.workers.dev/panel [R=302,L]
