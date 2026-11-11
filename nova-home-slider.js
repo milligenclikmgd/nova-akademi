@@ -3,7 +3,10 @@
  if(!root||!dotsRoot)return;
  const apiBase='https://nova-akademi.milligenclikmgd.workers.dev';
  const assetUrl=value=>value?.startsWith('/api/')?apiBase+value:value;
- const fallback=[{id:'fallback-nova-home',image:'/assets/nova-folkdance-hero.jpg?v=20261104-1',alt:'NOVA öğrencileri sahnede',hotspot:{enabled:false}}];
+ const fallback=[
+  {id:'default-folk',image:apiBase+'/api/site-media/cms/754f46fc-a45e-4bba-b778-cd9e53237dc7',mobileImage:apiBase+'/api/site-media/cms/76c0f4e1-f44f-4af2-a46b-f712c35b5c3f',alt:'NOVA sahne sanatları öğrencileri',hotspot:{enabled:true,x:12,y:72,width:13,height:11}},
+  {id:'cms-a2d59d6a-50be-44e9-b153-e94a1d6a875e',image:apiBase+'/api/site-media/cms/5d5323aa-923e-4cb7-ba66-33a5900db4c9',mobileImage:apiBase+'/api/site-media/cms/156adc2c-0e9e-458a-8ec0-eee259631374',alt:'HER ŞEY GENÇLERİMİZ İÇİN',hotspot:{enabled:true,x:24,y:79.5,width:18.5,height:6.5}}
+ ];
  let slides=fallback,index=0,timer=0,startX=0;
  const reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
  const safeLink=value=>{try{const url=new URL(value,location.href);return ['http:','https:'].includes(url.protocol)?url.href:''}catch{return ''}};
@@ -28,5 +31,5 @@
  root.addEventListener('pointerdown',event=>{startX=event.clientX},{passive:true});root.addEventListener('pointerup',event=>{const delta=event.clientX-startX;if(Math.abs(delta)>55&&slides.length>1){go(index+(delta<0?1:-1));restart()}},{passive:true});
  document.addEventListener('visibilitychange',()=>document.hidden?stop():restart());reduced.addEventListener?.('change',restart);
  render();
- fetch(apiBase+'/api/site-content',{cache:'no-store'}).then(response=>response.ok?response.json():Promise.reject()).then(data=>{const current=(data.slides||[]).filter(item=>item.published&&item.mediaType==='image'&&item.image);slides=current.length?current:fallback;index=0;render();restart()}).catch(restart);
+ fetch(apiBase+'/api/site-content',{cache:'no-store'}).then(response=>response.ok?response.json():Promise.reject()).then(data=>{const current=(data.slides||[]).filter(item=>item.published&&item.mediaType==='image'&&item.image);if(current.length>=2){slides=current.map(item=>({...item,image:assetUrl(item.image),mobileImage:assetUrl(item.mobileImage)}));index=0;render();restart()}}).catch(()=>restart());
 })();
