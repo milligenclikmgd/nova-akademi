@@ -1,6 +1,8 @@
 (()=>{
  const root=document.querySelector('[data-home-slides]'),dotsRoot=document.querySelector('[data-home-slider-dots]');
  if(!root||!dotsRoot)return;
+ const apiBase='https://nova-akademi.milligenclikmgd.workers.dev';
+ const assetUrl=value=>value?.startsWith('/api/')?apiBase+value:value;
  const fallback=[{id:'fallback-nova-home',image:'/assets/nova-folkdance-hero.jpg?v=20261104-1',alt:'NOVA öğrencileri sahnede',hotspot:{enabled:false}}];
  let slides=fallback,index=0,timer=0,startX=0;
  const reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -10,8 +12,8 @@
   slides.forEach((slide,i)=>{
    const item=document.createElement('div');item.className='home-slider__slide'+(i===index?' is-active':'')+(i<index?' is-before':'');item.setAttribute('role','group');item.setAttribute('aria-label',(i+1)+' / '+slides.length);
    const picture=document.createElement('picture');picture.className='home-slider-picture';
-   if(slide.mobileImage){const source=document.createElement('source');source.media='(max-width:760px)';source.srcset=slide.mobileImage;picture.append(source)}
-   const img=document.createElement('img');img.src=slide.image;img.alt=slide.alt||'';img.loading=i===0?'eager':'lazy';if(i===0)img.fetchPriority='high';picture.append(img);item.append(picture);
+   if(slide.mobileImage){const source=document.createElement('source');source.media='(max-width:760px)';source.srcset=assetUrl(slide.mobileImage);picture.append(source)}
+   const img=document.createElement('img');img.src=assetUrl(slide.image);img.alt=slide.alt||'';img.loading=i===0?'eager':'lazy';if(i===0)img.fetchPriority='high';picture.append(img);item.append(picture);
    const hotspot=slide.hotspot||{},link=hotspot.enabled&&safeLink(slide.link);
    if(link){const anchor=document.createElement('a');anchor.className='home-slider-hotspot';anchor.href=link;anchor.setAttribute('aria-label',slide.alt||'Slider bağlantısını aç');anchor.style.left=hotspot.x+'%';anchor.style.top=hotspot.y+'%';anchor.style.width=hotspot.width+'%';anchor.style.height=hotspot.height+'%';anchor.addEventListener('click',event=>event.stopPropagation());item.append(anchor)}
    root.append(item);
@@ -26,5 +28,5 @@
  root.addEventListener('pointerdown',event=>{startX=event.clientX},{passive:true});root.addEventListener('pointerup',event=>{const delta=event.clientX-startX;if(Math.abs(delta)>55&&slides.length>1){go(index+(delta<0?1:-1));restart()}},{passive:true});
  document.addEventListener('visibilitychange',()=>document.hidden?stop():restart());reduced.addEventListener?.('change',restart);
  render();
- fetch('/api/site-content',{cache:'no-store'}).then(response=>response.ok?response.json():Promise.reject()).then(data=>{const current=(data.slides||[]).filter(item=>item.published&&item.mediaType==='image'&&item.image);slides=current.length?current:fallback;index=0;render();restart()}).catch(restart);
+ fetch(apiBase+'/api/site-content',{cache:'no-store'}).then(response=>response.ok?response.json():Promise.reject()).then(data=>{const current=(data.slides||[]).filter(item=>item.published&&item.mediaType==='image'&&item.image);slides=current.length?current:fallback;index=0;render();restart()}).catch(restart);
 })();
