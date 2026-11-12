@@ -358,6 +358,19 @@ export class ApplicationStore {
     this.ctx.storage.transactionSync(()=>{this.sql.exec("INSERT INTO definitive_registrations(application_id,updated_at,data,health_name,health_type,health_size,status) VALUES(?,?,?,?,?,?,?)",finalRegistrationMatch[1],stamp,JSON.stringify(snapshot),'','',0,'registration_required');this.sql.exec('INSERT INTO application_status_history(application_id,created_at,actor,kind,from_value,to_value,note) VALUES(?,?,?,?,?,?,?)',finalRegistrationMatch[1],stamp,'Yönetici','registration','','registration_required','Kesin kayıt süreci başlatıldı.');this.sql.exec('INSERT INTO admin_audit_logs(created_at,action,entity_type,entity_id,detail) VALUES(?,?,?,?,?)',stamp,'final_registration_started','application',finalRegistrationMatch[1],row.reference)});
     return reply({ok:true,status:'registration_required'});
    }
+   if(path==='/api/panel/applications/reset'&&method==='POST'){
+    const input=await readJson(request,1024);if(input?.confirm!=='IPTAL')fail('Başvuru sıfırlama onayı eksik.',400);
+    const existing=this.sql.exec('SELECT id,reference,status FROM applications WHERE status<>\'iptal\' ORDER BY created_at,id').toArray(),stamp=new Date().toISOString();
+    this.ctx.storage.transactionSync(()=>{
+     for(const row of existing){
+      this.sql.exec('INSERT INTO application_status_history(application_id,created_at,actor,kind,from_value,to_value,note) VALUES(?,?,?,?,?,?,?)',row.id,stamp,'Yönetici','application',row.status,'iptal','Yeni başvuru dönemine geçiş için eski başvuru iptal edildi.');
+      this.sql.exec('DELETE FROM exam_results WHERE application_id=?',row.id);
+      this.sql.exec('UPDATE applications SET status=\'iptal\',rejection_explanation=\'Eski başvuru dönemi kapatıldı.\' WHERE id=?',row.id);
+     }
+     this.sql.exec('INSERT INTO admin_audit_logs(created_at,action,entity_type,entity_id,detail) VALUES(?,?,?,?,?)',stamp,'applications_reset','application','all',JSON.stringify({cancelled:existing.length}));
+    });
+    return reply({ok:true,cancelled:existing.length,message:existing.length+' eski başvuru iptal edildi. Ödeme ve dekont kayıtları denetim için korundu.'});
+   }
    if(path==='/api/panel/applications/summary'&&method==='GET'){
     const total=this.sql.exec('SELECT count(*) AS n FROM applications').one().n;
     const counts=this.sql.exec("SELECT status,payment,count(*) AS n FROM applications GROUP BY status,payment").toArray();
@@ -438,7 +451,6 @@ export class ApplicationStore {
     }
     if(!match[2]&&method==='PATCH'){
      const input=await readJson(request);
-     if(!['yeni','inceleniyor','onaylandi','reddedildi'].includes(input.status)||!['odenmedi','beyan-edildi','dogrulandi'].includes(input.payment))fail('Geçersiz durum.');
      const registrationReceipt=this.sql.exec('SELECT application_id FROM registration_payment_receipts WHERE application_id=?',row.id).toArray().length>0;
      if(['beyan-edildi','odeme-reddedildi','yeni-dekont'].includes(input.payment)&&!row.receipt&&!registrationReceipt)fail('Dekont işlemi için dosya bulunmalı.');
      if(['odeme-reddedildi','yeni-dekont'].includes(input.payment)&&input.rejectionExplanation===undefined)fail('Ödeme durumu için adaya açıklama yazın.');
