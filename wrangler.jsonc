@@ -2,6 +2,9 @@
   "name": "nova-akademi",
   "main": "worker.js",
   "compatibility_date": "2026-10-14",
+  "vars": {
+    "NOVA_SITE_ORIGIN": "https://novasanat.com.tr"
+  },
   "assets": {
     "directory": "./",
     "binding": "ASSETS",
@@ -12,4 +15,3 @@
   },
   "migrations": [{"tag": "nova-applications-v1", "new_sqlite_classes": ["ApplicationStore"]}]
 }
-
