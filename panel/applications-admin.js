@@ -17,13 +17,13 @@
   const body=$('#applications-rows');body.replaceChildren();
   if(!rows.length){const row=document.createElement('tr'),cell=document.createElement('td');cell.colSpan=5;cell.className='application-empty';cell.textContent=total?'Bu sayfada başvuru yok.':'Henüz başvuru kaydı bulunmuyor.';row.append(cell);body.append(row)}
   for(const item of rows){
-   const row=document.createElement('tr');row.className='application-row';
+   const row=document.createElement('tr');row.className='application-row is-clickable';row.tabIndex=0;row.setAttribute('aria-label','Başvuru ayrıntılarını aç: '+tr(item.name));
    const nameCell=document.createElement('td'),open=document.createElement('button');open.type='button';open.className='application-name';open.textContent=tr(item.name);const ref=document.createElement('small');ref.textContent=tr(item.reference);open.append(ref);open.addEventListener('click',()=>openDetails(item));nameCell.append(open);
    const period=document.createElement('td');period.textContent=tr(item.sessionPeriod||item.session?.period);
    const city=document.createElement('td');city.textContent=tr(item.cityName);
    const exam=document.createElement('td');exam.textContent=tr(item.branchName||item.groupName);
    const pay=document.createElement('td');pay.append(badge(item.payment,'payment'));if(item.payment==='dogrulandi'){const check=document.createElement('span');check.className='payment-check';check.setAttribute('aria-label','Ödeme doğrulandı');check.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg>';pay.append(check)}
-   row.append(nameCell,period,city,exam,pay);row.addEventListener('dblclick',()=>openDetails(item));body.append(row)
+   row.append(nameCell,period,city,exam,pay);row.addEventListener('click',event=>{if(!event.target.closest('button,a'))openDetails(item)});row.addEventListener('keydown',event=>{if((event.key==='Enter'||event.key===' ')&&event.target===row){event.preventDefault();openDetails(item)}});body.append(row)
   }
   $('#applications-total').textContent=String(total);
   $('#applications-page').textContent=total?Math.min((page-1)*30+1,total)+'–'+Math.min(page*30,total)+' / '+total:'0 başvuru';
