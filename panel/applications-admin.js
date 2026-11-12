@@ -2,6 +2,7 @@
  const root=document.querySelector('#applications-panel');if(!root)return;
  const $=selector=>root.querySelector(selector),dialog=document.querySelector('#application-detail-dialog');
  let page=1,total=0,rows=[],objectUrls=[],busy=false,searchTimer=0;
+ let requestedDetail=new URLSearchParams(location.search).get('detail')||'';
  const tr=value=>String(value??'').trim()||'—';
  const money=value=>value===null||value===undefined||value===''?'—':Number(value)===0?'Ücretsiz':new Intl.NumberFormat('tr-TR',{style:'currency',currency:'TRY'}).format(Number(value));
  const api=async path=>{const response=await window.novaWorkerApi(path,{method:'GET'});let data;try{data=await response.json()}catch{throw Error(response.redirected?'Panel oturumunuz doğrulanamadı. Panelden yeniden giriş yapın.':'Sunucudan geçerli JSON yanıtı alınamadı (HTTP '+response.status+').')}if(!response.ok)throw Error(data.error||'İstek tamamlanamadı (HTTP '+response.status+').');return data};
@@ -23,7 +24,7 @@
    const city=document.createElement('td');city.textContent=tr(item.cityName);
    const exam=document.createElement('td');exam.textContent=tr(item.branchName||item.groupName);
    const pay=document.createElement('td');pay.append(badge(item.payment,'payment'));if(item.payment==='dogrulandi'){const check=document.createElement('span');check.className='payment-check';check.setAttribute('aria-label','Ödeme doğrulandı');check.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg>';pay.append(check)}
-   const actionCell=document.createElement('td'),detailButton=document.createElement('button');detailButton.type='button';detailButton.className='application-detail-action';detailButton.textContent='Detayları Gör';detailButton.dataset.applicationDetails=String(item.id);actionCell.append(detailButton);row.append(nameCell,period,city,exam,pay,actionCell);row.addEventListener('click',event=>{if(!event.target.closest('button,a'))openDetails(item)});row.addEventListener('keydown',event=>{if((event.key==='Enter'||event.key===' ')&&event.target===row){event.preventDefault();openDetails(item)}});body.append(row)
+   const actionCell=document.createElement('td'),detailButton=document.createElement('a');detailButton.className='application-detail-action';detailButton.textContent='Detayları Gör';detailButton.href='/panel/dashboard.php?section=basvurular&detail='+encodeURIComponent(item.id);detailButton.dataset.applicationDetails=String(item.id);actionCell.append(detailButton);row.append(nameCell,period,city,exam,pay,actionCell);row.addEventListener('click',event=>{if(!event.target.closest('button,a'))openDetails(item)});row.addEventListener('keydown',event=>{if((event.key==='Enter'||event.key===' ')&&event.target===row){event.preventDefault();openDetails(item)}});body.append(row)
   }
   $('#applications-total').textContent=String(total);
   $('#applications-page').textContent=total?Math.min((page-1)*30+1,total)+'–'+Math.min(page*30,total)+' / '+total:'0 başvuru';
@@ -36,6 +37,7 @@
    const params=new URLSearchParams({page:String(page)}),query=$('#applications-search').value.trim(),city=$('#applications-city').value,payment=$('#applications-payment').value,status=$('#applications-status').value,period=$('#applications-period').value.trim();
    if(query)params.set('q',query);if(city)params.set('city',city);if(payment)params.set('payment',payment);if(status)params.set('status',status);if(period)params.set('period',period);
    const data=await api('/api/panel/applications?'+params.toString());rows=data.applications||[];total=Number(data.total)||0;populateCities();render();message('');
+   if(requestedDetail){const id=requestedDetail;requestedDetail='';history.replaceState(null,'','/panel/dashboard.php?section=basvurular');const target=rows.find(item=>String(item.id)===id)||{id,name:'Başvuru ayrıntısı',reference:''};openDetails(target)}
   }catch(error){rows=[];total=0;render();message(error.message,true)}
   finally{busy=false;render()}
  }
@@ -69,6 +71,7 @@
   revokeUrls();$('#application-detail-content').replaceChildren();$('#application-payment-status').replaceChildren();$('#application-detail-name').textContent=tr(row.name);$('#application-detail-reference').textContent='Başvuru No · '+tr(row.reference);$('#application-detail-loading').hidden=false;$('#application-detail-error').hidden=true;try{if(!dialog)throw Error('Başvuru ayrıntı penceresi sayfada bulunamadı.');if(!dialog.open)dialog.showModal();}catch(error){message(error.message,true);return}
   try{
    const data=await api('/api/panel/applications/'+encodeURIComponent(row.id));if(!data.application)throw Error('Başvuru kaydı bulundu ancak ayrıntı yanıtı boş geldi. Sayfayı yenileyip tekrar deneyin.');const app=data.application;
+   const candidateName=[app.candidate?.firstName,app.candidate?.lastName].filter(Boolean).join(' ')||app.name||row.name;$('#application-detail-name').textContent=tr(candidateName);$('#application-detail-reference').textContent='Başvuru No · '+tr(app.reference||row.reference);
    $('#application-detail-loading').hidden=true;
    const statusLine=$('#application-payment-status');statusLine.replaceChildren();const verified=app.payment==='dogrulandi';const icon=document.createElement('span');icon.className='payment-status-icon'+(verified?' is-paid':'');icon.innerHTML=verified?'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg>':'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>';const text=document.createElement('div'),title=document.createElement('strong'),note=document.createElement('small');title.textContent=paymentLabel(app.payment);note.textContent=paymentChannel(app);text.append(title,note);statusLine.append(icon,text);
    const exam=app.session||{};section('Sınav bilgileri',[['Dönem',exam.period||app.sessionPeriod],['İl',app.cityName],['Üst kategori',app.groupName],['Başvurduğu sınav',app.branchName],['Sınav tarihi',exam.examAt],['Sınav yeri',exam.address],['Kontenjan',exam.capacity],['Başvuru ücreti',money(app.fee)],['Kesin kayıt ücreti',money(exam.registrationFee)]]);
