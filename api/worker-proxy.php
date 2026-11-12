@@ -72,7 +72,7 @@ $appDetail=preg_match('~^/api/panel/applications/[a-f0-9-]{36}(?:/(?:receipt|reg
 $allowed=($method==='GET'&&in_array($path,['/api/panel/session','/api/panel/settings','/api/panel/exam-sessions','/api/panel/applications/summary','/api/panel/applications'],true))
  ||($method==='GET'&&$appDetail)
  ||($method==='PUT'&&$path==='/api/panel/settings')
- ||($method==='POST'&&in_array($path,['/api/panel/exam-sessions','/api/panel/exam-sessions/bulk-delete'],true))
+ ||($method==='POST'&&in_array($path,['/api/panel/exam-sessions','/api/panel/exam-sessions/bulk-delete','/api/panel/applications/reset'],true))
  ||(in_array($method,['PATCH','DELETE'],true)&&preg_match('~^/api/panel/exam-sessions/[a-f0-9-]{36}$~',$path)===1)
  ||($method==='PATCH'&&preg_match('~^/api/panel/applications/[a-f0-9-]{36}$~',$path)===1);
 if(!$allowed)proxy_reply(['error'=>'Bu panel isteğine izin verilmiyor.'],404);
