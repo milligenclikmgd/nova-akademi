@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 session_name('nova_panel');
-session_set_cookie_params(['httponly'=>true,'secure'=>!empty($_SERVER['HTTPS']),'samesite'=>'Lax']);
+session_set_cookie_params(['lifetime'=>0,'path'=>'/','httponly'=>true,'secure'=>(!empty($_SERVER['HTTPS'])&&$_SERVER['HTTPS']!=='off')||($_SERVER['HTTP_X_FORWARDED_PROTO']??'')==='https','samesite'=>'Lax']);
 session_start();
 $config=require dirname(__DIR__).'/config.php';
 $db=$config['db'];
