@@ -494,3 +494,29 @@ body.application-page{margin:0;background:#fff;color:var(--app-navy);font-family
 }
 
 .application-page .city-legend i{background:#2c78b7;box-shadow:0 0 0 4px rgba(44,120,183,.12)}.application-page .city-legend i.city-legend__exam{background:#1766ae;box-shadow:0 0 0 4px rgba(23,102,174,.13)}
+
+/* Başvuru özeti: başlık, alan adı ve değer kolay taranacak kartlarda. */
+.application-review{display:grid;gap:12px;margin:14px 0 20px}
+.review-section{overflow:hidden;border:1px solid #dce7f2;border-radius:12px;background:#fff;box-shadow:0 5px 18px rgba(20,66,110,.045)}
+.review-section>header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 15px;background:#f3f8fd;border-bottom:1px solid #e4edf6}
+.review-section h3{margin:0;color:#113d6b;font-size:14px;font-weight:800}
+.review-section>header .form-secondary{flex:none;padding:6px 10px;font-size:11px}
+.review-section dl{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0;margin:0;padding:3px 15px}
+.review-section dl>div{display:grid;grid-template-columns:minmax(105px,.75fr) minmax(0,1.25fr);gap:10px;padding:10px 0;border-bottom:1px solid #edf2f7}
+.review-section dl>div:nth-last-child(-n+2){border-bottom:0}
+.review-section dt{color:#70839b;font-size:11px;font-weight:700}
+.review-section dd{margin:0;color:#1b3554;font-size:12px;font-weight:650;line-height:1.55;overflow-wrap:anywhere;white-space:pre-wrap}
+.payment-choice-group{margin:0;padding:0;border:0}
+.payment-choice-group>legend{margin-bottom:10px;color:#203e63;font-size:13px;font-weight:800}
+#card-payment-note{margin:8px 0 0;padding:10px 12px;border:1px solid #f0d8a8;border-radius:8px;background:#fff9eb;color:#825d1c}
+.eft-payment-note{margin:10px 0;padding:11px 13px;border:1px solid #d9e8f4;border-radius:9px;background:#f3f8fd;color:#24476c;font-size:12px}
+.eft-payment-note p{margin:5px 0 0;color:#647b95}
+.card-payment-continue{display:inline-flex;align-items:center;justify-content:center;gap:8px;margin-top:12px;text-decoration:none}
+@media(max-width:620px){.review-section dl{grid-template-columns:1fr}.review-section dl>div:nth-last-child(-n+2){border-bottom:1px solid #edf2f7}.review-section dl>div:last-child{border-bottom:0}}
+/* Harita tonları: normal iller açık mavi, sınav illeri koyu mavi. */
+.turkey-province-svg .turkey>g.is-exam-city:hover path,.turkey-province-svg .turkey>g.is-exam-city:focus path{fill:#073a7e!important}
+.turkey-province-svg .turkey>g.is-exam-city:focus path{stroke:#052e65!important;stroke-width:1.1!important}
+.city-index__item{color:#1c5488;background:#eaf4fc;border-color:#d0e4f4}
+.city-index__item:hover,.city-index__item:focus-visible{background:#dcedfa;border-color:#9bc6e6;color:#0b447d}
+.city-index__item:not(:disabled).has-exams{color:#0a3e7e;background:#dbeaf9;border-color:#a9c9e9}
+.city-index__item.has-exams .city-index__pin{background:#0b4c9c;box-shadow:0 0 0 3px rgba(11,76,156,.14)}
