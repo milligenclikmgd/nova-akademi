@@ -20,16 +20,20 @@ function save_worker_cookie(string $cookie,int $lifetime):void{
 function load_worker_cookie():string{
  global $pdo;ensure_worker_auth_table();$id=(int)$_SESSION['admin'];$stmt=$pdo->prepare('SELECT token_cipher,token_iv,token_tag,expires_at FROM nova_worker_auth WHERE admin_id=?');$stmt->execute([$id]);$row=$stmt->fetch();
  if(!$row)return '';
- if(strtotime($row['expires_at'].' UTC')<=time()){$delete=$pdo->prepare('DELETE FROM nova_worker_auth WHERE admin_id=?');$delete->execute([$id]);return '';}
+ if(strtotime($row['expires_at'].' UTC')<=time()){$delete=$pdo->prepare('DELETE FROM nova_worker_auth WHERE admin_id=?');$delete->execute([$id]);unset($_SESSION['worker_panel_cookie']);return '';}
  if(!function_exists('openssl_decrypt'))return '';
  $plain=openssl_decrypt($row['token_cipher'],'aes-256-gcm',worker_auth_key(),OPENSSL_RAW_DATA,$row['token_iv'],$row['token_tag']);if(!is_string($plain)||!preg_match('/^__Host-nova-panel=[A-Za-z0-9-]{32,100}$/',$plain))return '';
  return $plain;
 }
 function clear_worker_cookie():void{global $pdo;unset($_SESSION['worker_panel_cookie']);try{ensure_worker_auth_table();$stmt=$pdo->prepare('DELETE FROM nova_worker_auth WHERE admin_id=?');$stmt->execute([(int)($_SESSION['admin']??0)]);}catch(Throwable $error){}}
 function current_worker_cookie():string{
- $cookie=(string)($_SESSION['worker_panel_cookie']??'');if($cookie!=='')return $cookie;
- try{$cookie=load_worker_cookie();if($cookie!=='')$_SESSION['worker_panel_cookie']=$cookie;}catch(Throwable $error){return '';}
- return $cookie;
+ $legacy=(string)($_SESSION['worker_panel_cookie']??'');
+ try{
+  $cookie=load_worker_cookie();
+  if($cookie!==''){$_SESSION['worker_panel_cookie']=$cookie;return $cookie;}
+  if($legacy!==''&&isset($_SESSION['worker_panel_cookie'])){save_worker_cookie($legacy,8*60*60);return $legacy;}
+ }catch(Throwable $error){if($legacy!=='')return $legacy;}
+ return '';
 }
 function worker_request(string $path,string $method,string $body=''):array{
  if(!function_exists('curl_init'))return [['error'=>'Sunucuda cURL etkin değil. Hosting desteğinden PHP cURL modülünü açtırın.'],503,''];
