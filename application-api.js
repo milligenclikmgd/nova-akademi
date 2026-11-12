@@ -287,8 +287,8 @@ export class ApplicationStore {
    this.rate('login:'+(request.headers.get('CF-Connecting-IP')||'local'),5);
    const input=await readJson(request);
    if(typeof input?.password!=='string'||input.password.length>256||!await sameSecret(input.password,this.env.NOVA_PANEL_PASSWORD))fail('Parola hatalı.',401);
-   const token=crypto.randomUUID()+crypto.randomUUID();this.sql.exec('INSERT INTO sessions(token,expires) VALUES(?,?)',await this.sessionKey(token),now+8*60*60*1000);
-   return reply({ok:true},200,{'Set-Cookie':COOKIE+'='+token+'; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=28800'});
+   const token=crypto.randomUUID()+crypto.randomUUID(),lifetime=30*24*60*60*1000;this.sql.exec('INSERT INTO sessions(token,expires) VALUES(?,?)',await this.sessionKey(token),now+lifetime);
+   return reply({ok:true},200,{'Set-Cookie':COOKIE+'='+token+'; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=2592000'});
   }
   if(path.startsWith('/api/panel/')){
    if(!await this.authorized(request))fail('Panel oturumunuz sona erdi. Lütfen giriş yapın.',401);
