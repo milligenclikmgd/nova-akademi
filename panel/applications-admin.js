@@ -48,7 +48,7 @@
  }
  function paymentChannel(app){
   const sources=[app.paymentMethod,app.paymentProvider,app.transaction?.provider,app.transaction?.method,app.paymentDetails?.provider,app.paymentDetails?.method,app.registration?.payment?.provider,app.registration?.payment?.method].filter(value=>typeof value==='string'&&value.trim());
-  if(sources.length){const value=sources[0];return /ziraat|pos|sanal/i.test(value)?'Sanal POS · '+value:value}
+  if(sources.length){const value=sources[0];if(/eft|havale|transfer/i.test(value))return 'EFT / havale';if(/card|kart|ziraat|pos|sanal/i.test(value))return 'Banka / kredi kartı · '+value;return value}
   if(app.receipt)return 'Dekont yüklenmiş · banka transfer bildirimi';
   if(app.paid)return 'Başvuru sahibi ödeme yaptığını beyan etmiş';
   return 'Ödeme kanalı kaydı bulunmuyor';
