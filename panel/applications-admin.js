@@ -4,7 +4,7 @@
  let page=1,total=0,rows=[],objectUrls=[],busy=false,searchTimer=0;
  const tr=value=>String(value??'').trim()||'—';
  const money=value=>value===null||value===undefined||value===''?'—':Number(value)===0?'Ücretsiz':new Intl.NumberFormat('tr-TR',{style:'currency',currency:'TRY'}).format(Number(value));
- const api=async path=>{const response=await window.novaWorkerApi(path,{method:'GET'});let data={};try{data=await response.json()}catch{}if(!response.ok)throw Error(data.error||'Başvurular yüklenemedi.');return data};
+ const api=async path=>{const response=await window.novaWorkerApi(path,{method:'GET'});let data;try{data=await response.json()}catch{throw Error(response.redirected?'Panel oturumunuz doğrulanamadı. Panelden yeniden giriş yapın.':'Sunucudan geçerli JSON yanıtı alınamadı (HTTP '+response.status+').')}if(!response.ok)throw Error(data.error||'İstek tamamlanamadı (HTTP '+response.status+').');return data};
  function paymentLabel(value){return ({'dogrulandi':'Ödeme onaylandı','beyan-edildi':'Dekont inceleniyor','odenmedi':'Ödeme bekliyor','odeme-reddedildi':'Dekont reddedildi','yeni-dekont':'Yeni dekont bekleniyor'})[value]||'Durum bilinmiyor'}
  function badge(value,kind='status'){const span=document.createElement('span');span.className='application-badge '+kind+' '+String(value||'').replace(/[^a-z0-9-]/gi,'');span.textContent=kind==='payment'?paymentLabel(value):({yeni:'Yeni',inceleniyor:'İnceleniyor',onaylandi:'Onaylandı',reddedildi:'Reddedildi','eksik-bilgi':'Eksik bilgi',iptal:'İptal',tamamlandi:'Tamamlandı'})[value]||'—';return span}
  function message(value,error=false){const el=$('#applications-message');if(!el)return;el.textContent=value;el.hidden=!value;el.dataset.tone=error?'error':'info'}
@@ -15,7 +15,7 @@
  }
  function render(){
   const body=$('#applications-rows');body.replaceChildren();
-  if(!rows.length){const row=document.createElement('tr'),cell=document.createElement('td');cell.colSpan=5;cell.className='application-empty';cell.textContent=total?'Bu sayfada başvuru yok.':'Henüz başvuru kaydı bulunmuyor.';row.append(cell);body.append(row)}
+  if(!rows.length){const row=document.createElement('tr'),cell=document.createElement('td');cell.colSpan=6;cell.className='application-empty';cell.textContent=total?'Bu sayfada başvuru yok.':'Henüz başvuru kaydı bulunmuyor.';row.append(cell);body.append(row)}
   for(const item of rows){
    const row=document.createElement('tr');row.className='application-row is-clickable';row.tabIndex=0;row.setAttribute('aria-label','Başvuru ayrıntılarını aç: '+tr(item.name));
    const nameCell=document.createElement('td'),open=document.createElement('button');open.type='button';open.className='application-name';open.textContent=tr(item.name);const ref=document.createElement('small');ref.textContent=tr(item.reference);open.append(ref);open.addEventListener('click',()=>openDetails(item));nameCell.append(open);
@@ -23,7 +23,7 @@
    const city=document.createElement('td');city.textContent=tr(item.cityName);
    const exam=document.createElement('td');exam.textContent=tr(item.branchName||item.groupName);
    const pay=document.createElement('td');pay.append(badge(item.payment,'payment'));if(item.payment==='dogrulandi'){const check=document.createElement('span');check.className='payment-check';check.setAttribute('aria-label','Ödeme doğrulandı');check.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg>';pay.append(check)}
-   row.append(nameCell,period,city,exam,pay);row.addEventListener('click',event=>{if(!event.target.closest('button,a'))openDetails(item)});row.addEventListener('keydown',event=>{if((event.key==='Enter'||event.key===' ')&&event.target===row){event.preventDefault();openDetails(item)}});body.append(row)
+   const actionCell=document.createElement('td'),detailButton=document.createElement('button');detailButton.type='button';detailButton.className='application-detail-action';detailButton.textContent='Detayları Gör';detailButton.addEventListener('click',()=>openDetails(item));actionCell.append(detailButton);row.append(nameCell,period,city,exam,pay,actionCell);row.addEventListener('click',event=>{if(!event.target.closest('button,a'))openDetails(item)});row.addEventListener('keydown',event=>{if((event.key==='Enter'||event.key===' ')&&event.target===row){event.preventDefault();openDetails(item)}});body.append(row)
   }
   $('#applications-total').textContent=String(total);
   $('#applications-page').textContent=total?Math.min((page-1)*30+1,total)+'–'+Math.min(page*30,total)+' / '+total:'0 başvuru';
@@ -65,9 +65,9 @@
   download.addEventListener('click',async()=>{try{const fileUrl=await fetchFile(),link=document.createElement('a');link.href=fileUrl;const extension=label.toLocaleLowerCase('tr-TR').includes('kesin')?'kesin-kayit-dekontu':'basvuru-dekontu';link.download=extension+'.'+fileExtension;document.body.append(link);link.click();link.remove()}catch(error){status.textContent=error.message;status.hidden=false}});
  }
  async function openDetails(row){
-  revokeUrls();$('#application-detail-content').replaceChildren();$('#application-detail-name').textContent=tr(row.name);$('#application-detail-reference').textContent='Başvuru No · '+tr(row.reference);$('#application-detail-loading').hidden=false;$('#application-detail-error').hidden=true;$('#application-detail-dialog').showModal();
+  revokeUrls();$('#application-detail-content').replaceChildren();$('#application-detail-name').textContent=tr(row.name);$('#application-detail-reference').textContent='Başvuru No · '+tr(row.reference);$('#application-detail-loading').hidden=false;$('#application-detail-error').hidden=true;try{if(!dialog)throw Error('Başvuru ayrıntı penceresi sayfada bulunamadı.');if(!dialog.open)dialog.showModal();}catch(error){message(error.message,true);return}
   try{
-   const data=await api('/api/panel/applications/'+encodeURIComponent(row.id)),app=data.application||{};
+   const data=await api('/api/panel/applications/'+encodeURIComponent(row.id));if(!data.application)throw Error('Başvuru kaydı bulundu ancak ayrıntı yanıtı boş geldi. Sayfayı yenileyip tekrar deneyin.');const app=data.application;
    $('#application-detail-loading').hidden=true;
    const statusLine=$('#application-payment-status');statusLine.replaceChildren();const verified=app.payment==='dogrulandi';const icon=document.createElement('span');icon.className='payment-status-icon'+(verified?' is-paid':'');icon.innerHTML=verified?'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg>':'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>';const text=document.createElement('div'),title=document.createElement('strong'),note=document.createElement('small');title.textContent=paymentLabel(app.payment);note.textContent=paymentChannel(app);text.append(title,note);statusLine.append(icon,text);
    const exam=app.session||{};section('Sınav bilgileri',[['Dönem',exam.period||app.sessionPeriod],['İl',app.cityName],['Üst kategori',app.groupName],['Başvurduğu sınav',app.branchName],['Sınav tarihi',exam.examAt],['Sınav yeri',exam.address],['Kontenjan',exam.capacity],['Başvuru ücreti',money(app.fee)],['Kesin kayıt ücreti',money(exam.registrationFee)]]);
