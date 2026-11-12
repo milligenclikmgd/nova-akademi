@@ -93,7 +93,7 @@ window.novaApplicationEndpoint=path=>(["nova-akademi.vercel.app","novasanat.com.
    group.removeAttribute("title");group.querySelector(":scope > title")?.remove();
    if(active){group.setAttribute("role","button");group.setAttribute("tabindex","0");group.setAttribute("aria-label",city.name+" sınav seçeneklerini aç");group.setAttribute("aria-pressed","false");group.onclick=()=>openPicker(city);group.onkeydown=event=>{if(event.key==="Enter"||event.key===" "){event.preventDefault();openPicker(city)}}}
    else{group.removeAttribute("role");group.removeAttribute("tabindex");group.removeAttribute("aria-label");group.removeAttribute("aria-pressed");group.onclick=null;group.onkeydown=null}
-   group.querySelectorAll("path").forEach(path=>{path.style.fill=active?"#1766ae":"#2c78b7";path.style.stroke="#ffffff";path.style.strokeWidth="1.35";path.style.vectorEffect="non-scaling-stroke";path.style.opacity="1";path.style.transition="fill .22s ease,opacity .22s ease"});
+   group.querySelectorAll("path").forEach(path=>{path.style.fill=active?"#F5B942":"#2c78b7";path.style.stroke="#ffffff";path.style.strokeWidth="1.35";path.style.vectorEffect="non-scaling-stroke";path.style.opacity="1";path.style.transition="fill .22s ease,opacity .22s ease"});
   }
   createCityIndex();
  }
