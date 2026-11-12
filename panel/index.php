@@ -18,7 +18,7 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
   redirect('Giriş bilgileri hatalı.');
  }
  guard();
- if(isset($_POST['logout'])){$_SESSION=[];session_destroy();header('Location: /panel/');exit;}
+ if(isset($_POST['logout'])){try{$workerAuth=$pdo->prepare('DELETE FROM nova_worker_auth WHERE admin_id=?');$workerAuth->execute([(int)$_SESSION['admin']]);}catch(Throwable $error){}$_SESSION=[];session_destroy();header('Location: /panel/');exit;}
  if(isset($_POST['delete'])){$stmt=$pdo->prepare('DELETE FROM slides WHERE id=?');$stmt->execute([(int)$_POST['delete']]);header('Location: /panel/dashboard.php?section=slider');exit;}
  if(isset($_POST['save'])){
   $type=(string)($_POST['media_type']??'image');if(!in_array($type,['image','video'],true))redirect('Medya türü geçersiz.');
