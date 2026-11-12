@@ -12,7 +12,7 @@ Sınav ve başvuru verisinin tek kaynağı mevcut Cloudflare Worker Durable Obje
 
 Sınav ekranına ilk girişte Worker panel parolası bir kez istenir. Parola HTTPS üzerinden Worker'a gönderilir; dosyaya veya GitHub'a yazılmaz. PHP oturumu yalnızca Worker oturum çerezini sunucu tarafında saklar. cPanel hostingde PHP cURL etkin olmalıdır. Bu bağlantı için gereken parola Worker'da `NOVA_PANEL_PASSWORD` Secret olarak ayarlanmış paroladır; cPanel panel kullanıcı parolasıyla aynı olmak zorunda değildir.
 
-Sınav Oluştur ekranında mevcut sınav özeti, il bazlı sınav listesi ve toplu il/sınav seçimi Worker verisine bağlanır. Sınav başvuru ve sonuç ekranları da aynı Worker API'sini kullanır. Yeni sınavlar seçilen illere yayımlandığında başvuru ekranındaki harita bu illeri etkin gösterir.
+Sınav Oluştur ekranında mevcut sınav özeti, il bazlı sınav listesi ve toplu il/sınav seçimi Worker verisine bağlanır. Sınav başvuru ve sonuç ekranları da aynı Worker API'sini kullanır. Yeni sınavlar seçilen illere yayımlandığında başvuru ekranındaki harita bu illeri etkin gösterir. Başvurular ekranı Worker kayıtlarını sayfalı listeler; adayın form bilgilerini, dönem/il/sınav bilgisini ve ödeme durumunu ayrıntıda gösterir. Yüklenmiş başvuru ve kesin kayıt dekontları yetkili panel oturumu üzerinden görüntülenip indirilebilir. Sanal POS sağlayıcısı ve işlem numarası, Ziraat entegrasyonu Worker verisine yazıldığında ödeme ayrıntısında gösterilir; POS tahsilat entegrasyonu bu panel ekranından ayrı bir kurulum adımıdır.
 
 ## Alan adı ve başvuru ekranı
 
