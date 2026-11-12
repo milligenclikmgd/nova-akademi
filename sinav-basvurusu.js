@@ -1,4 +1,4 @@
-window.novaApplicationEndpoint=path=>(location.hostname==="nova-akademi.vercel.app"?"https://nova-akademi.milligenclikmgd.workers.dev":"")+path;
+window.novaApplicationEndpoint=path=>(["nova-akademi.vercel.app","novasanat.com.tr","www.novasanat.com.tr"].includes(location.hostname)?"https://nova-akademi.milligenclikmgd.workers.dev":"")+path;
 (()=>{
  let cities=[];
  const map=document.querySelector("#turkey-map"),mount=document.querySelector("#turkey-map-svg"),cityIndex=document.querySelector("#city-index"),picker=document.querySelector("#city-picker");
