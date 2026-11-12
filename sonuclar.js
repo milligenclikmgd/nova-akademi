@@ -1,5 +1,5 @@
 (()=>{
- const $=selector=>document.querySelector(selector),params=new URLSearchParams(location.search),cityId=params.get('city')||'',branchId=params.get('branch')||'',sessionId=params.get('session')||'',apiBase=location.hostname==='nova-akademi.vercel.app'?'https://nova-akademi.milligenclikmgd.workers.dev':'',categories=[['asil','Kazananlar'],['yedek1','1. Yedek'],['yedek2','2. Yedek'],['yedek3','3. Yedek']];
+ const $=selector=>document.querySelector(selector),params=new URLSearchParams(location.search),cityId=params.get('city')||'',branchId=params.get('branch')||'',sessionId=params.get('session')||'',apiBase=['nova-akademi.vercel.app','novasanat.com.tr','www.novasanat.com.tr'].includes(location.hostname)?'https://nova-akademi.milligenclikmgd.workers.dev':'',categories=[['asil','Kazananlar'],['yedek1','1. Yedek'],['yedek2','2. Yedek'],['yedek3','3. Yedek']];
  let results=[],active='asil',locationDataPromise,locations={},provinces=[];
  const node=(tag,text,className)=>{const el=document.createElement(tag);if(text!==undefined)el.textContent=text;if(className)el.className=className;return el};
  const message=(text,error=false)=>{const box=$('#result-message');box.textContent=text;box.classList.toggle('is-error',error);box.hidden=!text};
