@@ -2,4 +2,4 @@
 deployment:
   tasks:
     - export DEPLOYPATH=/home/novasana/public_html/
-    - /bin/cp -R api assets *.css *.html *.js *.svg *.json *.mp4 *.webm *.jpg *.jpeg *.png *.webp $DEPLOYPATH
+    - /bin/cp -R api assets panel includes *.css *.html *.js *.svg *.json *.mp4 *.webm *.jpg *.jpeg *.png *.webp $DEPLOYPATH
