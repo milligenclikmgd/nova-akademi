@@ -89,6 +89,19 @@
  $('#applications-prev').addEventListener('click',()=>{if(page>1){page--;load()}});
  $('#applications-next').addEventListener('click',()=>{if(page*30<total){page++;load()}});
  $('#applications-refresh').addEventListener('click',load);
+ $('#applications-reset').addEventListener('click',async event=>{
+  const button=event.currentTarget;
+  if(!confirm('Bu işlem, mevcut tüm başvuruları İPTAL durumuna alır ve eski sınav sonuçlarını kaldırır. Başvuru bilgileri, dekontlar ve ödeme kayıtları korunur. Devam edilsin mi?'))return;
+  button.disabled=true;message('Eski başvurular iptal ediliyor…');
+  try{
+   const response=await window.novaWorkerApi('/api/panel/applications/reset',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({confirm:'IPTAL'})});
+   let data={};try{data=await response.json()}catch{}
+   if(!response.ok)throw Error(data.error||'Başvurular iptal edilemedi (HTTP '+response.status+').');
+   page=1;await load();message(data.message||'Eski başvurular iptal edildi. Yeni başvurular alınabilir.');
+  }catch(error){message(error.message,true)}
+  finally{button.disabled=false}
+ });
+
  document.querySelector('#application-detail-close').addEventListener('click',()=>dialog.close());
  dialog.addEventListener('click',event=>{if(event.target===dialog)dialog.close()});
  dialog.addEventListener('close',revokeUrls);
