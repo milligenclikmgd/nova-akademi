@@ -1,22 +1,30 @@
-# NOVA yönetim paneli ve başvuru sistemi
+# NOVA yönetim paneli ve sınav sistemi
 
 ## cPanel yönetim paneli
 
-Canlı kullanıcı adı/şifreli cPanel paneli PHP ile çalışır. Bu depoda aynı giriş akışı ve mevcut slider yönetimi korunarak panel kabuğu yenilenmiştir. `/panel/` adresi artık `/panel/index.php` girişine yönlenir; girişten sonra başlangıç ekranı **Sınav Oluştur** tasarımıdır. Sınav/başvuru verisi var olan Cloudflare Worker Durable Object deposunda kalır. PHP paneli güvenli bir cPanel sunucu tarafı proxy ile bu API'ye bağlanır; ayrı bir sınav kopyası oluşturmaz.
+Canlı kullanıcı adı/şifreli cPanel paneli PHP ile çalışır. Mevcut giriş akışı, yönetici hesabı ve slider yönetimi korunmuştur. `/panel/` adresi `/panel/index.php` girişine yönlenir; girişten sonra başlangıç ekranı Sınav Oluştur tasarımıdır.
 
-cPanel Git dağıtımı `.cpanel.yml` içinde `/home/novasana/public_html/` hedefine `api/`, `assets/`, `panel/` ve `includes/` klasörlerini kopyalar. `config.php` ve `uploads/` bu dağıtım listesine dahil değildir; cPanel'deki veritabanı ayarı, mevcut yönetici hesabı ve yüklenmiş medya yerinde kalır. `includes/bootstrap.php`, cPanel'de `public_html/config.php` dosyasını kullanır.
+cPanel Git dağıtımı `.cpanel.yml` içindeki görevle `/home/novasana/public_html/` hedefine `api/`, `assets/`, `panel/` ve `includes/` klasörlerini kopyalar. `config.php` ve `uploads/` dağıtım listesine dahil değildir; cPanel'deki veritabanı ayarı, yönetici hesabı ve yüklenmiş medya yerinde kalır. `includes/bootstrap.php`, cPanel'deki `public_html/config.php` dosyasını kullanır.
 
-Sınav oluşturma ekranı mevcut Worker API'sine bağlıdır: kategoriler, sınav türleri, başvuru/kesin kayıt ücretleri, sözleşmeler, iller, oturumlar ve başvuru özeti aynı kalıcı veriden okunur/yazılır. Sınav ekranına ilk girişte Cloudflare Worker panel parolası bir defa sorulur; parolayı PHP sunucusu Worker'a iletir ve yalnızca Worker oturum çerezini PHP oturumunda tutar. Parola GitHub'a ya da dosyalara yazılmaz. Hosting hesabında PHP cURL etkin olmalıdır. Diğer yönetim bölümleri (haber, kurul, ortaklar, iletişim) ayrı sırayla bağlanacaktır.
+## Sınav verisinin akışı
 
-## Cloudflare Worker başvuru uygulaması
+Sınav ve başvuru verisinin tek kaynağı mevcut Cloudflare Worker Durable Object deposudur. Panel, cPanel'deki `api/worker-proxy.php` üzerinden Worker API'sine bağlanır. Bu şekilde cPanel paneli ayrı bir sınav/başvuru kopyası oluşturmaz.
 
-Bu depoda ayrıca Cloudflare Worker üzerinde çalışan ayrı bir başvuru ve sınav yönetimi uygulaması bulunur. Worker paneli kendi kimlik doğrulamasını ve Durable Object verisini kullanır; cPanel PHP oturumu veya MySQL veritabanıyla şu anda ortak çalışmaz. Worker dağıtımı, cPanel Git dağıtımından ayrıdır.
+Sınav ekranına ilk girişte Worker panel parolası bir kez istenir. Parola HTTPS üzerinden Worker'a gönderilir; dosyaya veya GitHub'a yazılmaz. PHP oturumu yalnızca Worker oturum çerezini sunucu tarafında saklar. cPanel hostingde PHP cURL etkin olmalıdır. Bu bağlantı için gereken parola Worker'da `NOVA_PANEL_PASSWORD` Secret olarak ayarlanmış paroladır; cPanel panel kullanıcı parolasıyla aynı olmak zorunda değildir.
 
-Başvuru ve sonuç ekranları `https://nova-akademi.milligenclikmgd.workers.dev` API'sini kullanır; `novasanat.com.tr` üzerindeki cPanel `/api/...` yolunun 404 vermesi böylece aşılır. Worker'da `NOVA_SITE_ORIGIN` değeri, tarayıcıda kullanılan tam kökenle aynı olmalıdır (ör. `https://novasanat.com.tr`; www kullanılıyorsa www alan adını kanonikleştirip bu kökeni ayarlayın). Worker panel parolası `NOVA_PANEL_PASSWORD` Secret olarak tutulmalıdır; GitHub'a veya HTML'e yazılmamalıdır.
+Sınav Oluştur ekranında mevcut sınav özeti, il bazlı sınav listesi ve toplu il/sınav seçimi Worker verisine bağlanır. Sınav başvuru ve sonuç ekranları da aynı Worker API'sini kullanır. Yeni sınavlar seçilen illere yayımlandığında başvuru ekranındaki harita bu illeri etkin gösterir.
 
-## Veri güvenliği ve ileriki aşamalar
+## Alan adı ve başvuru ekranı
 
-- cPanel paneli, mevcut yönetici hesabını `nova_admins` tablosunda ve parolanın hash'ini kullanarak doğrular.
-- cPanel dağıtım komutunda `config.php` ve `uploads/` yoktur; deploy bu dosyaları ve dizini kopyalayıp üzerine yazmaz.
-- Worker başvuruları Durable Object verisinde tutulur. cPanel paneliyle bağlanmadan önce hangi uygulamanın sınav/başvuru verisinin ana kaynağı olacağı netleştirilmeli; aynı kayıtları iki yerde tutmaktan kaçınılmalıdır.
-- Üretimde panel ve veritabanı için düzenli yedek alınması önerilir.
+Başvuru ve sonuç ekranları `https://nova-akademi.milligenclikmgd.workers.dev` API'sini kullanır; böylece `novasanat.com.tr` üzerindeki cPanel `/api/...` yolunun 404 vermesi aşılır. Worker'da `NOVA_SITE_ORIGIN` değeri tarayıcıda kullanılan tam kökenle aynı olmalıdır (ör. `https://novasanat.com.tr`). Ziyaretçiler `www` adresini de kullanacaksa onu kanonik alan adına yönlendirin veya CORS ayarına ayrıca ekleyin.
+
+## Diğer panel bölümleri
+
+Haberler ve duyurular, yönetim kurulu, iş ortaklarımız ve iletişim ekranlarının içerik yönetimi sonraki aşamalarda eklenecektir. Bu bölümler sınav sisteminin veri kaynağından bağımsızdır.
+
+## Veri güvenliği
+
+- cPanel paneli yöneticiyi mevcut `nova_admins` tablosu ve parola hash'i ile doğrular.
+- cPanel dağıtım komutu `config.php` ve `uploads/` dosyalarını kopyalamaz.
+- Worker panel parolası GitHub'a, HTML'e veya JavaScript'e eklenmemelidir.
+- Üretimde panel dosyaları ve veritabanı için düzenli yedek alınması önerilir.
