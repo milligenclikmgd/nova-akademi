@@ -1,39 +1,22 @@
-# NOVA başvuru ve yönetim paneli
+# NOVA yönetim paneli ve başvuru sistemi
 
-Bu depodaki Worker paneli `/panel` yolunda çalışır ve `NOVA_PANEL_PASSWORD` gizli anahtarıyla doğrulama yapar. Canlı `https://novasanat.com.tr/panel/` adresinde görünen kullanıcı adı/şifreli cPanel paneli ayrı bir uygulamadır; bu depodaki Worker paneli onun oturum bilgilerini kullanmaz. Mevcut cPanel girişini korumak için bu deponun `panel/` klasörünü canlı `public_html/panel/` içine kopyalamayın. Önce mevcut cPanel panelinin kaynak kodunu bu depo ile eşleştirmek gerekir.
+## cPanel yönetim paneli
 
-Site özel alan adında ve cPanel'de yayınlanıyorsa, başvuru ekranının kullandığı **tek kanonik adresin** kökeni Cloudflare Worker'da `NOVA_SITE_ORIGIN` ortam değişkeni olarak tanımlanmalıdır; örneğin `https://www.ornekalanadi.com` (sonunda yol veya `/panel` olmamalı). Siteyi www ile açacaksanız www adresini; www olmadan açacaksanız kök alan adını kullanın. Diğer biçimi bu kanonik adrese yönlendirin. Bu ayar, başvuru ekranının Worker API'sine güvenli biçimde istek göndermesini sağlar. Yönetici API'leri çapraz kaynağa açılmaz; panel kendi Worker kaynağında çalışır ve oturum çerezi bu kaynakta kalır.
+Canlı kullanıcı adı/şifreli cPanel paneli PHP ile çalışır. Bu depoda aynı giriş akışı ve mevcut slider yönetimi korunarak panel kabuğu yenilenmiştir. `/panel/` adresi artık `/panel/index.php` girişine yönlenir; girişten sonra başlangıç ekranı **Sınav Oluştur** tasarımıdır.
 
-## İlk kurulum
+cPanel Git dağıtımı `.cpanel.yml` içinde `/home/novasana/public_html/` hedefine `api/`, `assets/`, `panel/` ve `includes/` klasörlerini kopyalar. `config.php` ve `uploads/` bu dağıtım listesine dahil değildir; cPanel'deki veritabanı ayarı, mevcut yönetici hesabı ve yüklenmiş medya yerinde kalır. `includes/bootstrap.php`, cPanel'de `public_html/config.php` dosyasını kullanır.
 
-1. cPanel panel girişini koruyacaksanız, yalnızca bu deponun `.cpanel.yml` ile tanımlı dağıtımını kullanın; `panel/` klasörünü ayrıca canlı panele kopyalamayın. Bu GitHub deposu Worker uygulamasını ve NOVA ana sitesini içerir, ancak mevcut kullanıcı adı/şifreli cPanel panelinin kaynak kodu henüz bu depo ile eşleştirilmedi.
-2. Cloudflare Workers & Pages → `nova-akademi` → Settings → Variables and Secrets bölümünde `NOVA_SITE_ORIGIN` adında ortam değişkeni oluşturup sitenizin kanonik tam köken adresini girin.
-3. Aynı yerde `NOVA_PANEL_PASSWORD` adında **Secret** ekleyin. En az 8 karakterlik, benzersiz bir parola seçin. Parolayı GitHub'a, HTML'e veya normal bir ortam değişkenine yazmayın. CLI alternatifi: `npx wrangler secret put NOVA_PANEL_PASSWORD` (parola gizli istemde girilir).
-4. Bu deponun güncel `wrangler.jsonc` dosyasıyla mevcut Cloudflare Worker'ı deploy edin. SQLite destekli `NOVA_APPLICATIONS` Durable Object bağlaması ve `nova-applications-v1` migration'ı deploy sırasında oluşturulur. Gemini değişkeni varsa korunur.
-5. Worker panelini `https://nova-akademi.milligenclikmgd.workers.dev/panel` adresinde açıp `NOVA_PANEL_PASSWORD` ile giriş yapın. Bu adım canlı cPanel panelinin kurulumu değildir. Sınavlar ve Ücretler bölümünden ana/alt başlıkları ve ücretleri düzenleyin; boş ücret o sınavı kapatır, 0 ücretsizdir.
-6. Ödeme açıklaması ve banka bilgilerini girin. Başvuru alımını açıp ayarları kaydedin.
-7. Kendi deneme adayınızla başvuru yapıp panelde formu ve dekontu kontrol edin. Gerçek kişilerin bilgileriyle test yapmayın.
+Menüdeki sınav, başvurular, sonuçlar, haberler, yönetim kurulu, iş ortakları ve iletişim sayfaları ilk aşamada arayüz/yer tutucu durumundadır. Bu depodaki PHP panel şu anda yalnızca eski slider kayıtlarıyla gerçek veri işlemi yapar. Modüller, ilgili tablolar/API'ler hazırlanıp eşleştirildikçe çalışır hale getirilecektir. İletişim formunun mesajlarını da gerçek tabloda/API'de saklama bağlantısı ayrıca kurulmalıdır.
 
-Panel parolası ve kalıcı veri bağlaması hazır olmadan sistem başvuru kabul etmez. Varsayılan parola veya ilk ziyaretçinin yönetici olması gibi bir kurulum akışı yoktur.
+## Cloudflare Worker başvuru uygulaması
 
-## Veri ve davranış
+Bu depoda ayrıca Cloudflare Worker üzerinde çalışan ayrı bir başvuru ve sınav yönetimi uygulaması bulunur. Worker paneli kendi kimlik doğrulamasını ve Durable Object verisini kullanır; cPanel PHP oturumu veya MySQL veritabanıyla şu anda ortak çalışmaz. Worker dağıtımı, cPanel Git dağıtımından ayrıdır.
 
-- Başvurular ve en fazla 5 MB PDF dekontlar SQLite destekli Durable Object içinde tutulur. PDF'ler atomik işlemle 64 KB parçalar halinde kaydedilir; herkese açık dosya klasöründe tutulmaz.
-- Ücret sunucuda doğrulanır. Eski başvurunun ücret ve sınav başlığı kopyası korunur.
-- Aday başvuru durumunu numarasıyla sorgulayabilir. Reddedilen başvurularda paneldeki **Ret açıklaması** adaya gösterilir.
-- Paneldeki **Başvuruları ve sınavları sıfırla** işlemi tüm başvuruları, sonuçları, kesin kayıtları ve bağlı dekont/sağlık belgelerini kalıcı olarak siler; sınav merkezi atamalarını boşaltır ve başvuru alımını kapatır. Sınav şablonları korunur.
-- İl, sınav/branş, durum ve aday adı filtreleri kullanılabilir. Excel dışa aktarımı geçerli filtreleri uygular.
-- `Ödendi` aday beyanıdır. Yönetici ödemeyi panelden doğrulayabilir; sistem banka işlemi yapmaz.
-- HttpOnly, Secure, SameSite=Strict oturum çerezi 8 saat geçerlidir. Giriş ve başvuru uçları hız sınırlıdır. Yazma istekleri aynı kaynakla sınırlandırılır.
-- Panel parolası değişince eski oturumlar geçersiz olur.
-- Düzenli yedekleme, veri saklama/silme politikası ve çok kullanıcılı yönetici hesapları sonraki aşamada belirlenmelidir.
+Başvuru ekranının kullandığı kanonik site adresi Worker'da `NOVA_SITE_ORIGIN` değişkeni olarak tanımlanmalıdır. Worker panel parolası `NOVA_PANEL_PASSWORD` Secret olarak tutulmalıdır; GitHub'a veya HTML'e yazılmamalıdır.
 
-## Yerel geliştirme
+## Veri güvenliği ve ileriki aşamalar
 
-Cloudflare Workers geliştirme ortamında `npx wrangler dev` kullanın. Yerel parola yalnızca Git tarafından izlenmeyen `.dev.vars` dosyasında tutulmalıdır. Üretim veritabanına bağlanmadan başvuru, oturum ve PDF akışlarını kontrol edin.
-
-## Faaliyet Alanları hero videosu
-
-Panel → **Site Videosu** bölümünden en fazla 25 MB MP4 (H.264/AAC önerilir) veya WebM yükleyin. Önizlemenin ardından **Videoyu yükle ve yayınla** ile kaydedin. Yükleme başarısızsa önceki video korunur. **Varsayılan videoya dön** sitedeki `assets/activity-intro.mp4` dosyasını yeniden kullanır.
-
-Video aynı Durable Object deposunda saklanır; yeni bucket veya secret gerekmez. Bu özellikte yalnızca cPanel'deki statik dosyaları dağıtmak yeterli olmaz; panel API'sinin bulunduğu Worker da güncel `wrangler.jsonc` ile yeniden deploy edilmelidir.
+- cPanel paneli, mevcut yönetici hesabını `nova_admins` tablosunda ve parolanın hash'ini kullanarak doğrular.
+- cPanel dağıtım komutunda `config.php` ve `uploads/` yoktur; deploy bu dosyaları ve dizini kopyalayıp üzerine yazmaz.
+- Worker başvuruları Durable Object verisinde tutulur. cPanel paneliyle bağlanmadan önce hangi uygulamanın sınav/başvuru verisinin ana kaynağı olacağı netleştirilmeli; aynı kayıtları iki yerde tutmaktan kaçınılmalıdır.
+- Üretimde panel ve veritabanı için düzenli yedek alınması önerilir.
