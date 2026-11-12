@@ -17,14 +17,14 @@
  sidebarBackdrop.addEventListener('click',closeSidebar);document.addEventListener('keydown',event=>{if(event.key==='Escape')closeSidebar()});
  function activateView(selected,examSub='settings'){
   const isExam=selected==='exam-management',moduleTitles={'exam-management':'Sınav Yönetimi',news:'Haberler ve Duyurular',board:'Yönetim Kurulu',slider:'Slider Yönetimi',partners:'İş Ortaklarımız',contact:'İletişim'},descriptions={'exam-management':'Sınavlarınızı oluşturun, başvuruları yönetin ve sonuçları yayınlayın.',news:'Haber ve duyurularınızı tek bir yerden yönetin.',board:'Yönetim kurulu bilgilerini ve tanıtımlarını düzenleyin.',slider:'Ana sayfa görselleri ve mevcut video içeriği için yönetim alanı.',partners:'İş ortaklarınızı ve yayımlanan logoları yönetin.',contact:'İletişim bilgilerini ve sosyal hesapları güncelleyin.'};
-  document.querySelectorAll('.nav-parent[data-view]').forEach(item=>item.classList.toggle('is-active',item.dataset.view===selected));
+  document.querySelectorAll('[data-view]').forEach(item=>item.classList.toggle('is-active',item.dataset.view===selected));
   $('#exam-management-nav').hidden=!isExam;
   const active=isExam?examSub:selected,sectionId=isExam?active+'-view':selected+'-view';
   ['applications','settings','results','news','contact','partners','board','slider'].forEach(view=>{const section=$('#'+view+'-view');if(section)section.hidden=section.id!==sectionId});
   document.querySelectorAll('[data-exam-view]').forEach(item=>item.classList.toggle('is-active',isExam&&item.dataset.examView===active));
-  const labels={settings:'Sınav Oluştur',applications:'Başvurular',results:'Sınav Sonuç'},title=isExam?(labels[active]||'Sınav Modülü'):(moduleTitles[selected]||'Yönetim Paneli');
+  const labels={settings:'Sınav Oluştur',applications:'Tüm Başvurular',results:'Sonuç Açıklama'},title=moduleTitles[selected]||'Yönetim Paneli';
   $('#module-title').textContent=title;$('#module-description').textContent=descriptions[selected]||'';
-  $('#page-breadcrumb').textContent=isExam?'Sınav Modülü / '+(labels[active]||''):title;
+  $('#page-breadcrumb').textContent=isExam?title+' / '+(labels[active]||''):title;
   document.querySelectorAll('.panel-main>section').forEach(section=>section.classList.toggle('module-home',!isExam&&section.id===sectionId));
   if(active==='slider')loadActivityVideo();if(active==='results')loadResultCities();if(active==='applications')loadApplications();
   if(['news','contact','partners','board','slider'].includes(active))window.loadPanelCMS?.(active);
@@ -33,7 +33,6 @@
  }
  document.querySelectorAll('[data-view]').forEach(button=>button.addEventListener('click',()=>{activateView(button.dataset.view,button.dataset.view==='exam-management'?'settings':undefined);closeSidebar()}));
  document.querySelectorAll('[data-exam-view]').forEach(button=>button.addEventListener('click',()=>activateView('exam-management',button.dataset.examView)));
- document.querySelectorAll('[data-cms-action]').forEach(button=>button.addEventListener('click',()=>{activateView('news');document.querySelectorAll('[data-cms-action]').forEach(item=>item.classList.toggle('is-current',item===button));if(button.dataset.cmsAction==='add')$('#add-cms-article')?.click();closeSidebar()}));
  let resultSelection=null;
  function renderResultItems(items,kind){const root=$('#panel-results-list');root.replaceChildren();$('#results-empty').hidden=items.length>0;for(const item of items){const card=node('article',undefined,kind==='candidate'?'panel-result-candidate':'panel-result-item');if(kind==='city'){const button=node('button',undefined,'panel-result-select');button.type='button';button.append(node('strong',item.name),node('span','Sınav merkezindeki sınavları görüntüle →'));button.addEventListener('click',()=>loadResultBranches(item.id,item.name));card.append(button)}else if(kind==='branch'){const button=node('button',undefined,'panel-result-select');button.type='button';button.append(node('strong',item.name),node('span',item.groupName||'Sınav başvuruları'));button.addEventListener('click',()=>loadResultCandidates(resultSelection.city.id,item.id,item.name,item.sessionId||''));card.append(button)}else{const person=node('div',undefined,'panel-result-person');person.append(node('strong',item.name),node('small',(item.reference||'Başvuru no yok')+' · '+(item.phone||'Telefon yok')));const badge=node('span',item.result?({asil:'Kazandı','yedek1':'1. yedek','yedek2':'2. yedek','yedek3':'3. yedek',bekliyor:'Değerlendirme bekliyor',kazanamadi:'Kazanamadı',katilmadi:'Sınava katılmadı'}[item.result]):'Sonuç girilmedi','panel-result-badge'+(item.result?' is-set':''));const action=node('button','Sonuç gir →','secondary');action.type='button';action.addEventListener('click',()=>openResultDialog(item,resultSelection.city.name,resultSelection.branch.name));card.append(person,badge,action)}root.append(card)}}
  async function loadResultCities(){
