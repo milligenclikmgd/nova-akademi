@@ -1,6 +1,6 @@
 (()=>{
  const root=document.querySelector('#applications-panel');if(!root)return;
- const $=selector=>root.querySelector(selector),dialog=document.querySelector('#application-detail-dialog');
+ const $=selector=>root.querySelector(selector),dialog=document.querySelector('#application-detail-dialog'),detail=selector=>dialog?.querySelector(selector);
  let page=1,total=0,rows=[],objectUrls=[],busy=false,searchTimer=0;
  let requestedDetail=new URLSearchParams(location.search).get('detail')||'';
  const tr=value=>String(value??'').trim()||'—';
@@ -44,7 +44,7 @@
  function section(title,entries){
   const box=document.createElement('section');box.className='application-detail-section';const heading=document.createElement('h3');heading.textContent=title;const grid=document.createElement('dl');
   for(const [label,value] of entries){const wrap=document.createElement('div');const dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=label;dd.textContent=tr(value);wrap.append(dt,dd);grid.append(wrap)}
-  box.append(heading,grid);$('#application-detail-content').append(box);return box
+  box.append(heading,grid);detail('#application-detail-content').append(box);return box
  }
  function paymentChannel(app){
   const sources=[app.paymentMethod,app.paymentProvider,app.transaction?.provider,app.transaction?.method,app.paymentDetails?.provider,app.paymentDetails?.method,app.registration?.payment?.provider,app.registration?.payment?.method].filter(value=>typeof value==='string'&&value.trim());
@@ -58,7 +58,7 @@
   const area=document.createElement('section');area.className='application-detail-section receipt-section';const heading=document.createElement('h3');heading.textContent=label;
   const actions=document.createElement('div');actions.className='receipt-actions';const view=document.createElement('button');view.type='button';view.className='compact-button';view.textContent='Görüntüle';const download=document.createElement('button');download.type='button';download.className='compact-button secondary';download.textContent='İndir';const status=document.createElement('p');status.className='receipt-note';status.hidden=true;
   const preview=document.createElement('div');preview.className='receipt-preview';preview.hidden=true;const frame=document.createElement('iframe');frame.title=label+' önizleme';frame.loading='lazy';frame.referrerPolicy='no-referrer';frame.hidden=true;const image=document.createElement('img');image.alt=label;image.hidden=true;preview.append(frame,image);
-  actions.append(view,download);area.append(heading,actions,status,preview);$('#application-detail-content').append(area);
+  actions.append(view,download);area.append(heading,actions,status,preview);detail('#application-detail-content').append(area);
   let url='',fileExtension='bin';
   async function fetchFile(){
    if(url)return url;status.hidden=false;status.textContent='Dosya alınıyor…';const response=await window.novaWorkerApi(path,{method:'GET'});if(!response.ok){let data={};try{data=await response.json()}catch{}throw Error(data.error||'Dekont açılamadı.')}
@@ -68,12 +68,12 @@
   download.addEventListener('click',async()=>{try{const fileUrl=await fetchFile(),link=document.createElement('a');link.href=fileUrl;const extension=label.toLocaleLowerCase('tr-TR').includes('kesin')?'kesin-kayit-dekontu':'basvuru-dekontu';link.download=extension+'.'+fileExtension;document.body.append(link);link.click();link.remove()}catch(error){status.textContent=error.message;status.hidden=false}});
  }
  async function openDetails(row){
-  revokeUrls();$('#application-detail-content').replaceChildren();$('#application-payment-status').replaceChildren();$('#application-detail-name').textContent=tr(row.name);$('#application-detail-reference').textContent='Başvuru No · '+tr(row.reference);$('#application-detail-loading').hidden=false;$('#application-detail-error').hidden=true;try{if(!dialog)throw Error('Başvuru ayrıntı penceresi sayfada bulunamadı.');if(!dialog.open)dialog.showModal();}catch(error){message(error.message,true);return}
+  revokeUrls();detail('#application-detail-content').replaceChildren();detail('#application-payment-status').replaceChildren();detail('#application-detail-name').textContent=tr(row.name);detail('#application-detail-reference').textContent='Başvuru No · '+tr(row.reference);detail('#application-detail-loading').hidden=false;detail('#application-detail-error').hidden=true;try{if(!dialog)throw Error('Başvuru ayrıntı penceresi sayfada bulunamadı.');if(!dialog.open)dialog.showModal();}catch(error){message(error.message,true);return}
   try{
    const data=await api('/api/panel/applications/'+encodeURIComponent(row.id));if(!data.application)throw Error('Başvuru kaydı bulundu ancak ayrıntı yanıtı boş geldi. Sayfayı yenileyip tekrar deneyin.');const app=data.application;
-   const candidateName=[app.candidate?.firstName,app.candidate?.lastName].filter(Boolean).join(' ')||app.name||row.name;$('#application-detail-name').textContent=tr(candidateName);$('#application-detail-reference').textContent='Başvuru No · '+tr(app.reference||row.reference);
-   $('#application-detail-loading').hidden=true;
-   const statusLine=$('#application-payment-status');statusLine.replaceChildren();const verified=app.payment==='dogrulandi';const icon=document.createElement('span');icon.className='payment-status-icon'+(verified?' is-paid':'');icon.innerHTML=verified?'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg>':'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>';const text=document.createElement('div'),title=document.createElement('strong'),note=document.createElement('small');title.textContent=paymentLabel(app.payment);note.textContent=paymentChannel(app);text.append(title,note);statusLine.append(icon,text);
+   const candidateName=[app.candidate?.firstName,app.candidate?.lastName].filter(Boolean).join(' ')||app.name||row.name;detail('#application-detail-name').textContent=tr(candidateName);detail('#application-detail-reference').textContent='Başvuru No · '+tr(app.reference||row.reference);
+   detail('#application-detail-loading').hidden=true;
+   const statusLine=detail('#application-payment-status');statusLine.replaceChildren();const verified=app.payment==='dogrulandi';const icon=document.createElement('span');icon.className='payment-status-icon'+(verified?' is-paid':'');icon.innerHTML=verified?'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg>':'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>';const text=document.createElement('div'),title=document.createElement('strong'),note=document.createElement('small');title.textContent=paymentLabel(app.payment);note.textContent=paymentChannel(app);text.append(title,note);statusLine.append(icon,text);
    const exam=app.session||{};section('Sınav bilgileri',[['Dönem',exam.period||app.sessionPeriod],['İl',app.cityName],['Üst kategori',app.groupName],['Başvurduğu sınav',app.branchName],['Sınav tarihi',exam.examAt],['Sınav yeri',exam.address],['Kontenjan',exam.capacity],['Başvuru ücreti',money(app.fee)],['Kesin kayıt ücreti',money(exam.registrationFee)]]);
    const candidate=app.candidate||{};section('Aday bilgileri',[['Ad soyad',[candidate.firstName,candidate.lastName].filter(Boolean).join(' ')||app.name],['T.C. kimlik no',candidate.tc],['Doğum tarihi',candidate.dob],['Cinsiyet',candidate.gender],['Telefon',candidate.phone],['E-posta',candidate.email],['Okul',candidate.school],['Sınıf',candidate.grade],['İkamet ili / ilçe',[candidate.province,candidate.district].filter(Boolean).join(' / ')],['Adres',candidate.address]]);
    for(const contact of app.contacts||[])section(contact.role==='mother'?'Anne bilgileri':contact.role==='father'?'Baba bilgileri':'Veli bilgileri',[['Ad soyad',contact.fullName],['Yakınlık',contact.relationship],['Meslek',contact.occupation],['Telefon',contact.phone],['E-posta',contact.email]]);
@@ -82,7 +82,7 @@
    section('Başvuru onayları',[['Aile / veli seçimi',app.familyMode],['İletişim kurulacak kişi',(app.contacts||[]).find(item=>item.role===app.primaryContact)?.fullName],['Veli görüşü',app.guardianOpinion],['Sözleşme onay zamanı',app.contractAcceptedAt],['Başvuru onay zamanı',app.confirmationAt]]);
    if(app.receipt)addReceiptSection('Başvuru ödeme dekontu','/api/panel/applications/'+encodeURIComponent(app.id)+'/receipt');
    if(app.paymentReceipt||app.registration?.paymentReceipt)addReceiptSection('Kesin kayıt ödeme dekontu','/api/panel/applications/'+encodeURIComponent(app.id)+'/registration-payment-receipt');
-  }catch(error){$('#application-detail-loading').hidden=true;const el=$('#application-detail-error');el.textContent=error.message;el.hidden=false}
+  }catch(error){detail('#application-detail-loading').hidden=true;const el=detail('#application-detail-error');el.textContent=error.message;el.hidden=false}
  }
  $('#applications-search').addEventListener('input',()=>{clearTimeout(searchTimer);searchTimer=setTimeout(()=>{page=1;load()},280)});
  ['applications-city','applications-payment','applications-status','applications-period'].forEach(id=>$( '#'+id).addEventListener('change',()=>{page=1;load()}));
