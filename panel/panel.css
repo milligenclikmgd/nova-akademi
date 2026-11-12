@@ -106,3 +106,12 @@ body{font-size:14px}
 .applications-table{min-width:840px}
 .application-detail-action{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;min-height:30px;padding:6px 9px;border:1px solid #c9d9ec;border-radius:7px;background:#f6f9ff;color:#1556a0;font-size:10px;font-weight:750;white-space:nowrap;cursor:pointer}
 .application-detail-action:hover,.application-detail-action:focus-visible{border-color:#72a7e7;background:#eaf2ff;outline:0}
+
+.application-decision{border-color:#d9e4ef;background:#fbfdff}
+.application-decision>p{margin:7px 0 12px;color:#667b96;font-size:12px}
+.application-decision-actions{display:flex;gap:9px;flex-wrap:wrap}
+.application-decision-actions button{min-height:34px;padding:8px 12px;border-radius:8px;font-size:11px;font-weight:800;cursor:pointer}
+.application-decision-accept{border:1px solid #b9dfc8;background:#eaf7ee;color:#197246}
+.application-decision-reject{border:1px solid #edc7c1;background:#fff2f0;color:#a54138}
+.application-decision-actions button:disabled{opacity:.55;cursor:wait}
+.application-decision-message{margin:10px 0 0;padding:9px 11px;border-radius:7px;background:#eff6ff;color:#335d8e;font-size:11px}
