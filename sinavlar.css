@@ -36,3 +36,5 @@
 .results-page .city-legend i.city-legend__exam{background:#1766ae;box-shadow:0 0 0 4px rgba(23,102,174,.13)}
 @media(max-width:760px){.results-page .results-city-section{padding-top:35px;padding-bottom:44px}}
 @media(max-width:480px){.results-page .results-city-section{padding-top:28px;padding-bottom:36px}.picker-card{padding:27px 21px}.picker-card h2{font-size:26px}}
+
+.result-lookup-message[data-state=success]{display:grid;gap:4px}.result-lookup-message[data-state=success] strong{font-size:12px;letter-spacing:.055em}.result-lookup-message[data-state=success] span{font-weight:600}.results-page .city-legend i.city-legend__exam{background:#0b4b92;box-shadow:0 0 0 4px rgba(11,75,146,.15)}.results-page .province-map g.is-active:hover path{fill:#06386f!important}
