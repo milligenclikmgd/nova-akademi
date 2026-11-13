@@ -313,13 +313,18 @@ export class ApplicationStore {
     if(method==='DELETE'){if(this.sql.exec('SELECT id FROM applications WHERE instr(data,?)>0 LIMIT 1',sessionMatch[1]).toArray().length)fail('Başvuru bulunan sınav oturumu silinemez; arşivleyin.',409);this.sql.exec('DELETE FROM exam_sessions WHERE id=?',sessionMatch[1]);return reply({ok:true});}
    }
    if(path==='/api/panel/reset-application-cycle'&&method==='POST'){
-    const input=await readJson(request,1024);if(input?.confirmation!=='SIFIRLA')fail('Başvuruları ve açık sınavları sıfırlamak için onay gerekli.',400);
+    const input=await readJson(request,1024);if(input?.confirmation!=='SIFIRLA')fail('Sınav modülü sıfırlama onayı eksik.',400);
     let removed={};this.ctx.storage.transactionSync(()=>{
-     const counts=['applications','receipts','receipt_metadata','exam_results','exam_sessions','definitive_registrations','registration_payment_receipts','registration_payment_chunks','registration_health'];
+     const settings=this.getSettings(),counts=['applications','receipts','receipt_metadata','application_status_history','exam_results','exam_sessions','definitive_registrations','registration_payment_receipts','registration_payment_chunks','registration_health'];
      for(const table of counts)removed[table]=this.sql.exec('SELECT count(*) AS count FROM '+table).one().count;
+     removed.categories=(settings.groups||[]).length;
+     removed.examTypes=(settings.groups||[]).reduce((total,group)=>total+(group.branches||[]).length,0);
+     removed.relatedAuditLogs=this.sql.exec("SELECT count(*) AS count FROM admin_audit_logs WHERE entity_type IN ('application','exam_session')").one().count;
      for(const table of counts)this.sql.exec('DELETE FROM '+table);
-     const settings=this.getSettings();settings.cityExams={};settings.accepting=false;settings.revision=(settings.revision||1)+1;
+     this.sql.exec("DELETE FROM admin_audit_logs WHERE entity_type IN ('application','exam_session')");
+     settings.groups=[];settings.cityExams={};settings.accepting=false;settings.taxonomyResetVersion=1;settings.revision=(settings.revision||1)+1;
      this.sql.exec('INSERT INTO settings(id,data) VALUES(1,?) ON CONFLICT(id) DO UPDATE SET data=excluded.data',JSON.stringify(settings));
+     this.sql.exec('INSERT INTO admin_audit_logs(created_at,action,entity_type,entity_id,detail) VALUES(?,?,?,?,?)',new Date().toISOString(),'exam_application_cycle_reset','exam_module','all',JSON.stringify(removed));
     });
     return reply({ok:true,removed});
    }
