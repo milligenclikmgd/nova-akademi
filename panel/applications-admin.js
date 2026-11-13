@@ -6,8 +6,8 @@
  const tr=value=>String(value??'').trim()||'—';
  const money=value=>value===null||value===undefined||value===''?'—':Number(value)===0?'Ücretsiz':new Intl.NumberFormat('tr-TR',{style:'currency',currency:'TRY'}).format(Number(value));
  const api=async path=>{const response=await window.novaWorkerApi(path,{method:'GET'});let data;try{data=await response.json()}catch{throw Error(response.redirected?'Panel oturumunuz doğrulanamadı. Panelden yeniden giriş yapın.':'Sunucudan geçerli JSON yanıtı alınamadı (HTTP '+response.status+').')}if(!response.ok)throw Error(data.error||'İstek tamamlanamadı (HTTP '+response.status+').');return data};
- function paymentLabel(value){return ({'dogrulandi':'Ödeme onaylandı','beyan-edildi':'Dekont inceleniyor','odenmedi':'Ödeme bekliyor','odeme-reddedildi':'Dekont reddedildi','yeni-dekont':'Yeni dekont bekleniyor'})[value]||'Durum bilinmiyor'}
- function badge(value,kind='status'){const span=document.createElement('span');span.className='application-badge '+kind+' '+String(value||'').replace(/[^a-z0-9-]/gi,'');span.textContent=kind==='payment'?paymentLabel(value):({yeni:'Yeni',inceleniyor:'İnceleniyor',onaylandi:'Onaylandı',reddedildi:'Reddedildi','eksik-bilgi':'Eksik bilgi',iptal:'İptal',tamamlandi:'Tamamlandı'})[value]||'—';return span}
+ function applicationStatus(value){if(value==='onaylandi')return{label:'Başvuru Onaylandı',tone:'approved'};if(value==='reddedildi')return{label:'Reddedildi',tone:'rejected'};return{label:'Beklemede',tone:'pending'}}
+ function statusBadge(value){const status=applicationStatus(value),span=document.createElement('span');span.className='application-badge application-status '+status.tone;span.textContent=status.label;return span}
  function message(value,error=false){const el=$('#applications-message');if(!el)return;el.textContent=value;el.hidden=!value;el.dataset.tone=error?'error':'info'}
  function populateCities(){
   const select=$('#applications-city'),current=select.value,values=[...new Set(rows.map(item=>item.cityName).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'tr'));
@@ -23,8 +23,8 @@
    const period=document.createElement('td');period.textContent=tr(item.sessionPeriod||item.session?.period);
    const city=document.createElement('td');city.textContent=tr(item.cityName);
    const exam=document.createElement('td');exam.textContent=tr(item.branchName||item.groupName);
-   const pay=document.createElement('td');pay.append(badge(item.payment,'payment'));if(item.payment==='dogrulandi'){const check=document.createElement('span');check.className='payment-check';check.setAttribute('aria-label','Ödeme doğrulandı');check.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg>';pay.append(check)}
-   const actionCell=document.createElement('td'),detailButton=document.createElement('a');detailButton.className='application-detail-action';detailButton.textContent='Detayları Gör';detailButton.href='/panel/dashboard.php?section=basvurular&detail='+encodeURIComponent(item.id);detailButton.dataset.applicationDetails=String(item.id);actionCell.append(detailButton);row.append(nameCell,period,city,exam,pay,actionCell);row.addEventListener('click',event=>{if(!event.target.closest('button,a'))openDetails(item)});row.addEventListener('keydown',event=>{if((event.key==='Enter'||event.key===' ')&&event.target===row){event.preventDefault();openDetails(item)}});body.append(row)
+   const statusCell=document.createElement('td');statusCell.append(statusBadge(item.status));
+   const actionCell=document.createElement('td'),detailButton=document.createElement('a');detailButton.className='application-detail-action';detailButton.textContent='Detayları Gör';detailButton.href='/panel/dashboard.php?section=basvurular&detail='+encodeURIComponent(item.id);detailButton.dataset.applicationDetails=String(item.id);actionCell.append(detailButton);row.append(nameCell,period,city,exam,statusCell,actionCell);row.addEventListener('click',event=>{if(!event.target.closest('button,a'))openDetails(item)});row.addEventListener('keydown',event=>{if((event.key==='Enter'||event.key===' ')&&event.target===row){event.preventDefault();openDetails(item)}});body.append(row)
   }
   $('#applications-total').textContent=String(total);
   $('#applications-page').textContent=total?Math.min((page-1)*30+1,total)+'–'+Math.min(page*30,total)+' / '+total:'0 başvuru';
@@ -95,13 +95,17 @@
  $('#applications-refresh').addEventListener('click',load);
  $('#applications-reset').addEventListener('click',async event=>{
   const button=event.currentTarget;
-  if(!confirm('Bu işlem, mevcut tüm başvuruları İPTAL durumuna alır ve eski sınav sonuçlarını kaldırır. Başvuru bilgileri, dekontlar ve ödeme kayıtları korunur. Devam edilsin mi?'))return;
-  button.disabled=true;message('Eski başvurular iptal ediliyor…');
+  if(!confirm('Bu işlem sınav modülündeki TÜM başvuruları, sınav oturumlarını, kategori ve sınav türlerini, sonuçları, dekontları ve kesin kayıt bilgilerini kalıcı olarak siler. Site haberleri ve diğer panel içerikleri korunur. Devam etmek için ikinci onay istenir.'))return;
+  const confirmation=prompt('Sınav modülünü sıfırlamak için SIFIRLA yazın:');
+  if(confirmation!=='SIFIRLA')return;
+  button.disabled=true;message('Sınav modülü verileri siliniyor…');
   try{
-   const response=await window.novaWorkerApi('/api/panel/applications/reset',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({confirm:'IPTAL'})});
+   const response=await window.novaWorkerApi('/api/panel/reset-application-cycle',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({confirmation:'SIFIRLA'})});
    let data={};try{data=await response.json()}catch{}
-   if(!response.ok)throw Error(data.error||'Başvurular iptal edilemedi (HTTP '+response.status+').');
-   page=1;await load();message(data.message||'Eski başvurular iptal edildi. Yeni başvurular alınabilir.');
+   if(!response.ok)throw Error(data.error||'Sınav modülü sıfırlanamadı (HTTP '+response.status+').');
+   page=1;await load();
+   const total=Object.values(data.removed||{}).reduce((sum,value)=>sum+(Number(value)||0),0);
+   message('Sınav modülü sıfırlandı. '+total+' kayıt ve tanım kaldırıldı; yeni dönem için modül boş.');
   }catch(error){message(error.message,true)}
   finally{button.disabled=false}
  });
