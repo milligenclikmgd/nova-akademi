@@ -30,11 +30,29 @@
   if(summaryEmpty)summaryEmpty.hidden=grouped.size>0;
   [...grouped.entries()].sort(([a],[b])=>a.localeCompare(b,'tr')).forEach(([city,items])=>{const section=document.createElement('section'),heading=document.createElement('h3'),list=document.createElement('ul');section.className='active-exam-city';heading.textContent=city;items.sort((a,b)=>(a.title||a.branchName||'').localeCompare(b.title||b.branchName||'','tr')).forEach(item=>{const li=document.createElement('li'),name=document.createElement('strong'),meta=document.createElement('small');name.textContent=item.title||item.branchName||'Sınav';meta.textContent=[item.period,item.status==='open'?'Başvuruya açık':item.status==='published'?'Yayında':item.status==='draft'?'Taslak':item.status==='closed'?'Durduruldu':item.status==='archived'?'Arşivlendi':'Tamamlandı'].filter(Boolean).join(' · ');li.append(name,meta);list.append(li)});section.append(heading,list);summaryList?.append(section)});
  }
+ function panelUnavailable(text){
+  window.dispatchEvent(new CustomEvent('nova:panel-unavailable',{detail:{message:text}}));
+ }
  async function loadWorkerData(){
-  const session=await window.novaWorkerApi('/api/panel/session');if(!session.ok){notice.hidden=false;openConnect();return}
+  let session;
+  try{session=await window.novaWorkerApi('/api/panel/session')}catch(error){notice.hidden=false;panelUnavailable('Sınav servisine ulaşılamadı. Bağlantıyı yenileyip tekrar deneyin.');throw error}
+  if(!session.ok){
+   notice.hidden=false;
+   if(session.status===401)openConnect();
+   let data={};try{data=await session.json()}catch{}
+   const text=data.error||'Sınav servisi oturumu doğrulanamadı.';
+   panelUnavailable(session.status===401?'Sınav servisi bağlantısı gerekiyor. Üstteki “Bağlantıyı kur” düğmesini kullanın.':text);
+   if(session.status!==401)throw Error(text);
+   return;
+  }
   const [settingsResponse,sessionsResponse,applicationsResponse]=await Promise.all([window.novaWorkerApi('/api/panel/settings'),window.novaWorkerApi('/api/panel/exam-sessions'),window.novaWorkerApi('/api/panel/applications/summary')]);
   const [settingsData,sessionsData,applicationData]=await Promise.all([settingsResponse.json(),sessionsResponse.json(),applicationsResponse.ok?applicationsResponse.json():Promise.resolve({})]);
-  if(!settingsResponse.ok||!sessionsResponse.ok){notice.hidden=false;openConnect();return}
+  if(!settingsResponse.ok||!sessionsResponse.ok){
+   notice.hidden=false;
+   const failed=!settingsResponse.ok?settingsData:sessionsData;
+   const text=failed.error||'Sınav verileri alınamadı.';
+   panelUnavailable(text);throw Error(text);
+  }
   notice.hidden=true;renderSummary(sessionsData.sessions||[],settingsData.settings||{},applicationData);
   window.dispatchEvent(new CustomEvent('nova:panel-ready',{detail:{settings:settingsData.settings}}));
  }
