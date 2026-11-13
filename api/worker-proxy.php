@@ -71,6 +71,8 @@ $method=strtoupper((string)($_SERVER['REQUEST_METHOD']??''));
 $appDetail=preg_match('~^/api/panel/applications/[a-f0-9-]{36}(?:/(?:receipt|registration-payment-receipt))?$~',$path)===1;
 $allowed=($method==='GET'&&in_array($path,['/api/panel/session','/api/panel/settings','/api/panel/exam-sessions','/api/panel/applications/summary','/api/panel/applications'],true))
  ||($method==='GET'&&$appDetail)
+ ||($method==='GET'&&$path==='/api/panel/results')
+ ||($method==='PATCH'&&preg_match('~^/api/panel/results/[a-f0-9-]{36}$~',$path)===1)
  ||($method==='PUT'&&$path==='/api/panel/settings')
  ||($method==='POST'&&in_array($path,['/api/panel/exam-sessions','/api/panel/exam-sessions/bulk-delete','/api/panel/applications/reset'],true))
  ||(in_array($method,['PATCH','DELETE'],true)&&preg_match('~^/api/panel/exam-sessions/[a-f0-9-]{36}$~',$path)===1)
