@@ -208,7 +208,7 @@ export class ApplicationStore {
   }
   if(path==='/api/results/track'&&method==='GET'){
    this.rate('results-track:'+(request.headers.get('CF-Connecting-IP')||'local'),30);
-   const reference=(url.searchParams.get('reference')||'').trim().toUpperCase();if(!/^NOVA-\d{4}-0[1-9]\d*$/.test(reference))return reply({found:false});
+   const reference=(url.searchParams.get('reference')||'').trim().toUpperCase();if(!/^(?:NOVA-\d{4}-0[1-9]\d*|\d{2}-[A-Z]{3}-\d{3})$/.test(reference))return reply({found:false});
    const row=this.sql.exec('SELECT a.reference,a.city,a.data,r.result FROM applications a LEFT JOIN exam_results r ON r.application_id=a.id WHERE a.reference=? LIMIT 1',reference).toArray()[0];if(!row)return reply({found:false});
    const data=JSON.parse(row.data),settings=this.getSettings(),sessionId=String(data.sessionId||''),session=sessionId?settings.examSessions.find(item=>item.id===sessionId&&item.city===row.city):null,branch=String(data.branch||''),published=session?Boolean(session.resultsPublished):Boolean(branch&&(settings.cityExams?.[row.city]||[]).includes(branch));
    const result=['asil','yedek1','yedek2','yedek3','kazanamadi','katilmadi','bekliyor'].includes(row.result)?row.result:'bekliyor';
