@@ -23,5 +23,6 @@
  ['results-filter-period','results-filter-city','results-filter-exam'].forEach(id=>$('#'+id).addEventListener('change',loadRows));
  $('#results-search').addEventListener('input',renderRows);$('#results-refresh').addEventListener('click',refreshSessions);$('#results-publish').addEventListener('click',publishResults);
  window.addEventListener('nova:panel-ready',()=>refreshSessions().catch(error=>show(error.message,true)));
+ window.addEventListener('nova:panel-unavailable',event=>{requestId++;rows=[];renderRows();show(event.detail?.message||'Sınav servisine bağlanılamadı. Üstteki bağlantı düğmesini kullanın.',true)});
  if(window.novaWorkerApi)refreshSessions().catch(error=>show(error.message,true));
 })();
