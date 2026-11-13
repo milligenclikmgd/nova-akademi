@@ -19,28 +19,36 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
  }
  guard();
  if(isset($_POST['logout'])){$_SESSION=[];session_destroy();header('Location: /panel/');exit;}
- if(isset($_POST['delete'])){$stmt=$pdo->prepare('DELETE FROM slides WHERE id=?');$stmt->execute([(int)$_POST['delete']]);header('Location: /panel/dashboard.php?section=slider');exit;}
+ ensure_slide_schema($pdo);
+ if(isset($_POST['delete'])){
+  $stmt=$pdo->prepare('DELETE FROM slides WHERE id=?');$stmt->execute([(int)$_POST['delete']]);$device=($_POST['device']??'desktop')==='mobile'?'mobile':'desktop';header('Location: /panel/dashboard.php?section=slider&device='.$device);exit;
+ }
+ if(isset($_POST['move'])){
+  $id=(int)($_POST['move']??0);$direction=($_POST['direction']??'')==='up'?-1:1;$stmt=$pdo->prepare('SELECT id FROM slides WHERE device=? ORDER BY sort_order,id');$device=($_POST['device']??'desktop')==='mobile'?'mobile':'desktop';$stmt->execute([$device]);$ids=array_map('intval',$stmt->fetchAll(PDO::FETCH_COLUMN));$position=array_search($id,$ids,true);if($position!==false){$other=$position+$direction;if(isset($ids[$other])){[$ids[$position],$ids[$other]]=[$ids[$other],$ids[$position]];$pdo->beginTransaction();$update=$pdo->prepare('UPDATE slides SET sort_order=? WHERE id=?');foreach($ids as $order=>$slideId)$update->execute([$order,$slideId]);$pdo->commit();}}
+  header('Location: /panel/dashboard.php?section=slider&device='.$device);exit;
+ }
  if(isset($_POST['save'])){
   $type=(string)($_POST['media_type']??'image');if(!in_array($type,['image','video'],true))redirect('Medya türü geçersiz.');
-  $id=(int)($_POST['id']??0);$existing=null;
-  if($id){$stmt=$pdo->prepare('SELECT * FROM slides WHERE id=?');$stmt->execute([$id]);$existing=$stmt->fetch();if(!$existing)redirect('Kayıt bulunamadı.');}
+  $device=($_POST['device']??'desktop')==='mobile'?'mobile':'desktop';$id=(int)($_POST['id']??0);$existing=null;
+  if($id){$stmt=$pdo->prepare('SELECT * FROM slides WHERE id=? AND device=?');$stmt->execute([$id,$device]);$existing=$stmt->fetch();if(!$existing)redirect('Slider kaydı bulunamadı.');}
   $field=$type==='video'?'video_url':'image_url';$url=$existing[$field]??null;
   if(!empty($_FILES['media']['name'])){
    $file=$_FILES['media'];if($file['error']!==UPLOAD_ERR_OK||$file['size']>150*1024*1024)redirect('Dosya yüklenemedi veya 150 MB sınırını aştı.');
-   $mime=(new finfo(FILEINFO_MIME_TYPE))->file($file['tmp_name']);
-   $allowed=$type==='video'?['video/mp4'=>'mp4','video/webm'=>'webm']:['image/jpeg'=>'jpg','image/png'=>'png','image/webp'=>'webp'];
+   $mime=(new finfo(FILEINFO_MIME_TYPE))->file($file['tmp_name']);$allowed=$type==='video'?['video/mp4'=>'mp4','video/webm'=>'webm']:['image/jpeg'=>'jpg','image/png'=>'png','image/webp'=>'webp'];
    if(!isset($allowed[$mime]))redirect('Dosya türü desteklenmiyor.');
-   $dir=dirname(__DIR__).'/uploads';if(!is_dir($dir))mkdir($dir,0755,true);
-   $name=bin2hex(random_bytes(16)).'.'.$allowed[$mime];
-   if(!move_uploaded_file($file['tmp_name'],$dir.'/'.$name))redirect('Dosya kaydedilemedi.');
-   $url='/uploads/'.$name;
+   $dir=dirname(__DIR__).'/uploads';if(!is_dir($dir)&&!mkdir($dir,0755,true))redirect('Yükleme klasörü oluşturulamadı.');
+   $name=bin2hex(random_bytes(16)).'.'.$allowed[$mime];if(!move_uploaded_file($file['tmp_name'],$dir.'/'.$name))redirect('Dosya kaydedilemedi.');$url='/uploads/'.$name;
   }
-  if(!$url)redirect('Görsel veya video seçin.');
-  $alt=mb_substr(trim((string)($_POST['alt_text']??'')),0,300);
+  if(!$url)redirect('Bu slider için görsel veya video seçin.');
+  $alt=mb_substr(trim((string)($_POST['alt_text']??'')),0,300);$title=mb_substr(trim((string)($_POST['title']??'')),0,180);$subtitle=mb_substr(trim((string)($_POST['subtitle']??'')),0,500);
+  $titleColor=(string)($_POST['title_color']??'#ffffff');$subtitleColor=(string)($_POST['subtitle_color']??'#ffffff');foreach([$titleColor,$subtitleColor] as $color)if(!preg_match('/^#[0-9a-fA-F]{6}$/',$color))redirect('Metin rengini kontrol edin.');
+  $link=trim((string)($_POST['link_url']??''));if($link!==''){if(str_starts_with($link,'/')&&!str_starts_with($link,'//')){}else{$parsed=parse_url($link);if(!$parsed||!in_array(strtolower($parsed['scheme']??''),['https','http'],true)||empty($parsed['host']))redirect('Bağlantı HTTPS/HTTP veya site içi adres olmalı.');}}
+  $enabled=isset($_POST['hotspot_enabled'])?1:0;$x=(float)($_POST['hotspot_x']??10);$y=(float)($_POST['hotspot_y']??70);$width=(float)($_POST['hotspot_width']??28);$height=(float)($_POST['hotspot_height']??18);if($x<0||$y<0||$width<=0||$height<=0||$x+$width>100||$y+$height>100)redirect('Tıklama alanının yüzde konumunu kontrol edin.');if($enabled&&$link==='')redirect('Tıklama alanı için bağlantı adresi girin.');
   $order=(int)($_POST['sort_order']??0);$published=isset($_POST['is_published'])?1:0;
-  if($id){$stmt=$pdo->prepare('UPDATE slides SET media_type=?,image_url=?,video_url=?,alt_text=?,sort_order=?,is_published=? WHERE id=?');$stmt->execute([$type,$type==='image'?$url:null,$type==='video'?$url:null,$alt,$order,$published,$id]);}
-  else{$stmt=$pdo->prepare('INSERT INTO slides(media_type,image_url,video_url,alt_text,sort_order,is_published) VALUES(?,?,?,?,?,?)');$stmt->execute([$type,$type==='image'?$url:null,$type==='video'?$url:null,$alt,$order,$published]);}
-  header('Location: /panel/dashboard.php?section=slider');exit;
+  if($id){$stmt=$pdo->prepare('UPDATE slides SET media_type=?,image_url=?,video_url=?,alt_text=?,sort_order=?,is_published=?,title=?,title_color=?,subtitle=?,subtitle_color=?,link_url=?,hotspot_enabled=?,hotspot_x=?,hotspot_y=?,hotspot_width=?,hotspot_height=? WHERE id=? AND device=?');$stmt->execute([$type,$type==='image'?$url:null,$type==='video'?$url:null,$alt,$order,$published,$title,$titleColor,$subtitle,$subtitleColor,$link,$enabled,$x,$y,$width,$height,$id,$device]);}
+  else{$stmt=$pdo->prepare('INSERT INTO slides(device,media_type,image_url,video_url,alt_text,sort_order,is_published,title,title_color,subtitle,subtitle_color,link_url,hotspot_enabled,hotspot_x,hotspot_y,hotspot_width,hotspot_height) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)');$stmt->execute([$device,$type,$type==='image'?$url:null,$type==='video'?$url:null,$alt,$order,$published,$title,$titleColor,$subtitle,$subtitleColor,$link,$enabled,$x,$y,$width,$height]);}
+  header('Location: /panel/dashboard.php?section=slider&device='.$device);exit;
+ }
  }
 }
 $flash=$_SESSION['flash']??'';unset($_SESSION['flash']);
