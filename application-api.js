@@ -82,8 +82,8 @@ export function validateCMS(input,previous){
   const link=sliderLink(item.link,'Slider'),mobileLink=sliderLink(item.mobileLink,'Mobil slider');
   return{id,mediaType,image,video,mobileMediaType,mobileImage,mobileVideo,alt:required(cmsText(item.alt||'','Görsel açıklaması',300),'Görsel açıklaması',300),
    title:cmsText(item.title||'','Slider başlığı',180),titleColor:sliderColor(item.titleColor,'Başlık'),subtitle:cmsText(item.subtitle||'','Slider alt yazısı',500),subtitleColor:sliderColor(item.subtitleColor,'Alt yazı'),
-   mobileTitle:cmsText(item.mobileTitle||'','Mobil slider başlığı',180),mobileTitleColor:sliderColor(item.mobileTitleColor,'Mobil başlık'),mobileSubtitle:cmsText(item.mobileSubtitle||'','Mobil slider alt yazısı',500),mobileSubtitleColor:sliderColor(item.mobileSubtitleColor,'Mobil alt yazı'),
-   link,hotspot:sliderHotspot(item.hotspot,link,'Masaüstü'),mobileLink,mobileHotspot:sliderHotspot(item.mobileHotspot,mobileLink,'Mobil'),order:index,published:item.published!==false};
+   mobileTextEnabled:item.mobileTextEnabled===true,mobileTitle:cmsText(item.mobileTitle||'','Mobil slider başlığı',180),mobileTitleColor:sliderColor(item.mobileTitleColor,'Mobil başlık'),mobileSubtitle:cmsText(item.mobileSubtitle||'','Mobil slider alt yazısı',500),mobileSubtitleColor:sliderColor(item.mobileSubtitleColor,'Mobil alt yazı'),
+   link,hotspot:sliderHotspot(item.hotspot,link,'Masaüstü'),mobileLinkEnabled:item.mobileLinkEnabled===true,mobileLink,mobileHotspot:sliderHotspot(item.mobileHotspot,mobileLink,'Mobil'),order:index,published:item.published!==false};
  });
  return {contact:{phone,email,address,extra:contactExtra},social:networks,faq,partners,boardMembers,articles,slides,articleSeedVersion:2};
 }
