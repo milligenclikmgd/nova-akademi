@@ -49,7 +49,6 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
   else{$stmt=$pdo->prepare('INSERT INTO slides(device,media_type,image_url,video_url,alt_text,sort_order,is_published,title,title_color,subtitle,subtitle_color,link_url,hotspot_enabled,hotspot_x,hotspot_y,hotspot_width,hotspot_height) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)');$stmt->execute([$device,$type,$type==='image'?$url:null,$type==='video'?$url:null,$alt,$order,$published,$title,$titleColor,$subtitle,$subtitleColor,$link,$enabled,$x,$y,$width,$height]);}
   header('Location: /panel/dashboard.php?section=slider&device='.$device);exit;
  }
- }
 }
 $flash=$_SESSION['flash']??'';unset($_SESSION['flash']);
 $installed=(int)$pdo->query('SELECT COUNT(*) FROM nova_admins')->fetchColumn()>0;
