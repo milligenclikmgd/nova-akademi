@@ -1,5 +1,6 @@
 <?php
 require dirname(__DIR__).'/includes/bootstrap.php';
+if($_SERVER['REQUEST_METHOD']==='GET'&&!empty($_SESSION['admin'])){header('Location: /panel/dashboard.php');exit;}
 $pdo->exec("CREATE TABLE IF NOT EXISTS nova_admins (id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,username VARCHAR(100) NOT NULL UNIQUE,password_hash VARCHAR(255) NOT NULL) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
 if($_SERVER['REQUEST_METHOD']==='POST'){
  check_csrf();
