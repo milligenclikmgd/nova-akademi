@@ -94,3 +94,33 @@ body[data-page-key="faaliyet-alanlari"] .activity-hero-media video{
  object-fit:cover;
  object-position:center;
 }
+
+
+/* Faaliyet hero: video sağ ve üst kenara kadar uzanır; soldaki yumuşak geçiş korunur. */
+body[data-page-key="faaliyet-alanlari"] .activity-band{position:relative;overflow:hidden;min-height:360px;padding:0}
+body[data-page-key="faaliyet-alanlari"] .activity-hero-layout{
+ width:100%;max-width:none;min-height:360px;margin:0;padding:0 0 0 max(24px,calc((100vw - 1160px)/2));
+ display:block;position:relative
+}
+body[data-page-key="faaliyet-alanlari"] .activity-hero-copy{
+ position:relative;z-index:1;width:min(43%,520px);padding:54px 0
+}
+body[data-page-key="faaliyet-alanlari"] .activity-hero-media{
+ position:absolute;inset:0 0 0 auto;width:56%;height:100%;margin:0;border-radius:0;
+ box-shadow:none;background:#061c32
+}
+body[data-page-key="faaliyet-alanlari"] .activity-hero-media video{
+ width:100%;height:100%;max-height:none;aspect-ratio:auto;object-fit:cover;object-position:center
+}
+body[data-page-key="faaliyet-alanlari"] .activity-video-tools{display:none}
+@media(max-width:800px){
+ body[data-page-key="faaliyet-alanlari"] .activity-band{min-height:0;padding:0}
+ body[data-page-key="faaliyet-alanlari"] .activity-hero-layout{min-height:0;padding:0 0 0 24px;display:flex;flex-direction:column}
+ body[data-page-key="faaliyet-alanlari"] .activity-hero-copy{width:100%;padding:30px 20px 22px 0}
+ body[data-page-key="faaliyet-alanlari"] .activity-hero-media{position:relative;inset:auto;width:100%;height:auto;aspect-ratio:16/9}
+ body[data-page-key="faaliyet-alanlari"] .activity-hero-media video{height:100%;aspect-ratio:16/9}
+}
+@media(max-width:560px){
+ body[data-page-key="faaliyet-alanlari"] .activity-hero-layout{padding-left:17px}
+ body[data-page-key="faaliyet-alanlari"] .activity-hero-copy{padding-top:26px}
+}
