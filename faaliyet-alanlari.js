@@ -1,37 +1,15 @@
 (() => {
   const video = document.getElementById('activity-video');
-  const sound = document.getElementById('activity-sound');
-  const status = document.getElementById('activity-video-status');
-  if (video && sound) {
+  if (video) {
     video.muted = true;
-    video.volume = 0.35;
-    const syncSound = () => {
-      const audible = !video.muted && video.volume > 0;
-      sound.textContent = audible ? 'Sesi kapat' : 'Sesi aç';
-      sound.setAttribute('aria-pressed', String(audible));
-    };
-    const start = () => video.play().catch(() => {status.textContent = 'Videoyu başlatmak için oynat düğmesine dokunun.';});
-    sound.addEventListener('click', () => {
-      video.muted = !video.muted && video.volume > 0;
-      if (!video.muted && video.volume === 0) video.volume = 0.35;
-      syncSound();
-      if (video.paused) start();
+    video.defaultMuted = true;
+    video.loop = true;
+    video.playsInline = true;
+    video.controls = false;
+    video.play().catch(() => {
+      // Muted autoplay is supported by modern browsers; retry when media becomes ready.
+      video.addEventListener('canplay', () => video.play().catch(() => {}), {once:true});
     });
-    video.addEventListener('volumechange', syncSound);
-    video.addEventListener('playing', () => {status.textContent = '';});
-    video.addEventListener('error', () => {status.textContent = 'Video oynatılamadı. Lütfen daha sonra tekrar deneyin.';});
-    const base = location.hostname === 'nova-akademi.vercel.app' ? 'https://nova-akademi.milligenclikmgd.workers.dev' : '';
-    fetch(base + '/api/site-media/activity-video', {cache:'no-store',signal:AbortSignal.timeout(8000)})
-      .then(response => {if (!response.ok) throw Error('Video bilgisi alınamadı');return response.json();})
-      .then(({video:media}) => {
-        // Only a path on our media backend may replace the default NOVA video.
-        if (!media || !/^\/api\/site-media\/activity-video\/file\?v=[a-f0-9-]+$/.test(media.url)) return;
-        video.src = base + media.url;
-        video.load();
-        start();
-      }).catch(() => { /* The bundled NOVA video remains playable offline. */ });
-    syncSound();
-    start();
   }
   const timeline = document.querySelector('.activity-timeline');
   if (!timeline) return;
