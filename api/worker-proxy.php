@@ -69,7 +69,7 @@ if($_SERVER['REQUEST_METHOD']==='POST'&&isset($_GET['connect'])){
 $rawPath=(string)($_GET['path']??'');$parsed=parse_url($rawPath);$path=(string)($parsed['path']??'');$query=(string)($parsed['query']??'');$target=$path.($query!==''?'?'.$query:'');
 $method=strtoupper((string)($_SERVER['REQUEST_METHOD']??''));
 $appDetail=preg_match('~^/api/panel/applications/[a-f0-9-]{36}(?:/(?:receipt|registration-payment-receipt))?$~',$path)===1;
-$allowed=($method==='GET'&&in_array($path,['/api/panel/session','/api/panel/settings','/api/panel/exam-sessions','/api/panel/applications/summary','/api/panel/applications'],true))
+$allowed=($method==='GET'&&in_array($path,['/api/panel/session','/api/panel/settings','/api/panel/exam-sessions','/api/panel/applications/summary','/api/panel/applications','/api/panel/messages'],true))
  ||($method==='GET'&&$appDetail)
  ||($method==='GET'&&$path==='/api/panel/results')
  ||($method==='PATCH'&&preg_match('~^/api/panel/results/[a-f0-9-]{36}$~',$path)===1)
