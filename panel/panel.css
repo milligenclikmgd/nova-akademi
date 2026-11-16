@@ -144,3 +144,35 @@ body{font-size:14px}
 .contact-admin-tabs{display:flex;gap:8px;margin-bottom:16px;border-bottom:1px solid #dce6f1}.contact-admin-tabs a{padding:10px 15px;border:1px solid #dce6f1;border-bottom:0;border-radius:9px 9px 0 0;background:#fff;color:#506784;text-decoration:none;font-size:13px;font-weight:700}.contact-admin-tabs a.active{background:#eaf3ff;border-color:#b7d4f8;color:#075cc4}.contact-admin{display:grid;gap:14px}.contact-info-form{display:grid;gap:20px;padding:18px 0 4px}.contact-info-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.contact-info-grid label,.contact-social-grid label{display:grid;gap:6px;color:#314760;font-size:12px;font-weight:700}.contact-info-grid label.wide{grid-column:1/-1}.contact-info-grid input,.contact-social-grid input{min-height:42px;padding:9px 11px;border:1px solid #d5e0eb;border-radius:8px;background:#fff;font:inherit;color:#102541}.contact-social-editor{border-top:1px solid #e0e8f2;padding-top:16px}.contact-social-editor h3{margin:0;font-size:15px}.contact-social-editor p{margin:5px 0 14px;color:#64748b;font-size:12px}.contact-social-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.contact-social-grid label>span{display:flex;align-items:center;gap:7px}.contact-social-grid svg{width:18px;height:18px;fill:currentColor;stroke:currentColor;stroke-width:1.2}.contact-form-actions{display:flex;justify-content:flex-end}.contact-message-tools{display:flex;align-items:center;gap:12px;color:#5d718a;font-size:12px}.contact-message-tools>span strong{color:#102541}.contact-messages-list{display:grid;gap:10px;padding-top:14px}.contact-message-card{padding:14px 16px;border:1px solid #dfe7ef;border-radius:11px;background:#fff}.contact-message-head{display:flex;align-items:center;justify-content:space-between;gap:12px}.contact-message-head strong{font-size:14px}.contact-message-head time{color:#73839a;font-size:11px}.contact-message-fields{display:flex;flex-wrap:wrap;gap:8px 18px;padding:10px 0;color:#5b6f87;font-size:12px}.contact-message-fields a{color:#145eb5;text-decoration:none}.contact-message-card details{border-top:1px solid #edf1f5;padding-top:9px}.contact-message-card summary{color:#145eb5;font-size:12px;font-weight:700;cursor:pointer}.contact-message-body{margin:10px 0 0;white-space:pre-wrap;overflow-wrap:anywhere;color:#273b55;font-size:13px;line-height:1.65}
 @media(max-width:800px){.contact-info-grid,.contact-social-grid{grid-template-columns:1fr}}
 @media(max-width:540px){.contact-info-grid label.wide{grid-column:auto}.contact-message-head{align-items:flex-start;flex-direction:column}.contact-message-tools{width:100%;justify-content:space-between}}
+
+
+/* Haber ve duyuru yönetimi */
+.news-admin-list{display:grid;gap:10px;margin-top:18px}
+.news-admin-row{display:grid;grid-template-columns:104px minmax(0,1fr) auto;align-items:center;gap:16px;padding:12px;border:1px solid #e3eaf2;border-radius:12px;background:#fff}
+.news-admin-thumb{width:104px;height:72px;object-fit:cover;border-radius:8px;background:#edf2f7}
+.news-admin-copy{min-width:0;display:grid;gap:5px}
+.news-admin-copy strong{color:#132640;font-size:14px}
+.news-admin-copy small{overflow:hidden;color:#64748b;text-overflow:ellipsis;white-space:nowrap;font-size:12px}
+.news-admin-state{width:max-content;color:#087443;background:#e9f8f0;border-radius:20px;padding:3px 9px;font-size:10px;font-weight:800}
+.news-admin-state.is-draft{color:#77551b;background:#fff5dc}
+.news-admin-actions{display:flex;align-items:center;gap:6px}
+.news-admin-actions button{min-width:36px;padding:7px 10px}
+.news-editor-card{margin-top:22px}
+.news-form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.news-form-grid label,.news-form-wide{display:grid;align-content:start;gap:7px;color:#33435d;font-size:12px;font-weight:700}
+.news-form-wide{grid-column:1/-1}
+.news-form-grid input:not([type=checkbox]),.news-form-grid select,.news-form-grid textarea{width:100%;min-height:44px;padding:10px 12px;border:1px solid #d8e1ec;border-radius:9px;background:#fff;color:#12213f;font:inherit}
+.news-form-grid textarea{resize:vertical}
+.news-form-grid small{color:#738198;font-size:11px;font-weight:500}
+.news-cover-preview{display:block;max-width:360px}
+.news-cover-preview img{display:block;width:100%;max-height:220px;object-fit:cover;border-radius:9px}
+.news-field-label{display:block;margin-bottom:7px;color:#33435d;font-size:12px;font-weight:700}
+.news-toolbar{display:flex;flex-wrap:wrap;gap:6px;padding:8px;border:1px solid #d8e1ec;border-bottom:0;border-radius:9px 9px 0 0;background:#f6f8fb}
+.news-toolbar button{min-height:34px;padding:6px 10px;border:1px solid #dce3ec;border-radius:6px;background:#fff;color:#33435d;cursor:pointer;font:inherit;font-size:12px}
+.news-toolbar button:hover{background:#eaf2fb}
+.news-rich-editor{min-height:260px;padding:14px;border:1px solid #d8e1ec;border-radius:0 0 9px 9px;background:#fff;color:#172b46;font-size:14px;line-height:1.75;outline:none}
+.news-rich-editor:focus{border-color:#1768d2;box-shadow:0 0 0 3px #1768d21a}
+.news-rich-editor:empty:before{content:"Haber veya duyuru metnini buraya yazın…";color:#9aa6b6}
+.news-publish-toggle{display:flex!important;align-items:center;gap:9px!important}
+.news-publish-toggle input{width:18px;height:18px;accent-color:#1768d2}
+@media(max-width:760px){.news-admin-row{grid-template-columns:76px minmax(0,1fr);gap:11px}.news-admin-thumb{width:76px;height:62px}.news-admin-actions{grid-column:1/-1;justify-content:flex-end}.news-form-grid{grid-template-columns:1fr}.news-form-wide{grid-column:auto}.news-admin-copy small{white-space:normal}}
