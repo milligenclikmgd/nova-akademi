@@ -1,5 +1,5 @@
 // The existing panel session protects writes; only the published video is public.
-export const MAX_VIDEO_BYTES = 25 * 1024 * 1024;
+export const MAX_VIDEO_BYTES = 100 * 1024 * 1024;
 const PART_SIZE = 65536;
 const error = (message, status = 400) => { throw Object.assign(new Error(message), {status}); };
 const json = data => new Response(JSON.stringify(data), {headers: {'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store'}});
@@ -12,9 +12,9 @@ export function initializeSiteMedia(sql) {
 }
 
 export async function saveCMSMedia(request,store){
-  const limit=MAX_VIDEO_BYTES,declared=Number(request.headers.get('Content-Length')||0);if(declared>limit)error('Dosya en fazla 25 MB olabilir.',413);
+  const limit=MAX_VIDEO_BYTES,declared=Number(request.headers.get('Content-Length')||0);if(declared>limit)error('Dosya en fazla 100 MB olabilir.',413);
   const type=(request.headers.get('Content-Type')||'').split(';')[0].toLowerCase(),reader=request.body?.getReader();if(!reader)error('Yüklenecek dosyayı seçin.');const parts=[];let size=0;
-  while(true){const {done,value}=await reader.read();if(done)break;size+=value.byteLength;if(size>limit){await reader.cancel();error('Dosya en fazla 25 MB olabilir.',413)}parts.push(value)}
+  while(true){const {done,value}=await reader.read();if(done)break;size+=value.byteLength;if(size>limit){await reader.cancel();error('Dosya en fazla 100 MB olabilir.',413)}parts.push(value)}
   if(!size)error('Dosya boş olamaz.');const bytes=new Uint8Array(size);let offset=0;for(const part of parts){bytes.set(part,offset);offset+=part.length}
   const imageTypes=['image/jpeg','image/png','image/webp','image/gif'],videoTypes=['video/mp4','video/webm'];if(!imageTypes.includes(type)&&!videoTypes.includes(type))error('JPG, PNG, WebP, GIF, MP4 veya WebM dosyası yükleyin.');
   if(type.startsWith('image/')&&size>10*1024*1024)error('Görsel dosyaları en fazla 10 MB olabilir.',413);
@@ -44,7 +44,7 @@ export function videoSettings(sql) {
 }
 
 async function readVideo(request) {
-  if (Number(request.headers.get('Content-Length')) > MAX_VIDEO_BYTES) error('Video en fazla 25 MB olabilir.', 413);
+  if (Number(request.headers.get('Content-Length')) > MAX_VIDEO_BYTES) error('Video en fazla 100 MB olabilir.', 413);
   const reader = request.body?.getReader();
   if (!reader) error('Bir video dosyası seçin.');
   const chunks = []; let size = 0;
@@ -52,7 +52,7 @@ async function readVideo(request) {
     const {done, value} = await reader.read();
     if (done) break;
     size += value.byteLength;
-    if (size > MAX_VIDEO_BYTES) { await reader.cancel(); error('Video en fazla 25 MB olabilir.', 413); }
+    if (size > MAX_VIDEO_BYTES) { await reader.cancel(); error('Video en fazla 100 MB olabilir.', 413); }
     chunks.push(value);
   }
   if (size < 16) error('Geçerli bir MP4 veya WebM video seçin.');
