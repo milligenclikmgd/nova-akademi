@@ -120,3 +120,8 @@
   .about-page .about-hero{min-height:300px;padding-bottom:20px;background-position:66% top}
   .about-page .about-hero h1{font-size:clamp(28px,8vw,38px)}
 }
+
+/* Hakkımızda görselleri, belirlenen bölüm planıyla eşleştirilir. */
+.about-page .visual-history{background-image:linear-gradient(145deg,rgba(3,37,71,.08),rgba(3,43,77,.38)),url('assets/nova-folkdance-hero.jpg')!important;background-position:center!important;background-size:cover!important}
+.about-page .visual-selection{background-image:linear-gradient(145deg,rgba(3,37,71,.08),rgba(3,43,77,.38)),url('assets/journey-stock/music-assessment.webp')!important;background-position:center!important;background-size:cover!important}
+.about-page .visual-purpose{background-image:linear-gradient(145deg,rgba(3,37,71,.06),rgba(3,43,77,.34)),url('assets/journey-stock/stage-experience.webp')!important;background-position:center!important;background-size:cover!important}
