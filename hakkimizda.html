@@ -6,7 +6,7 @@
   <title>Hakkımızda | NOVA Performans Sanatları Gelişim Merkezi</title>
   <meta name="description" content="NOVA'nın tarihçesi, seçici yetenek sistemi, sekiz yıllık gelişim yolculuğu ve uluslararası gelecek vizyonu.">
   <link rel="stylesheet" href="nova-header-v2.css?v=20261103-7">
-  <link rel="stylesheet" href="hakkimizda.css?v=20261116-3">
+  <link rel="stylesheet" href="hakkimizda.css?v=20261116-4">
   <link rel="stylesheet" href="nova-footer.css?v=20261116-2">
 </head>
 <body class="nova-about-page">
@@ -76,7 +76,7 @@
           <p><strong>Nova’nın sekiz yıllık eğitim yaklaşımının temel amacı; öğrencilerin lise mezuniyetleriyle birlikte sanat ve spor alanında eğitimlerine devam edebilecekleri, profesyonel kurumlarda yer alabilecekleri veya yeteneklerinden mesleki gelir üretebilecekleri güçlü bir altyapıya sahip olmalarını sağlamaktır.</strong></p>
         </div>
       </div>
-      <div class="section-visual visual-journey" role="img" aria-label="Farklı yaşlardaki genç dansçıların sahne performansı"><img class="about-section-image" src="https://images.pexels.com/photos/16126271/pexels-photo-16126271.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1200" alt=""></div>
+      <div class="section-visual visual-journey" role="img" aria-label="Genç erkek dansçıların sahne performansı"><img class="about-section-image" src="https://images.pexels.com/photos/12327992/pexels-photo-12327992.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1200" alt=""></div>
     </section>
 
     <section class="about-section about-global" id="dunya-universiteleri" data-content-id="about-global">
@@ -119,4 +119,21 @@
     <div><b>KURUMSAL</b><a href="hakkimizda.html">NOVA Hakkında</a><a href="index.html#kurumsal">Güven ve Sorumluluk</a><a href="index.html#seffaflik">Şeffaflık Belgeleri</a></div>
     <div><b>İLETİŞİM</b><a href="mailto:info@novaakademi.com">info@novaakademi.com</a><a href="index.html#haberler">Haberler ve Duyurular</a><a href="index.html#ilkeler">Temel İlkelerimiz</a></div>
   </div><div class="footer-bottom"><small>© 2026 NOVA Sanat ve Spor Kulübü. Tüm hakları saklıdır.</small><span class="kriter-media"><span>Dijital Çözüm Ortağı</span><img src="assets/kriter-medya-white.png?v=20261017-1" alt="Kriter Medya"></span></div></footer>
+
+  <script>
+    (() => {
+      const image = document.querySelector('.visual-global .about-section-image');
+      if (!image) return;
+      const frame = image.parentElement;
+      const cropBottomQuarter = () => {
+        requestAnimationFrame(() => {
+          const height = image.getBoundingClientRect().height;
+          if (height > 0) frame.style.height = Math.round(height * 0.75) + 'px';
+        });
+      };
+      if (image.complete) cropBottomQuarter();
+      else image.addEventListener('load', cropBottomQuarter, { once: true });
+      window.addEventListener('resize', cropBottomQuarter, { passive: true });
+    })();
+  </script>
 </body></html>
