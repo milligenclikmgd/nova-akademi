@@ -2,6 +2,8 @@
  const csrf=document.querySelector('meta[name="csrf-token"]')?.content||'';
  const nativeFetch=window.fetch.bind(window);
  const workerOrigin='https://nova-akademi.milligenclikmgd.workers.dev';
+ const currentSection=new URLSearchParams(location.search).get('section')||'';
+ const isContentAdmin=['slider','yonetim','ortaklar','haberler','iletisim'].includes(currentSection);
  window.novaWorkerApi=async(path,options={})=>{
   const method=(options.method||'GET').toUpperCase(),headers=new Headers(options.headers||{});
   if(method!=='GET'&&method!=='HEAD')headers.set('X-CSRF-Token',csrf);
@@ -45,6 +47,7 @@
    if(session.status!==401)throw Error(text);
    return;
   }
+  if(isContentAdmin){notice.hidden=true;window.dispatchEvent(new CustomEvent('nova:panel-ready',{detail:{}}));return;}
   const [settingsResponse,sessionsResponse,applicationsResponse]=await Promise.all([window.novaWorkerApi('/api/panel/settings'),window.novaWorkerApi('/api/panel/exam-sessions'),window.novaWorkerApi('/api/panel/applications/summary')]);
   const [settingsData,sessionsData,applicationData]=await Promise.all([settingsResponse.json(),sessionsResponse.json(),applicationsResponse.ok?applicationsResponse.json():Promise.resolve({})]);
   if(!settingsResponse.ok||!sessionsResponse.ok){
