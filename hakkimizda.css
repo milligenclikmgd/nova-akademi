@@ -125,3 +125,8 @@
 .about-page .visual-history{background-image:linear-gradient(145deg,rgba(3,37,71,.08),rgba(3,43,77,.38)),url('assets/nova-folkdance-hero.jpg')!important;background-position:center!important;background-size:cover!important}
 .about-page .visual-selection{background-image:linear-gradient(145deg,rgba(3,37,71,.08),rgba(3,43,77,.38)),url('assets/journey-stock/music-assessment.webp')!important;background-position:center!important;background-size:cover!important}
 .about-page .visual-purpose{background-image:linear-gradient(145deg,rgba(3,37,71,.06),rgba(3,43,77,.34)),url('assets/journey-stock/stage-experience.webp')!important;background-position:center!important;background-size:cover!important}
+
+
+/* INTO görselinin alt %25'ini kadraj dışında tut */
+.about-page .visual-global{display:block!important;min-height:0!important;overflow:hidden!important}
+.about-page .visual-global .about-section-image{display:block!important;width:100%!important;height:auto!important;flex:none!important;object-fit:unset!important}
