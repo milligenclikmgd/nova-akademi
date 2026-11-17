@@ -154,7 +154,7 @@
 /* CV panel header altından başlar; kapatma kontrolü sürekli görünür kalır. */
 .bio-panel{
  top:109px;right:0;bottom:0;left:auto;
- width:min(620px,48vw);height:auto;min-height:0;max-height:none;
+ width:min(760px,50vw);height:auto;min-height:0;max-height:none;
  padding:58px clamp(30px,4vw,58px) 42px;
  border-radius:18px 0 0 0;
  transform:translateX(104%);overflow:auto;
@@ -176,7 +176,7 @@
 @media(min-width:1331px){.bio-panel{top:109px}}
 @media(max-width:1330px){.bio-panel{top:84px}}
 @media(max-width:900px){
- .bio-panel{width:min(620px,70vw);padding:54px 34px 36px}
+ .bio-panel{width:min(680px,70vw);padding:54px 34px 36px}
  .bio-panel .bio-name{font-size:32px}
  .bio-panel .bio-role{font-size:14px}
  .bio-panel .bio-cv p{font-size:14px}
