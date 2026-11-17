@@ -149,3 +149,42 @@
 
 /* CV alanında panelden girilen satır ve boş satır aralarını koru. */
 .bio-panel .bio-cv p{white-space:pre-wrap;overflow-wrap:anywhere}
+
+
+/* CV panel header altından başlar; kapatma kontrolü sürekli görünür kalır. */
+.bio-panel{
+ top:109px;right:0;bottom:0;left:auto;
+ width:min(620px,48vw);height:auto;min-height:0;max-height:none;
+ padding:58px clamp(30px,4vw,58px) 42px;
+ border-radius:18px 0 0 0;
+ transform:translateX(104%);overflow:auto;
+}
+.bio-panel.show{transform:translateX(0)}
+.bio-panel .bio-close{
+ z-index:3;top:14px;right:18px;left:auto;
+ display:grid;place-items:center;width:42px;height:42px;
+ border:1px solid #d8e3ee;border-radius:50%;
+ background:#fff;color:#0b3159;font-size:30px;font-weight:400;line-height:1;
+ box-shadow:0 4px 16px #0b31591a;
+}
+.bio-panel .bio-close:hover{background:#edf6fc;border-color:#9abbd6;color:#0057b8}
+.bio-panel .bio-close:focus-visible{outline:3px solid #1682c2;outline-offset:3px}
+.bio-panel .bio-name{margin:0 54px 8px 0;font-size:clamp(28px,2.6vw,36px);line-height:1.15;letter-spacing:-.04em}
+.bio-panel .bio-role{margin:0 42px 22px 0;font-size:15px;line-height:1.5;font-weight:700}
+.bio-panel .bio-cv h3{margin:0 0 9px;font-size:12px}
+.bio-panel .bio-cv p{margin:0;font-size:15px;line-height:1.68;white-space:pre-wrap;overflow-wrap:anywhere}
+@media(min-width:1331px){.bio-panel{top:109px}}
+@media(max-width:1330px){.bio-panel{top:84px}}
+@media(max-width:900px){
+ .bio-panel{width:min(620px,70vw);padding:54px 34px 36px}
+ .bio-panel .bio-name{font-size:32px}
+ .bio-panel .bio-role{font-size:14px}
+ .bio-panel .bio-cv p{font-size:14px}
+}
+@media(max-width:600px){
+ .bio-panel{top:84px;right:0;bottom:0;left:0;width:100%;height:auto;max-height:none;padding:54px 24px 30px;border-radius:0}
+ .bio-panel .bio-close{top:10px;right:14px;width:40px;height:40px}
+ .bio-panel .bio-name{font-size:28px}
+ .bio-panel .bio-role{font-size:14px;margin-bottom:18px}
+ .bio-panel .bio-cv p{font-size:14px;line-height:1.65}
+}
