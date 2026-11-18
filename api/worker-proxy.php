@@ -39,7 +39,7 @@ function worker_request(string $path,string $method,string $body='',string $cont
  if(!function_exists('curl_init'))return [['error'=>'Sunucuda cURL etkin değil. Hosting desteğinden PHP cURL modülünü açtırın.'],503,''];
  $base='https://nova-akademi.milligenclikmgd.workers.dev';$url=$base.$path;$headers=['Accept: application/json','Origin: '.$base];$cookie=current_worker_cookie();if($cookie!=='')$headers[]='Cookie: '.$cookie;
  if($method!=='GET'&&$contentType!=='')$headers[]='Content-Type: '.$contentType;
- $ch=curl_init($url);$opts=[CURLOPT_RETURNTRANSFER=>true,CURLOPT_HEADER=>true,CURLOPT_HTTPHEADER=>$headers,CURLOPT_CONNECTTIMEOUT=>10,CURLOPT_TIMEOUT=>30,CURLOPT_SSL_VERIFYPEER=>true,CURLOPT_FOLLOWLOCATION=>false];
+ $ch=curl_init($url);$opts=[CURLOPT_RETURNTRANSFER=>true,CURLOPT_HEADER=>true,CURLOPT_HTTPHEADER=>$headers,CURLOPT_CONNECTTIMEOUT=>10,CURLOPT_TIMEOUT=>120,CURLOPT_SSL_VERIFYPEER=>true,CURLOPT_FOLLOWLOCATION=>false];
  if($method!=='GET'){$opts[CURLOPT_CUSTOMREQUEST]=$method;if($body!=='')$opts[CURLOPT_POSTFIELDS]=$body;}
  curl_setopt_array($ch,$opts);$raw=curl_exec($ch);$status=(int)curl_getinfo($ch,CURLINFO_RESPONSE_CODE);$headerSize=(int)curl_getinfo($ch,CURLINFO_HEADER_SIZE);$error=curl_error($ch);curl_close($ch);
  if($raw===false)return [['error'=>'Sınav servisine bağlanılamadı: '.$error],502,''];
@@ -77,6 +77,9 @@ $allowed=($method==='GET'&&in_array($path,['/api/panel/session','/api/panel/sett
  ||($method==='GET'&&$path==='/api/panel/cms')
  ||($method==='PUT'&&$path==='/api/panel/cms')
  ||($method==='POST'&&$path==='/api/panel/cms-media')
+ ||($method==='POST'&&$path==='/api/panel/cms-media/start')
+ ||($method==='POST'&&preg_match('~^/api/panel/cms-media/complete/[a-f0-9-]{36}$~',$path)===1)
+ ||($method==='PUT'&&preg_match('~^/api/panel/cms-media/chunk/[a-f0-9-]{36}/[0-9]+$~',$path)===1)
  ||($method==='POST'&&in_array($path,['/api/panel/exam-sessions','/api/panel/exam-sessions/bulk-delete','/api/panel/applications/reset'],true))
  ||(in_array($method,['PATCH','DELETE'],true)&&preg_match('~^/api/panel/exam-sessions/[a-f0-9-]{36}$~',$path)===1)
  ||($method==='PATCH'&&preg_match('~^/api/panel/applications/[a-f0-9-]{36}$~',$path)===1);
@@ -91,5 +94,5 @@ if($method==='GET'&&preg_match('~^/api/panel/applications/[a-f0-9-]{36}/(?:recei
  preg_match('/^Content-Type:\\s*([^;\\r\\n]+)/mi',$head,$typeMatch);$type=strtolower(trim($typeMatch[1]??'application/octet-stream'));$allowedTypes=['application/pdf','image/jpeg','image/png','image/webp'];if(!in_array($type,$allowedTypes,true))$type='application/octet-stream';
  header('Content-Type: '.$type);header('Content-Disposition: inline; filename="nova-dekont"');header('Content-Security-Policy: sandbox');echo $payload;exit;
 }
-$body='';$contentType='application/json';if(!in_array($method,['GET','DELETE'],true)){$body=(string)file_get_contents('php://input');$limit=$path==='/api/panel/cms-media'?26214400:($path==='/api/panel/cms'?524288:300000);if(strlen($body)>$limit)proxy_reply(['error'=>'İstek boyutu sınırı aşıldı.'],413);if($path==='/api/panel/cms-media')$contentType=(string)($_SERVER['CONTENT_TYPE']??'application/octet-stream');}
+$body='';$contentType='application/json';if(!in_array($method,['GET','DELETE'],true)){$body=(string)file_get_contents('php://input');$isMediaChunk=preg_match('~^/api/panel/cms-media/chunk/[a-f0-9-]{36}/[0-9]+$~',$path)===1;$limit=$path==='/api/panel/cms-media'?26214400:($isMediaChunk?4*1024*1024+1024:($path==='/api/panel/cms'?524288:300000));if(strlen($body)>$limit)proxy_reply(['error'=>'İstek boyutu sınırı aşıldı.'],413);if($path==='/api/panel/cms-media'||$isMediaChunk)$contentType=(string)($_SERVER['CONTENT_TYPE']??'application/octet-stream');}
 [$data,$status]=worker_request($target,$method,$body,$contentType);if($status===401)clear_worker_cookie();proxy_reply($data,$status?:502);
