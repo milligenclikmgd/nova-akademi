@@ -129,8 +129,8 @@ const mountFooterSocialAssets=()=>document.querySelectorAll('footer .footer-soci
 const syncNovaFooter=()=>{
  const footers=[...document.querySelectorAll('footer')];if(!footers.length)return;
  const sheets=[...document.querySelectorAll('link[rel="stylesheet"]')].filter(link=>new URL(link.href,location.href).pathname.endsWith('/nova-footer.css'));
- if(sheets.length)sheets.forEach(link=>link.href='nova-footer.css?v=20261116-1');
- else{const link=document.createElement('link');link.rel='stylesheet';link.href='nova-footer.css?v=20261116-1';document.head.append(link)}
+ if(sheets.length)sheets.forEach(link=>link.href='nova-footer.css?v=20261118-mobile-footer2');
+ else{const link=document.createElement('link');link.rel='stylesheet';link.href='nova-footer.css?v=20261118-mobile-footer2';document.head.append(link)}
  footers.forEach(footer=>{footer.id='iletisim';footer.classList.remove('exam-footer');footer.innerHTML=novaHomeFooter});
  mountFooterBrand();mountFooterPhone();mountFooterSocialAssets();syncFooterPhoneFromSettings();
 };
