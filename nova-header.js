@@ -113,7 +113,7 @@
   });
 
 })();
-const mountFooterPhone=()=>document.querySelectorAll('footer#iletisim .footer-bottom').forEach(bottom=>{const kriter=bottom.querySelector('.kriter-media img');if(kriter){kriter.src='assets/kriter-medya-original.svg?v=20261116-2';kriter.alt='Kriter Medya'}if(bottom.querySelector('.footer-phone'))return;const phone=document.createElement('a');phone.className='footer-phone';phone.href='tel:+908503038957';phone.setAttribute('aria-label','NOVA telefon numarası 0850 303 89 57');phone.innerHTML='<small>BİZE ULAŞIN</small><strong>0850 303 89 57</strong>';bottom.append(phone)});
+const mountFooterPhone=()=>document.querySelectorAll('footer#iletisim .footer-bottom').forEach(bottom=>{const kriter=bottom.querySelector('.kriter-media img');if(kriter){kriter.src='assets/kriter-medya-original.svg?v=20261116-2';kriter.alt='Kriter Medya'}if(bottom.querySelector('.footer-phone'))return;const phone=document.createElement('a');phone.className='footer-phone';phone.href='tel:';phone.setAttribute('aria-label','NOVA telefon numarası');phone.innerHTML='<small>BİZE ULAŞIN</small><strong></strong>';bottom.append(phone)});
 const syncFooterPhoneFromSettings=()=>fetch('https://nova-akademi.milligenclikmgd.workers.dev/api/site-content',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(data=>{const phone=data?.contact?.phone;if(!phone)return;const tel='tel:'+phone.replace(/[^+\d]/g,'');document.querySelectorAll('footer#iletisim .footer-phone').forEach(link=>{link.href=tel;link.setAttribute('aria-label','NOVA telefon numarası '+phone);const strong=link.querySelector('strong');if(strong)strong.textContent=phone})}).catch(()=>{});
 /* Production sync: 2026-10-11 · footer phone and transparent Kriter logo */
 
