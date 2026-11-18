@@ -1,4 +1,4 @@
-import {MAX_VIDEO_BYTES, initializeSiteMedia, videoSettings, saveActivityVideo, removeActivityVideo, serveActivityVideo, saveCMSMedia, serveCMSMedia} from './site-media.js';
+import {MAX_VIDEO_BYTES, initializeSiteMedia, videoSettings, saveActivityVideo, removeActivityVideo, serveActivityVideo, saveCMSMedia, serveCMSMedia, startCMSMediaUpload, saveCMSMediaChunk, completeCMSMediaUpload} from './site-media.js';
 import districtsByProvince from './turkiye-il-ilce.js';
 const MAX_PDF = 5 * 1024 * 1024;
 const MIN_PANEL_PASSWORD_LENGTH = 8;
@@ -203,7 +203,7 @@ export class ApplicationStore {
  async authorized(request){const token=cookieToken(request);if(!token)return false;const hash=await this.sessionKey(token);const now=Date.now();this.sql.exec('DELETE FROM sessions WHERE expires < ?',now);return this.sql.exec('SELECT token FROM sessions WHERE token=? AND expires>?',hash,now).toArray().length>0}
  async fetch(request){try{
   /* DO aktarımındaki gövdeyi yanıt vermeden önce sınırlandırarak tüket. */
-  if(request.body){const path=new URL(request.url).pathname;const max=['/api/applications','/api/enrollment','/api/enrollment/payment'].includes(path)?MAX_PDF+65536:['/api/panel/activity-video','/api/panel/cms-media'].includes(path)?MAX_VIDEO_BYTES:path==='/api/panel/cms'?524288:32768;const payload=await boundedBody(request,max);request=new Request(request,{body:payload})}
+  if(request.body){const path=new URL(request.url).pathname;const max=['/api/applications','/api/enrollment','/api/enrollment/payment'].includes(path)?MAX_PDF+65536:['/api/panel/activity-video','/api/panel/cms-media'].includes(path)?MAX_VIDEO_BYTES:path.startsWith('/api/panel/cms-media/chunk/')?4*1024*1024+1024:path==='/api/panel/cms'?524288:32768;const payload=await boundedBody(request,max);request=new Request(request,{body:payload})}
   return await this.handle(request);
  }catch(error){try{if(request.body&&!request.body.locked)await request.body.cancel()}catch{}return reply({error:error.status?error.message:'İşlem tamamlanamadı. Lütfen tekrar deneyin.'},error.status||500)}}
  async handle(request){
@@ -343,6 +343,9 @@ export class ApplicationStore {
     if(method==='GET'){const settings=this.getSettings();return reply({cms:settings.cms,revision:settings.cmsRevision||1});}
     if(method==='PUT'){const input=await readJson(request,524288),previous=this.getSettings(),cmsRevision=previous.cmsRevision||1;if(input.revision!==cmsRevision)fail('Site içerikleri başka bir oturumda değişti. Sayfayı yenileyin.',409);const cms=validateCMS(input.cms,previous.cms);const settings={...previous,cms,cmsRevision:cmsRevision+1};this.sql.exec('INSERT INTO settings(id,data) VALUES(1,?) ON CONFLICT(id) DO UPDATE SET data=excluded.data',JSON.stringify(settings));return reply({cms,revision:settings.cmsRevision});}
    }
+   if(path==='/api/panel/cms-media/start'&&method==='POST')return startCMSMediaUpload(request,this);
+   const chunkPrefix='/api/panel/cms-media/chunk/';if(path.startsWith(chunkPrefix)&&method==='PUT'){const bits=path.slice(chunkPrefix.length).split('/');if(bits.length===2&&/^[a-f0-9-]{36}$/.test(bits[0])&&/^\d+$/.test(bits[1]))return saveCMSMediaChunk(request,this,bits[0],bits[1]);}
+   const completePrefix='/api/panel/cms-media/complete/';if(path.startsWith(completePrefix)&&method==='POST'){const id=path.slice(completePrefix.length);if(/^[a-f0-9-]{36}$/.test(id))return completeCMSMediaUpload(request,this,id);}
    if(path==='/api/panel/cms-media'&&method==='POST')return saveCMSMedia(request,this);
    if(path==='/api/panel/messages'&&method==='GET'){const rows=this.sql.exec('SELECT id,created_at,name,email,phone,subject,message FROM contact_messages ORDER BY created_at DESC LIMIT 300').toArray();return reply({messages:rows})}
    if(path==='/api/panel/activity-video'){
